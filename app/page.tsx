@@ -18,7 +18,6 @@ const SITE_URL = "https://www.drdubay.in";
 
 export default async function CardWithForm() {
   let achievements: any[] = [];
-  let services: any[] = [];
 
   try {
     achievements = await db.achievement.findMany({
@@ -28,12 +27,6 @@ export default async function CardWithForm() {
     });
   } catch {
     achievements = [];
-  }
-
-  try {
-    services = await db.services.findMany();
-  } catch {
-    services = [];
   }
 
   const featuredAchievements = achievements.map((a) => ({
@@ -80,7 +73,7 @@ export default async function CardWithForm() {
           itemReviewedId={`${SITE_URL}/#physician`}
         />
       ) : null}
-      <HomePageContent featuredAchievements={featuredAchievements} services={services} />
+      <HomePageContent featuredAchievements={featuredAchievements} />
       {featuredReviews.length ? (
         <TestimonialStrip
           reviews={featuredReviews}

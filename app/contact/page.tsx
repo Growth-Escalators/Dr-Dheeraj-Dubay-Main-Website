@@ -1,17 +1,19 @@
 import { generatePageMetadata } from "@/lib/seo.config";
-import ContactSection from "@/components/ContactForm/Form2";
-
-export const metadata = generatePageMetadata({
-  title: "Contact Dr. Dheeraj Dubay | Book Appointment Jaipur",
-  description: "Contact Dr. Dheeraj Dubay at Shalby Hospital Jaipur or Dr. Dubay Hip & Knee Clinic. Book your joint replacement consultation today.",
-  slug: "contact",
-});
-import GoogleMaps from "@/components/ui/map";
+import LocationsBlock from "@/components/home/LocationsBlock";
+import FinalCTA from "@/components/home/FinalCTA";
+import { PhoneIcon, MailIcon, MessageCircle } from "lucide-react";
 import GTM from "@/utils/GTM";
 import React from "react";
 
-// Organization schema with multiple contactPoints — helps Google show the
-// right number for the right intent (appointments vs general).
+export const metadata = generatePageMetadata({
+  title: "Contact Dr. Dheeraj Dubay | Book Appointment Jaipur",
+  description:
+    "Contact Dr. Dheeraj Dubay at Shalby Hospital Jaipur or Dr. Dubay Hip & Knee Clinic. Call, WhatsApp, or visit either clinic location.",
+  slug: "contact",
+});
+
+// Organization + multi-ContactPoint schema. Renders the appointments and
+// general-info numbers so Google can surface the right one per query.
 const contactOrgSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -44,9 +46,12 @@ const contactOrgSchema = {
   ],
 };
 
-type Props = {};
+const PHONE_TEL = "+918955373205";
+const PHONE_DISPLAY = "+91 89553 73205";
+const WHATSAPP_URL = "https://wa.me/918955373205?text=Hello%20Dr.%20Dubay%20clinic";
+const EMAIL = "connect@drdubay.in";
 
-const page = (props: Props) => {
+const ContactPage = () => {
   return (
     <>
       <script
@@ -55,20 +60,74 @@ const page = (props: Props) => {
       />
       <head>
         <GTM gtmId="GTM-MDF4W4JT" />
-
-        <title>Dr. Dubay</title>
-        <meta
-          name="description"
-          content="Dr. Dheeraj Dubay, Joint and Hip Replacement Surgeon in Rajasthan"
-        />
-
-        {/* Favicon for branding */}
         <link rel="icon" href="/assets/images/logonew.png" />
       </head>
-      <ContactSection />
-      <GoogleMaps />
+
+      {/* Header */}
+      <section className="py-16 bg-white">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+            Get in touch with Dr. Dheeraj Dubay
+          </h1>
+          <p className="text-gray-600 text-base md:text-lg">
+            Call, WhatsApp, or visit either clinic — we&apos;ll help you book a
+            consultation and answer any pre-surgery questions.
+          </p>
+        </div>
+      </section>
+
+      {/* Primary contact methods */}
+      <section className="py-10 bg-emerald-50">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <a
+              href={`tel:${PHONE_TEL}`}
+              className="bg-white border border-gray-200 rounded-xl p-6 text-center hover:shadow-md transition group"
+            >
+              <PhoneIcon className="w-8 h-8 text-emerald-600 mx-auto mb-3" />
+              <h3 className="font-semibold text-gray-900 mb-1">Call us</h3>
+              <p className="text-gray-600 text-sm">{PHONE_DISPLAY}</p>
+              <span className="inline-block mt-3 px-4 py-1.5 text-xs font-semibold text-emerald-700 border border-emerald-300 rounded-md group-hover:bg-emerald-50">
+                Call Now
+              </span>
+            </a>
+
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white border border-gray-200 rounded-xl p-6 text-center hover:shadow-md transition group"
+            >
+              <MessageCircle className="w-8 h-8 text-emerald-600 mx-auto mb-3" />
+              <h3 className="font-semibold text-gray-900 mb-1">WhatsApp</h3>
+              <p className="text-gray-600 text-sm">Chat with our team</p>
+              <span className="inline-block mt-3 px-4 py-1.5 text-xs font-semibold text-emerald-700 border border-emerald-300 rounded-md group-hover:bg-emerald-50">
+                Open WhatsApp →
+              </span>
+            </a>
+
+            <a
+              href={`mailto:${EMAIL}`}
+              className="bg-white border border-gray-200 rounded-xl p-6 text-center hover:shadow-md transition group"
+            >
+              <MailIcon className="w-8 h-8 text-emerald-600 mx-auto mb-3" />
+              <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
+              <p className="text-gray-600 text-sm">{EMAIL}</p>
+              <span className="inline-block mt-3 px-4 py-1.5 text-xs font-semibold text-emerald-700 border border-emerald-300 rounded-md group-hover:bg-emerald-50">
+                Send email
+              </span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Locations with Get Directions (no embedded map) */}
+      <LocationsBlock />
+
+      {/* Final CTA */}
+      <FinalCTA />
     </>
   );
 };
 
-export default page;
+export default ContactPage;
