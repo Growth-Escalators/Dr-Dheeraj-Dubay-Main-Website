@@ -1,7 +1,8 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 import React from "react";
-import Link from "next/link";
-import { db } from "@/lib/db";
+import { PROCEDURE_PAGES } from "@/lib/procedure-pages";
+import { ProcedureCard } from "@/components/ui/ProcedureCard";
+import FinalCTA from "@/components/home/FinalCTA";
 import GTM from "@/utils/GTM";
 
 export const revalidate = 3600;
@@ -9,117 +10,51 @@ export const revalidate = 3600;
 export const metadata = generatePageMetadata({
   title: "Joint Replacement Services | Dr. Dheeraj Dubay Jaipur",
   description:
-    "Expert knee replacement, hip replacement, computer navigation surgery and minimally invasive joint replacement in Jaipur by Dr. Dheeraj Dubay.",
+    "All joint replacement procedures performed by Dr. Dheeraj Dubay — robotic knee, hip replacement, partial knee, revision, bilateral, minimally invasive, and more.",
   slug: "services",
 });
 
-const FALLBACK_SERVICES = [
-  {
-    id: "knee",
-    title: "Knee Replacement Surgery",
-    subtitle: "Advanced knee replacement procedures with computer-aided navigation for precise outcomes.",
-    slug: "knee-replacement-surgery",
-    image: null,
-  },
-  {
-    id: "hip",
-    title: "Hip Replacement Surgery",
-    subtitle: "Total and partial hip replacement with minimally invasive techniques.",
-    slug: "hip-replacement-surgery",
-    image: null,
-  },
-  {
-    id: "nav",
-    title: "Computer Navigation Surgery",
-    subtitle: "State-of-the-art computer navigation for superior accuracy in joint replacement.",
-    slug: "computer-navigation-surgery",
-    image: null,
-  },
-  {
-    id: "mis",
-    title: "Minimally Invasive Surgery",
-    subtitle: "Smaller incisions, faster recovery and less pain with minimally invasive techniques.",
-    slug: "minimally-invasive-surgery",
-    image: null,
-  },
-];
-
-const Service = async () => {
-  let services: any[] = [];
-  try {
-    services = await db.services.findMany();
-  } catch {
-    services = [];
-  }
-
-  const displayServices = services.length > 0 ? services : FALLBACK_SERVICES;
-
+const ServicesPage = () => {
   return (
     <>
       <head>
         <GTM gtmId="GTM-MDF4W4JT" />
-        <title>Services | Dr. Dubay</title>
-        <meta
-          name="description"
-          content="Dr. Dheeraj Dubay, Joint and Hip Replacement Surgeon in Rajasthan"
-        />
         <link rel="icon" href="/assets/images/logonew.png" />
       </head>
-      <section className="flex flex-col justify-center max-w-6xl px-4 py-10 mx-auto sm:px-6">
-        <div className="flex flex-wrap items-center justify-between mb-8">
-          <h2 className="mr-10 text-4xl font-bold leading-none md:text-5xl">
-            Our Services Dedicated to Your Vitality.
-          </h2>
-        </div>
 
-        <div className="flex flex-wrap -mx-4">
-          {displayServices.map((item) => (
-            <div
-              key={item.id}
-              className="w-full max-w-full mb-8 sm:w-1/2 px-4 lg:w-1/3 flex flex-col"
-            >
-              <div className="relative h-48 bg-gradient-to-br from-emerald-100 to-teal-100 overflow-hidden">
-                {item.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="object-cover object-center w-full h-full"
-                  />
-                ) : (
-                  <div className="flex items-center justify-center h-full">
-                    <span className="text-5xl">🦴</span>
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-grow">
-                <div className="triangle"></div>
-                <div className="w-full flex flex-col justify-between px-4 py-6 bg-white border border-gray-400">
-                  <div>
-                    <Link
-                      href={`/services/${item.slug}`}
-                      className="block mb-4 text-2xl font-black leading-tight hover:underline hover:text-blue-600 border-b-2 border-blue-600 dark:text-black"
-                    >
-                      {item.title}
-                    </Link>
-                    <p className="mb-4 dark:text-black">{item.subtitle}</p>
-                  </div>
-                  <div>
-                    <Link
-                      href={`/services/${item.slug}`}
-                      className="inline-block pb-1 mt-2 text-base font-black text-blue-600 uppercase border-b border-transparent hover:border-blue-600"
-                    >
-                      Learn More
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <span className="inline-block bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-3 border border-emerald-200">
+              All Procedures
+            </span>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+              Joint Replacement Procedures by Dr. Dheeraj Dubay
+            </h1>
+            <p className="text-gray-500 max-w-2xl mx-auto">
+              Every joint replacement procedure we perform — robotic and
+              conventional. Click any procedure for a detailed page with
+              outcomes, recovery, and FAQs.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {PROCEDURE_PAGES.map((p) => (
+              <ProcedureCard
+                key={p.slug}
+                slug={p.slug}
+                title={p.title}
+                category={p.category}
+                intro={p.intro}
+              />
+            ))}
+          </div>
         </div>
       </section>
+
+      <FinalCTA />
     </>
   );
 };
 
-export default Service;
+export default ServicesPage;

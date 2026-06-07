@@ -14,6 +14,7 @@ import LatestBlogs from "@/components/home/LatestBlogs";
 import LatestPodcasts from "@/components/home/LatestPodcasts";
 import SpecialtiesHighlight from "@/components/home/SpecialtiesHighlight";
 import FeaturedAchievementsSection from "@/components/Achievements/FeaturedAchievementsSection";
+import { ProcedureCard } from "@/components/ui/ProcedureCard";
 import GTM from "@/utils/GTM";
 import { PROCEDURE_PAGES } from "@/lib/procedure-pages";
 import { CONDITION_PAGES } from "@/lib/condition-pages";
@@ -70,24 +71,13 @@ export default function HomePageContent({
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {PROCEDURE_PAGES.map((p) => (
-              <a
+              <ProcedureCard
                 key={p.slug}
-                href={`/procedures/${p.slug}`}
-                className="bg-white rounded-xl p-5 border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all group"
-              >
-                <p className="text-xs text-emerald-700 font-semibold uppercase tracking-wide mb-2">
-                  {p.category}
-                </p>
-                <h3 className="font-bold text-gray-900 group-hover:text-emerald-700 transition-colors mb-2">
-                  {p.title}
-                </h3>
-                <p className="text-sm text-gray-500 line-clamp-2">
-                  {p.intro.slice(0, 110)}...
-                </p>
-                <span className="text-emerald-700 text-sm font-semibold mt-3 inline-block">
-                  Learn more →
-                </span>
-              </a>
+                slug={p.slug}
+                title={p.title}
+                category={p.category}
+                intro={p.intro}
+              />
             ))}
           </div>
         </div>
