@@ -35,6 +35,13 @@ const nextConfig = {
     ],
     domains: ['placehold.co'],
   },
+  async redirects() {
+    return [
+      // Phase 6: /youtube page renamed to /testimonials. Permanent 301
+      // preserves any backlinks + GSC indexing already accrued.
+      { source: '/youtube', destination: '/testimonials', permanent: true },
+    ]
+  },
   async headers() {
     return [
       {

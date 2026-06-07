@@ -1,5 +1,6 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
+import { LazyMapEmbed } from "@/components/ui/LazyMapEmbed";
 
 export const revalidate = 3600;
 
@@ -133,15 +134,10 @@ export default function LocationsPage() {
                   </div>
                 </div>
                 <div className="h-64 md:h-80">
-                  <iframe
+                  <LazyMapEmbed
                     src={loc.mapSrc}
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title={`Map - ${loc.name}`}
+                    title={loc.name}
+                    height={320}
                   />
                 </div>
               </div>
