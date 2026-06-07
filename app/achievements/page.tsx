@@ -1,6 +1,4 @@
 import { generatePageMetadata } from "@/lib/seo.config";
-import Navbar from "@/components/Navbar/navbar";
-import Footer from "@/components/Footer/Footer";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -57,7 +55,6 @@ export default async function AchievementsPage({
 
   return (
     <>
-      <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-3">
@@ -153,7 +150,6 @@ export default async function AchievementsPage({
           </div>
         )}
       </div>
-      <Footer />
     </>
   );
 }

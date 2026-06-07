@@ -1,8 +1,6 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 import Link from "next/link";
 import Image from "next/image";
-import Navbar from "@/components/Navbar/navbar";
-import Footer from "@/components/Footer/Footer";
 import { db } from "@/lib/db";
 
 export const revalidate = 3600;
@@ -55,7 +53,6 @@ export default async function BlogsPage({
 
   return (
     <>
-      <Navbar />
       <section className="max-w-6xl mx-auto px-4 py-12">
         <div className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-3">
@@ -172,7 +169,6 @@ export default async function BlogsPage({
           </div>
         )}
       </section>
-      <Footer />
     </>
   );
 }

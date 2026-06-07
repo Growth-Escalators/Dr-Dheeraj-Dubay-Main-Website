@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "../Navbar/navbar";
 import Image from "next/image";
 
 type Props = {};
@@ -7,7 +6,6 @@ type Props = {};
 const Section2 = (props: Props) => {
   return (
     <>
-      <Navbar />
       <section className="flex items-center bg-stone-100  font-poppins dark:bg-inherit ">
         <div className="justify-center flex-1 max-w-[90%] py-4 mx-auto lg:py-6 md:px-6">
           <div className="flex flex-wrap ">

@@ -10,7 +10,6 @@ export const metadata = generatePageMetadata({
   slug: "about",
 });
 import Section2 from "@/components/AboutUs/Section2";
-import Footer from "@/components/Footer/Footer";
 
 import Gallery from "@/components/Gallery4/NewGallery";
 import { db } from "@/lib/db";
@@ -47,7 +46,6 @@ const page = async (props: Props) => {
       <div className="py-12">
         <Gallery images={newimages} />
       </div>
-      <Footer />
     </div>
   );
 };

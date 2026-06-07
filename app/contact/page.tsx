@@ -6,8 +6,6 @@ export const metadata = generatePageMetadata({
   description: "Contact Dr. Dheeraj Dubay at Shalby Hospital Jaipur or Dr. Dubay Hip & Knee Clinic. Book your joint replacement consultation today.",
   slug: "contact",
 });
-import Footer from "@/components/Footer/Footer";
-import Navbar from "@/components/Navbar/navbar";
 import GoogleMaps from "@/components/ui/map";
 import GTM from "@/utils/GTM";
 import React from "react";
@@ -67,10 +65,8 @@ const page = (props: Props) => {
         {/* Favicon for branding */}
         <link rel="icon" href="/assets/images/logonew.png" />
       </head>
-      <Navbar />
       <ContactSection />
       <GoogleMaps />
-      <Footer />
     </>
   );
 };

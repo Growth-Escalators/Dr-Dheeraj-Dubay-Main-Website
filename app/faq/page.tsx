@@ -1,8 +1,6 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 import { FaqJsonLd } from "@/components/seo/FaqJsonLd";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
-import Navbar from "@/components/Navbar/navbar";
-import Footer from "@/components/Footer/Footer";
 import Link from "next/link";
 
 export const revalidate = 3600;
@@ -81,7 +79,6 @@ export default function FaqPage() {
           { name: "FAQ", url: "https://www.drdubay.in/faq" },
         ]}
       />
-      <Navbar />
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
         <div className="max-w-3xl mx-auto px-4 py-16">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
@@ -142,7 +139,6 @@ export default function FaqPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

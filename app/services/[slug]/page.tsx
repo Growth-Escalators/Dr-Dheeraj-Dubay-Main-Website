@@ -1,8 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Navbar from "@/components/Navbar/navbar";
-import Footer from "@/components/Footer/Footer";
 import { defaultSEO } from "@/lib/seo.config";
 import { FaqJsonLd } from "@/components/seo/FaqJsonLd";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
@@ -150,7 +148,6 @@ export default async function ServiceDetailPage({
         { name: "Services", url: "https://www.drdubay.in/services" },
         { name: service.title, url: `https://www.drdubay.in/services/${service.slug}` },
       ]} />
-      <Navbar />
       <div className="container mx-auto px-4">
         <main className="mt-12 mb-16">
           {/* Breadcrumb */}
@@ -291,7 +288,6 @@ export default async function ServiceDetailPage({
           </div>
         </main>
       </div>
-      <Footer />
     </>
   );
 }

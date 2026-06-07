@@ -1,6 +1,4 @@
 import { generatePageMetadata } from "@/lib/seo.config";
-import Footer from "@/components/Footer/Footer";
-import Navbar from "@/components/Navbar/navbar";
 import { YoutubePlayer } from "@/components/ui/video";
 import { db } from "@/lib/db";
 import GTM from "@/utils/GTM";
@@ -73,7 +71,6 @@ const Youtube = async () => {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }}
         />
       )}
-      <Navbar />
 
       <section className="max-w-6xl mx-auto px-4 py-12">
         <div className="text-center mb-10">
@@ -100,7 +97,6 @@ const Youtube = async () => {
         )}
       </section>
 
-      <Footer />
     </>
   );
 };

@@ -1,7 +1,6 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 import React from "react";
 import Link from "next/link";
-import Navbar from "@/components/Navbar/navbar";
 import { db } from "@/lib/db";
 import GTM from "@/utils/GTM";
 
@@ -66,7 +65,6 @@ const Service = async () => {
         />
         <link rel="icon" href="/assets/images/logonew.png" />
       </head>
-      <Navbar />
       <section className="flex flex-col justify-center max-w-6xl px-4 py-10 mx-auto sm:px-6">
         <div className="flex flex-wrap items-center justify-between mb-8">
           <h2 className="mr-10 text-4xl font-bold leading-none md:text-5xl">

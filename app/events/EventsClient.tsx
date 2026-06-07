@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Navbar from "@/components/Navbar/navbar";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
@@ -129,7 +128,6 @@ const EventsClient = () => {
   if (loading) {
     return (
       <>
-        <Navbar />
         <div className="flex justify-center items-center min-h-screen">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
         </div>
@@ -145,7 +143,6 @@ const EventsClient = () => {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }}
         />
       )}
-      <Navbar />
       <div className="max-w-6xl mx-auto py-12 px-4">
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-4">

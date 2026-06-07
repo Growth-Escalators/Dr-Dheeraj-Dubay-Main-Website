@@ -1,5 +1,4 @@
 import { generatePageMetadata } from "@/lib/seo.config";
-import Footer from "@/components/Footer/Footer";
 
 export const revalidate = 3600;
 
@@ -10,7 +9,6 @@ export const metadata = generatePageMetadata({
 });
 
 import Gallery from "@/components/Gallery4/NewGallery";
-import Navbar from "@/components/Navbar/navbar";
 import { db } from "@/lib/db";
 import GTM from "@/utils/GTM";
 import React from "react";
@@ -38,9 +36,7 @@ const page = async (props: Props) => {
         {/* Favicon for branding */}
         <link rel="icon" href="/assets/images/logonew.png" />
       </head>
-      <Navbar />
       <Gallery images={images} />
-      <Footer />
     </>
   );
 };

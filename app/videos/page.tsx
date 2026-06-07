@@ -1,6 +1,4 @@
 import { generatePageMetadata } from "@/lib/seo.config";
-import Footer from "@/components/Footer/Footer";
-import Navbar from "@/components/Navbar/navbar";
 import GTM from "@/utils/GTM";
 
 export const revalidate = 3600;
@@ -25,7 +23,6 @@ const Videos = async () => {
 
         <link rel="icon" href="/assets/images/logonew.png" />
       </head>
-      <Navbar />
       <div className="p-4 min-h-screen bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto py-12">
           <div className="text-center mb-12">
@@ -63,7 +60,6 @@ const Videos = async () => {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 };

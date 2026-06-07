@@ -6,10 +6,9 @@ export default function WhatsAppFloat() {
       href="https://wa.me/918955373205"
       target="_blank"
       rel="noopener noreferrer"
+      className="bottom-24 right-5 sm:bottom-6 sm:right-6"
       style={{
         position: "fixed",
-        bottom: "24px",
-        right: "24px",
         zIndex: 9999,
         width: "56px",
         height: "56px",

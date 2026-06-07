@@ -2,8 +2,6 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import Navbar from "@/components/Navbar/navbar";
-import Footer from "@/components/Footer/Footer";
 import { defaultSEO } from "@/lib/seo.config";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { db } from "@/lib/db";
@@ -112,7 +110,6 @@ export default async function AchievementDetailPage({
         { name: "Achievements", url: "https://www.drdubay.in/achievements" },
         { name: achievement.title, url: `https://www.drdubay.in/achievements/${achievement.slug}` },
       ]} />
-      <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Breadcrumb */}
         <div className="mb-6 text-sm text-gray-500">
@@ -180,7 +177,6 @@ export default async function AchievementDetailPage({
           ← Back to all achievements
         </Link>
       </div>
-      <Footer />
     </>
   );
 }

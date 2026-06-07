@@ -2,8 +2,6 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import Navbar from "@/components/Navbar/navbar";
-import Footer from "@/components/Footer/Footer";
 import { defaultSEO } from "@/lib/seo.config";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { db } from "@/lib/db";
@@ -135,7 +133,6 @@ export default async function BlogDetailPage({
         { name: "Blog", url: "https://www.drdubay.in/blogs" },
         { name: blog.title, url: `https://www.drdubay.in/blogs/${blog.slug}` },
       ]} />
-      <Navbar />
       <div className="container mx-auto px-4">
         <main className="mt-12 mb-16">
           {/* Breadcrumb */}
@@ -302,7 +299,6 @@ export default async function BlogDetailPage({
           </div>
         </main>
       </div>
-      <Footer />
     </>
   );
 }

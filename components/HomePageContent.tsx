@@ -12,8 +12,6 @@ import Card1 from "@/components/ProfileCard/Card1";
 import WhyChoose from "@/components/WhyChoose/WhyChoose";
 import ReviewCard from "@/components/Carousel/ReviewCard";
 import Booknow from "@/components/Booknow/Booknow";
-import Footer from "@/components/Footer/Footer";
-import Navbar from "@/components/Navbar/navbar";
 import GoogleMaps from "@/components/ui/map";
 import Certificate from "@/components/Certificate/Certificate";
 import GTM from "@/utils/GTM";
@@ -59,7 +57,6 @@ export default function HomePageContent({ featuredAchievements = [], services = 
         <GTM gtmId="GTM-MDF4W4JT" />
         <link rel="icon" href="/assets/images/logonew.png" />
       </head>
-      <Navbar />
       {/* 1. Hero */}
       <Card1 />
       {/* 2. Stats */}
@@ -186,7 +183,6 @@ export default function HomePageContent({ featuredAchievements = [], services = 
       <WhyChoose />
       <GoogleMaps />
       <Form />
-      <Footer />
     </div>
   );
 }
