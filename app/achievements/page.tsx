@@ -1,8 +1,10 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 import Link from "next/link";
-import Image from "next/image";
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 
 export const revalidate = 3600;
+
+const ACHIEVEMENT_IMAGE_FALLBACK = "/assets/images/hero.png";
 
 export const metadata = generatePageMetadata({
   title: "Achievements & Awards | Dr. Dheeraj Dubay",
@@ -111,31 +113,16 @@ export default async function AchievementsPage({
                 href={`/achievements/${achievement.slug}`}
                 className="group block bg-white rounded-xl shadow hover:shadow-lg transition-shadow overflow-hidden border border-gray-100"
               >
-                <div className="relative h-48 overflow-hidden bg-gradient-to-br from-emerald-50 to-emerald-100 flex items-center justify-center">
-                  {achievement.imageUrl ? (
-                    <Image
-                      src={achievement.imageUrl}
-                      alt={achievement.title}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      unoptimized
-                    />
-                  ) : (
-                    // Fallback when no imageUrl — keeps card heights consistent and
-                    // prevents text overflowing a blank box (the original bug).
-                    <div className="text-center px-4">
-                      <span className="text-5xl block mb-1" aria-hidden>
-                        {achievement.category === "Award"
-                          ? "🏆"
-                          : achievement.category === "Conference"
-                          ? "🎤"
-                          : achievement.category === "Record"
-                          ? "🌟"
-                          : "📰"}
-                      </span>
-                    </div>
-                  )}
+                <div className="relative h-64 md:h-72 overflow-hidden bg-gradient-to-br from-emerald-50 to-emerald-100">
+                  <ImageWithFallback
+                    src={achievement.imageUrl || ACHIEVEMENT_IMAGE_FALLBACK}
+                    fallbackSrc={ACHIEVEMENT_IMAGE_FALLBACK}
+                    alt={achievement.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    unoptimized
+                  />
                   <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold bg-white/95 text-emerald-800 shadow">
                     {achievement.category}
                   </span>

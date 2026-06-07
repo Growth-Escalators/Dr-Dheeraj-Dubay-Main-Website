@@ -1,12 +1,14 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { defaultSEO } from "@/lib/seo.config";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 import { db } from "@/lib/db";
 
 export const revalidate = 3600;
+
+const ACHIEVEMENT_IMAGE_FALLBACK = "/assets/images/hero.png";
 
 async function getAchievementBySlug(slug: string) {
   try {
@@ -125,19 +127,18 @@ export default async function AchievementDetailPage({
         </div>
 
         {/* Image */}
-        {achievement.imageUrl && (
-          <div className="relative w-full aspect-[16/9] max-h-[480px] rounded-xl overflow-hidden mb-8 shadow-md">
-            <Image
-              src={achievement.imageUrl}
-              alt={achievement.title}
-              fill
-              sizes="(max-width: 768px) 100vw, 800px"
-              className="object-cover"
-              priority
-              unoptimized
-            />
-          </div>
-        )}
+        <div className="relative w-full aspect-[16/9] max-h-[480px] rounded-xl overflow-hidden mb-8 shadow-md bg-gray-100">
+          <ImageWithFallback
+            src={achievement.imageUrl || ACHIEVEMENT_IMAGE_FALLBACK}
+            fallbackSrc={ACHIEVEMENT_IMAGE_FALLBACK}
+            alt={achievement.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 800px"
+            className="object-cover"
+            priority
+            unoptimized
+          />
+        </div>
 
         {/* Header */}
         <div className="mb-6">

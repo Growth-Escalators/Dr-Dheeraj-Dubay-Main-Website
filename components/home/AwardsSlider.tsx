@@ -1,12 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AWARDS } from "@/lib/awards";
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 
 const AUTO_ADVANCE_MS = 4500;
+const AWARD_IMAGE_FALLBACK = "/assets/images/hero.png";
 
 // Single award carousel replacing 5 separate award components that used to
 // stack on the homepage. Auto-advance is gentle (4.5s) so visitors actually
@@ -75,18 +76,19 @@ export default function AwardsSlider() {
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 items-center min-h-[320px]">
-            <div className="relative h-64 md:h-full bg-gray-100">
-              <Image
+          <div className="grid grid-cols-1 md:grid-cols-[1.85fr_1fr] items-stretch min-h-[440px] md:min-h-[520px]">
+            <div className="relative h-80 md:h-full bg-gray-100">
+              <ImageWithFallback
                 src={current.image}
+                fallbackSrc={AWARD_IMAGE_FALLBACK}
                 alt={`${current.name} — ${current.issuingBody}, ${current.year}`}
                 fill
-                sizes="(max-width: 768px) 100vw, 500px"
+                sizes="(max-width: 768px) 100vw, 65vw"
                 className="object-cover"
                 unoptimized
               />
             </div>
-            <div className="p-6 md:p-10">
+            <div className="p-6 md:p-10 flex flex-col justify-center">
               <p className="text-xs text-emerald-700 font-semibold uppercase tracking-wide mb-2">
                 {current.issuingBody} · {current.year}
               </p>
