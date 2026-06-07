@@ -1,4 +1,6 @@
 import { CITY_PAGES } from '@/lib/city-pages'
+import { isRichCity, RICH_CITIES } from '@/lib/cities'
+import { RichCityContent } from '@/components/cities/RichCityContent'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { BreadcrumbNav } from '@/components/pages'
@@ -255,15 +257,18 @@ export default async function CityPage(
         </a>
       </div>
     </main>
+    {/* Tier-1 unique sections (travel, why-travel, lodging, FAQs) — only
+        renders for cities migrated to the rich data architecture. */}
+    {isRichCity(page.slug) && (
+      <RichCityContent
+        city={RICH_CITIES.find((c) => c.slug === page.slug)!}
+      />
+    )}
     {cityReviews.length ? (
       <TestimonialStrip
         reviews={cityReviews}
         heading={`What ${page.city} patients say`}
-        subheading={
-          aggregate
-            ? `${aggregate.ratingValue}/5 average across ${aggregate.reviewCount} reviews for ${page.procedure}`
-            : undefined
-        }
+        subheading={`${aggregate.ratingValue}/5 average across ${aggregate.reviewCount}+ Google reviews`}
       />
     ) : null}
     </>
