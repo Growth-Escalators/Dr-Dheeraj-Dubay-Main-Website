@@ -49,14 +49,17 @@ export default async function PodcastsPage() {
         ) : (
           <div className="grid md:grid-cols-2 gap-8">
             {videos.map((v: any) => {
-              const videoId = getYouTubeId(v.url || '')
+              // DB stores the URL on `link` (admin schema); a couple of older
+              // rows might use `url` — accept either so nothing falls through.
+              const url: string = v.link || v.url || ''
+              const videoId = getYouTubeId(url)
               return (
                 <article key={v.id} className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow">
                   {videoId ? (
                     <div className="aspect-video">
                       <iframe
                         src={`https://www.youtube.com/embed/${videoId}`}
-                        title={v.title}
+                        title={v.title || 'Dr. Dheeraj Dubay podcast episode'}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                         className="w-full h-full"
@@ -76,7 +79,9 @@ export default async function PodcastsPage() {
                         Episode
                       </span>
                     </div>
-                    <h2 className="font-bold text-gray-900 mb-1">{v.title}</h2>
+                    {v.title && (
+                      <h2 className="font-bold text-gray-900 mb-1">{v.title}</h2>
+                    )}
                     {v.description && (
                       <p className="text-sm text-gray-500 line-clamp-2">{v.description}</p>
                     )}
