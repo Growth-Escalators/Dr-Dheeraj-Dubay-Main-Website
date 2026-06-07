@@ -182,3 +182,102 @@ export const MedicalBusinessJsonLd = () => {
     />
   )
 }
+
+// AggregateRating attached to the Physician node. Emit on homepage + any
+// page where the aggregate is meaningful. Caller must pass real stats —
+// Google rejects AggregateRating with reviewCount=0.
+export const AggregateRatingJsonLd = ({
+  ratingValue,
+  reviewCount,
+  itemType = "Physician",
+  itemId,
+  itemName = "Dr. Dheeraj Dubay",
+}: {
+  ratingValue: number
+  reviewCount: number
+  itemType?: "Physician" | "MedicalBusiness" | "MedicalProcedure"
+  itemId?: string
+  itemName?: string
+}) => {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": itemType,
+    ...(itemId ? { "@id": itemId } : {}),
+    name: itemName,
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: ratingValue.toFixed(1),
+      reviewCount: reviewCount.toString(),
+      bestRating: "5",
+      worstRating: "1",
+    },
+  }
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  )
+}
+
+// Batch Review schema for a page. `itemReviewed` should be the most
+// specific thing the review is about — e.g. the procedure for a procedure
+// page, the physician for the homepage.
+export interface ReviewInput {
+  id: string
+  patientName: string
+  city: string
+  procedure: string
+  rating: number
+  text: string
+  dateOfReview: Date | string
+}
+
+export const ReviewListJsonLd = ({
+  reviews,
+  itemReviewedName = "Dr. Dheeraj Dubay",
+  itemReviewedType = "Physician",
+  itemReviewedId,
+}: {
+  reviews: ReviewInput[]
+  itemReviewedName?: string
+  itemReviewedType?: "Physician" | "MedicalProcedure" | "MedicalBusiness"
+  itemReviewedId?: string
+}) => {
+  if (!reviews.length) return null
+  const itemReviewed: Record<string, unknown> = {
+    "@type": itemReviewedType,
+    name: itemReviewedName,
+  }
+  if (itemReviewedId) itemReviewed["@id"] = itemReviewedId
+
+  const schema = reviews.map((r) => ({
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "@id": `${SITE_URL}/#review-${r.id}`,
+    author: {
+      "@type": "Person",
+      name: r.patientName,
+      ...(r.city ? { address: { "@type": "PostalAddress", addressLocality: r.city } } : {}),
+    },
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: r.rating.toString(),
+      bestRating: "5",
+      worstRating: "1",
+    },
+    reviewBody: r.text,
+    datePublished: (typeof r.dateOfReview === "string"
+      ? new Date(r.dateOfReview)
+      : r.dateOfReview
+    ).toISOString().slice(0, 10),
+    itemReviewed,
+  }))
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  )
+}

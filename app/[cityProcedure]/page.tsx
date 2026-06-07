@@ -3,7 +3,14 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { BreadcrumbNav } from '@/components/pages'
 import { BreadcrumbJsonLd } from '@/components/seo/BreadcrumbJsonLd'
+import { AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
+import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { defaultSEO } from '@/lib/seo.config'
+import { getAggregateStats, getPublishedReviews } from '@/lib/reviews'
+
+function toSlug(s: string) {
+  return s.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
+}
 
 export async function generateStaticParams() {
   return CITY_PAGES.map(p => ({
@@ -35,7 +42,7 @@ export async function generateMetadata(
   }
 }
 
-export default function CityPage(
+export default async function CityPage(
   { params }: { params: { cityProcedure: string } }
 ) {
   const page = CITY_PAGES.find(p => p.slug === params.cityProcedure)
@@ -45,6 +52,24 @@ export default function CityPage(
     { name: 'Home', url: defaultSEO.siteUrl },
     { name: `${page.procedure} in ${page.city}`, url: `${defaultSEO.siteUrl}/${page.slug}` },
   ]
+
+  // Reviews scoped to this city + procedure. Fall back to city-only if
+  // no procedure-specific reviews exist yet, then to procedure-only,
+  // then global — so the page always shows something credible.
+  const citySlug = toSlug(page.city)
+  const procedureSlug = toSlug(page.procedure)
+  let cityReviews = await getPublishedReviews({ citySlug, procedureSlug, limit: 3 })
+  if (cityReviews.length < 3) {
+    const extra = await getPublishedReviews({ citySlug, limit: 3 - cityReviews.length })
+    const ids = new Set(cityReviews.map(r => r.id))
+    cityReviews = [...cityReviews, ...extra.filter(r => !ids.has(r.id))].slice(0, 3)
+  }
+  if (cityReviews.length < 3) {
+    const extra = await getPublishedReviews({ procedureSlug, limit: 3 - cityReviews.length })
+    const ids = new Set(cityReviews.map(r => r.id))
+    cityReviews = [...cityReviews, ...extra.filter(r => !ids.has(r.id))].slice(0, 3)
+  }
+  const aggregate = await getAggregateStats({ procedureSlug })
 
   // MedicalBusiness + Service schema — Jaipur surgeon serving this city.
   // The local-pack signal: tie the doctor + procedure + service-area together.
@@ -82,6 +107,21 @@ export default function CityPage(
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localServiceSchema) }}
       />
+      {aggregate ? (
+        <AggregateRatingJsonLd
+          ratingValue={aggregate.ratingValue}
+          reviewCount={aggregate.reviewCount}
+          itemType="MedicalProcedure"
+          itemName={`${page.procedure} by Dr. Dheeraj Dubay`}
+        />
+      ) : null}
+      {cityReviews.length ? (
+        <ReviewListJsonLd
+          reviews={cityReviews}
+          itemReviewedName={`${page.procedure} by Dr. Dheeraj Dubay`}
+          itemReviewedType="MedicalProcedure"
+        />
+      ) : null}
       <main style={{
       maxWidth: '800px',
       margin: '0 auto',
@@ -214,6 +254,17 @@ export default function CityPage(
         </a>
       </div>
     </main>
+    {cityReviews.length ? (
+      <TestimonialStrip
+        reviews={cityReviews}
+        heading={`What ${page.city} patients say`}
+        subheading={
+          aggregate
+            ? `${aggregate.ratingValue}/5 average across ${aggregate.reviewCount} reviews for ${page.procedure}`
+            : undefined
+        }
+      />
+    ) : null}
     </>
   )
 }

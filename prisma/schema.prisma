@@ -239,3 +239,30 @@ model Achievement {
   metaDescription String?
   createdAt       DateTime @default(now())
 }
+
+// Read-only on the public site — written by the admin app.
+// Source of AggregateRating + Review JSON-LD shown on homepage, city, and
+// procedure pages. Filter by citySlug / procedureSlug to scope reviews to
+// the right page.
+model PatientReview {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  patientName   String
+  city          String
+  citySlug      String?
+  procedure     String
+  procedureSlug String?
+  rating        Int      @default(5)
+  text          String
+  textHi        String?
+  dateOfReview  DateTime @default(now())
+  isPublished   Boolean  @default(false)
+  isFeatured    Boolean  @default(false)
+  photoUrl      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([isPublished])
+  @@index([citySlug])
+  @@index([procedureSlug])
+  @@index([isFeatured])
+}

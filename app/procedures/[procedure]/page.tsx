@@ -2,6 +2,9 @@ import { PROCEDURE_PAGES } from '@/lib/procedure-pages'
 import { HINDI_PAGES } from '@/lib/hindi-pages'
 import { notFound } from 'next/navigation'
 import { BreadcrumbNav, CTASection, FAQAccordion, RecoveryTimeline, TrustBadges } from '@/components/pages'
+import { AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
+import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
+import { getAggregateStats, getPublishedReviews } from '@/lib/reviews'
 import type { Metadata } from 'next'
 import { defaultSEO } from '@/lib/seo.config'
 
@@ -42,9 +45,15 @@ export async function generateMetadata(
   }
 }
 
-export default function ProcedurePage({ params }: { params: { procedure: string } }) {
+export default async function ProcedurePage({ params }: { params: { procedure: string } }) {
   const page = PROCEDURE_PAGES.find(p => p.slug === params.procedure)
   if (!page) return notFound()
+
+  // Reviews + aggregate scoped to this procedure
+  const [procedureReviews, aggregate] = await Promise.all([
+    getPublishedReviews({ procedureSlug: page.slug, limit: 3 }),
+    getAggregateStats({ procedureSlug: page.slug }),
+  ])
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -98,6 +107,21 @@ export default function ProcedurePage({ params }: { params: { procedure: string 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      {aggregate ? (
+        <AggregateRatingJsonLd
+          ratingValue={aggregate.ratingValue}
+          reviewCount={aggregate.reviewCount}
+          itemType="MedicalProcedure"
+          itemName={page.schema.procedureName}
+        />
+      ) : null}
+      {procedureReviews.length ? (
+        <ReviewListJsonLd
+          reviews={procedureReviews}
+          itemReviewedType="MedicalProcedure"
+          itemReviewedName={page.schema.procedureName}
+        />
+      ) : null}
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
         <BreadcrumbNav
@@ -232,6 +256,17 @@ export default function ProcedurePage({ params }: { params: { procedure: string 
 
         <CTASection />
       </main>
+      {procedureReviews.length ? (
+        <TestimonialStrip
+          reviews={procedureReviews}
+          heading={`${page.title} — patient experiences`}
+          subheading={
+            aggregate
+              ? `${aggregate.ratingValue}/5 average across ${aggregate.reviewCount} reviews`
+              : undefined
+          }
+        />
+      ) : null}
     </>
   )
 }
