@@ -230,6 +230,26 @@ model Event {
   description String   // Add description field
   createdAt   DateTime @default(now())
 }
+
+// Mirrors the admin app's Article model. Read-only on the public site —
+// articles are created/edited through https://admin.drdubay.in/admin/articles.
+// Two render variants on /articles: tags ["press"] → outlet-led press card,
+// tags ["white-paper"] → surgeon-authored expandable card.
+model Article {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  journalName   String?
+  authors       String?
+  abstract      String?
+  doi           String?
+  externalUrl   String?
+  pdfUrl        String?
+  publishedDate DateTime?
+  tags          String[]
+  isPublished   Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
 model Achievement {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   title           String

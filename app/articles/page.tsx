@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { db } from "@/lib/db";
 
 export const metadata: Metadata = {
   title: "Articles & Press | Dr. Dheeraj Dubay",
@@ -25,16 +26,28 @@ interface Article {
   isPublished?: boolean;
 }
 
+// Query Prisma directly. We previously fetched admin.drdubay.in/api/articles
+// but that endpoint is auth-gated by NextAuth middleware and silently
+// returned an HTML sign-in page — yielding 0 articles on the public site.
 async function getArticles(): Promise<Article[]> {
   try {
-    const baseUrl =
-      process.env.NEXT_PUBLIC_API_URL || "https://admin.drdubay.in";
-    const res = await fetch(`${baseUrl}/api/articles`, {
-      next: { revalidate: 3600 },
+    const rows = await db.article.findMany({
+      where: { isPublished: true },
+      orderBy: { publishedDate: "desc" },
     });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data.filter((a: Article) => a.isPublished) : [];
+    return rows.map((r) => ({
+      id: r.id,
+      title: r.title,
+      journalName: r.journalName,
+      authors: r.authors,
+      abstract: r.abstract,
+      externalUrl: r.externalUrl,
+      pdfUrl: r.pdfUrl,
+      doi: r.doi,
+      publishedDate: r.publishedDate ? r.publishedDate.toISOString() : null,
+      tags: r.tags,
+      isPublished: r.isPublished,
+    }));
   } catch {
     return [];
   }

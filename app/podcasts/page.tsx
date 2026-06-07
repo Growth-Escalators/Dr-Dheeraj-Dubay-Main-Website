@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { db } from '@/lib/db'
 
 export const metadata: Metadata = {
   title: 'Podcasts & Video Insights | Dr. Dheeraj Dubay',
@@ -7,13 +8,19 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600
 
+// Query the YouTube model directly via Prisma. We previously fetched
+// admin.drdubay.in/api/youtube but that endpoint is behind NextAuth
+// middleware and returned an HTML sign-in page, leaving the page empty.
 async function getVideos() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://admin.drdubay.in'
-    const res = await fetch(`${baseUrl}/api/youtube`, { next: { revalidate: 3600 } })
-    if (!res.ok) return []
-    const data = await res.json()
-    return Array.isArray(data) ? data : []
+    const rows = await db.youTube.findMany({
+      orderBy: { createdAt: 'desc' },
+    })
+    return rows.map((r) => ({
+      id: r.id,
+      link: r.link,
+      createdAt: r.createdAt.toISOString(),
+    }))
   } catch {
     return []
   }
