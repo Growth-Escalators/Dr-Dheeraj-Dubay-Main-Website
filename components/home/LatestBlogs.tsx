@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Blog {
   id: string;
@@ -49,11 +50,13 @@ export default function LatestBlogs() {
             >
               <div className="h-48 bg-gradient-to-br from-blue-50 to-indigo-100 overflow-hidden relative">
                 {(blog.coverImage || blog.image1) && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={blog.coverImage || blog.image1}
                     alt={blog.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    unoptimized
                     onError={(e) => {
                       (e.target as HTMLImageElement).style.display = "none";
                     }}

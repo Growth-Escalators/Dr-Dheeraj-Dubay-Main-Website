@@ -2,6 +2,7 @@ import { generatePageMetadata } from "@/lib/seo.config";
 import Navbar from "@/components/Navbar/navbar";
 import Footer from "@/components/Footer/Footer";
 import Link from "next/link";
+import Image from "next/image";
 
 export const revalidate = 3600;
 
@@ -115,11 +116,13 @@ export default async function AchievementsPage({
               >
                 <div className="relative h-48 overflow-hidden bg-gray-100">
                   {achievement.imageUrl && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={achievement.imageUrl}
                       alt={achievement.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      unoptimized
                     />
                   )}
                   <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold bg-white/90 text-blue-700 shadow">

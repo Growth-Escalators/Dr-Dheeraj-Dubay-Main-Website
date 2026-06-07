@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Event {
   id: string;
@@ -44,13 +45,15 @@ export default function LatestEvents() {
               key={event.id}
               className="bg-white rounded-xl shadow hover:shadow-lg transition-shadow overflow-hidden border border-gray-100"
             >
-              <div className="h-48 bg-gradient-to-br from-emerald-100 to-teal-100 flex items-center justify-center overflow-hidden">
+              <div className="relative h-48 bg-gradient-to-br from-emerald-100 to-teal-100 flex items-center justify-center overflow-hidden">
                 {event.imageUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={event.imageUrl}
                     alt={event.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover"
+                    unoptimized
                     onError={(e) => {
                       (e.target as HTMLImageElement).style.display = "none";
                     }}

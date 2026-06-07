@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/Navbar/navbar";
 import Footer from "@/components/Footer/Footer";
 import { defaultSEO } from "@/lib/seo.config";
@@ -128,12 +129,15 @@ export default async function AchievementDetailPage({
 
         {/* Image */}
         {achievement.imageUrl && (
-          <div className="w-full rounded-xl overflow-hidden mb-8 shadow-md">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+          <div className="relative w-full aspect-[16/9] max-h-[480px] rounded-xl overflow-hidden mb-8 shadow-md">
+            <Image
               src={achievement.imageUrl}
               alt={achievement.title}
-              className="w-full object-cover max-h-[480px]"
+              fill
+              sizes="(max-width: 768px) 100vw, 800px"
+              className="object-cover"
+              priority
+              unoptimized
             />
           </div>
         )}

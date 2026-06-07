@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/Navbar/navbar";
 import Footer from "@/components/Footer/Footer";
 import { defaultSEO } from "@/lib/seo.config";
@@ -172,12 +173,17 @@ export default async function BlogDetailPage({
 
               {/* Cover / primary image */}
               {((blog as any).coverImage || blog.image1) && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={(blog as any).coverImage || blog.image1}
-                  alt={blog.title}
-                  className="rounded-md object-cover w-full max-h-[480px] mb-6"
-                />
+                <div className="relative w-full aspect-[16/9] max-h-[480px] mb-6 overflow-hidden rounded-md">
+                  <Image
+                    src={(blog as any).coverImage || blog.image1}
+                    alt={blog.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 800px"
+                    className="object-cover"
+                    priority
+                    unoptimized
+                  />
+                </div>
               )}
 
               {/* Tags */}
@@ -208,12 +214,16 @@ export default async function BlogDetailPage({
 
               {/* Image1 (secondary) */}
               {blog.image1 && (blog as any).coverImage && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={blog.image1}
-                  alt={blog.subtitle1}
-                  className="rounded-md object-cover w-full max-h-[400px] mb-8"
-                />
+                <div className="relative w-full aspect-[16/9] max-h-[400px] mb-8 overflow-hidden rounded-md">
+                  <Image
+                    src={blog.image1}
+                    alt={blog.subtitle1}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 800px"
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
               )}
 
               {/* Section 2 */}
@@ -224,12 +234,16 @@ export default async function BlogDetailPage({
               )}
 
               {blog.image2 && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={blog.image2}
-                  alt={blog.subtitle2 || ""}
-                  className="rounded-md object-cover w-full max-h-[400px] mb-6"
-                />
+                <div className="relative w-full aspect-[16/9] max-h-[400px] mb-6 overflow-hidden rounded-md">
+                  <Image
+                    src={blog.image2}
+                    alt={blog.subtitle2 || ""}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 800px"
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
               )}
 
               {blog.content2 && (
@@ -261,12 +275,16 @@ export default async function BlogDetailPage({
                       className="flex gap-3 group"
                     >
                       {(item as any).coverImage || item.image1 ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={(item as any).coverImage || item.image1}
-                          alt={item.title}
-                          className="w-20 h-16 object-cover rounded-md flex-shrink-0"
-                        />
+                        <div className="relative w-20 h-16 flex-shrink-0 overflow-hidden rounded-md">
+                          <Image
+                            src={(item as any).coverImage || item.image1}
+                            alt={item.title}
+                            fill
+                            sizes="80px"
+                            className="object-cover"
+                            unoptimized
+                          />
+                        </div>
                       ) : null}
                       <div>
                         <p className="text-gray-800 font-semibold text-sm group-hover:text-primary transition-colors line-clamp-2">
