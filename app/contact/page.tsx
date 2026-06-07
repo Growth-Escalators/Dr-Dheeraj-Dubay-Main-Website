@@ -12,11 +12,49 @@ import GoogleMaps from "@/components/ui/map";
 import GTM from "@/utils/GTM";
 import React from "react";
 
+// Organization schema with multiple contactPoints — helps Google show the
+// right number for the right intent (appointments vs general).
+const contactOrgSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://www.drdubay.in/#organization",
+  name: "Dr. Dheeraj Dubay — Joint Replacement Clinic",
+  url: "https://www.drdubay.in",
+  logo: "https://www.drdubay.in/assets/images/logonew.png",
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      telephone: "+91-8955373205",
+      contactType: "appointments",
+      areaServed: "IN",
+      availableLanguage: ["en", "hi"],
+    },
+    {
+      "@type": "ContactPoint",
+      telephone: "+91-8955373205",
+      contactType: "customer service",
+      areaServed: "IN",
+      availableLanguage: ["en", "hi"],
+    },
+  ],
+  email: "connect@drdubay.in",
+  sameAs: [
+    "https://www.facebook.com/drdheerajdubay/",
+    "https://www.instagram.com/dheerajdubay1/",
+    "https://www.youtube.com/@dr.dheerajdubay6664",
+    "https://www.linkedin.com/in/dr-dheeraj-dubay-36399599/",
+  ],
+};
+
 type Props = {};
 
 const page = (props: Props) => {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactOrgSchema) }}
+      />
       <head>
         <GTM gtmId="GTM-MDF4W4JT" />
 

@@ -1,5 +1,6 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 import Section1 from "@/components/AboutUs/Section1";
+import { PhysicianJsonLd } from "@/components/seo/JsonLd";
 
 export const revalidate = 3600;
 
@@ -28,6 +29,7 @@ const page = async (props: Props) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      <PhysicianJsonLd />
       <head>
         <GTM gtmId="GTM-MDF4W4JT" />
 

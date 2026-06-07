@@ -1,4 +1,5 @@
 import { generatePageMetadata } from "@/lib/seo.config";
+import { db } from "@/lib/db";
 
 export const revalidate = 3600;
 import EventsClient from "./EventsClient";
@@ -9,6 +10,61 @@ export const metadata = generatePageMetadata({
   slug: "events",
 });
 
-export default function EventsPage() {
-  return <EventsClient />;
+// The Event model doesn't carry a structured start/end date — only
+// createdAt — so we emit Event schema with createdAt as startDate and the
+// clinic as the default location. Limited completeness but enough for
+// Google to surface them as events in the knowledge panel.
+async function buildEventSchema() {
+  try {
+    const events = await db.event.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 20,
+    });
+    if (!events.length) return null;
+
+    return events.map((e) => ({
+      "@context": "https://schema.org",
+      "@type": "Event",
+      name: e.title,
+      description: e.description,
+      startDate: e.createdAt.toISOString(),
+      eventStatus: "https://schema.org/EventScheduled",
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      ...(e.imageUrl ? { image: e.imageUrl } : {}),
+      location: {
+        "@type": "Place",
+        name: "Shalby Hospital Jaipur",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "200 Feet Bypass Road, Vaishali Nagar",
+          addressLocality: "Jaipur",
+          addressRegion: "Rajasthan",
+          postalCode: "302021",
+          addressCountry: "IN",
+        },
+      },
+      organizer: {
+        "@type": "Person",
+        name: "Dr. Dheeraj Dubay",
+        url: "https://www.drdubay.in",
+      },
+    }));
+  } catch {
+    return null;
+  }
+}
+
+export default async function EventsPage() {
+  const eventSchema = await buildEventSchema();
+  return (
+    <>
+      {eventSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }}
+        />
+      ) : null}
+      <EventsClient />
+    </>
+  );
 }

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { CITY_PAGES } from "@/lib/city-pages";
+import { PROCEDURE_PAGES } from "@/lib/procedure-pages";
 import { getWhatsAppBookingUrl } from "@/lib/whatsapp-booking";
 
 type Props = {};
@@ -202,6 +203,25 @@ const Footer = (props: Props) => {
                     className="text-gray-600 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400 underline-offset-2 hover:underline"
                   >
                     {c.procedure} in {c.city}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mt-8 mb-2">
+              Procedures
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-5">
+              Full range of joint replacement and orthopedic procedures performed by Dr. Dubay:
+            </p>
+            <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+              {PROCEDURE_PAGES.map((p) => (
+                <li key={p.slug}>
+                  <Link
+                    href={`/procedures/${p.slug}`}
+                    className="text-gray-600 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400 underline-offset-2 hover:underline"
+                  >
+                    {p.title}
                   </Link>
                 </li>
               ))}

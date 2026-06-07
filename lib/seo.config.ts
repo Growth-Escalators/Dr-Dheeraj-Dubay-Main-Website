@@ -107,5 +107,15 @@ export const generatePageMetadata = ({
         "max-snippet": -1,
       },
     },
+    // GSC verification meta — set NEXT_PUBLIC_GSC_VERIFICATION on Vercel
+    // with the value from "Verify ownership → HTML tag". Survives DNS
+    // changes that would invalidate TXT-record verification.
+    ...(process.env.NEXT_PUBLIC_GSC_VERIFICATION
+      ? {
+          verification: {
+            google: process.env.NEXT_PUBLIC_GSC_VERIFICATION,
+          },
+        }
+      : {}),
   }
 }
