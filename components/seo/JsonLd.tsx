@@ -135,7 +135,12 @@ export const MedicalBusinessJsonLd = () => {
         })),
         "areaServed": AREA_SERVED.map((name) => ({ "@type": "City", name })),
         "physician": { "@id": `${SITE_URL}/#physician` },
-        "sameAs": SOCIAL_LINKS,
+        // sameAs includes the Google Business Profile listing (via Place
+        // ID URL). This links the schema entity to the verified GBP.
+        "sameAs": [
+          "https://www.google.com/maps/place/?q=place_id:ChIJPSvAWaS0bTkRSpg1PguKuf0",
+          ...SOCIAL_LINKS,
+        ],
       },
       {
         "@type": ["MedicalClinic", "LocalBusiness"],

@@ -6,7 +6,8 @@ import { BreadcrumbJsonLd } from '@/components/seo/BreadcrumbJsonLd'
 import { AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { defaultSEO } from '@/lib/seo.config'
-import { getAggregateStats, getPublishedReviews } from '@/lib/reviews'
+import { getPublishedReviews } from '@/lib/reviews'
+import { AGGREGATE_RATING } from '@/lib/clinic-info'
 
 function toSlug(s: string) {
   return s.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
@@ -69,7 +70,7 @@ export default async function CityPage(
     const ids = new Set(cityReviews.map(r => r.id))
     cityReviews = [...cityReviews, ...extra.filter(r => !ids.has(r.id))].slice(0, 3)
   }
-  const aggregate = await getAggregateStats({ procedureSlug })
+  const aggregate = AGGREGATE_RATING
 
   // MedicalBusiness + Service schema — Jaipur surgeon serving this city.
   // The local-pack signal: tie the doctor + procedure + service-area together.

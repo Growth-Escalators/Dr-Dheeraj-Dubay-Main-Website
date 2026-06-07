@@ -10,11 +10,10 @@ import {
 } from "@/components/seo/JsonLd";
 import { TestimonialStrip } from "@/components/ui/TestimonialStrip";
 import { db } from "@/lib/db";
-import { getAggregateStats, getPublishedReviews } from "@/lib/reviews";
+import { getPublishedReviews } from "@/lib/reviews";
+import { AGGREGATE_RATING, SITE_URL } from "@/lib/clinic-info";
 
 export const metadata = generatePageMetadata({});
-
-const SITE_URL = "https://www.drdubay.in";
 
 export default async function CardWithForm() {
   let achievements: any[] = [];
@@ -38,21 +37,16 @@ export default async function CardWithForm() {
     imageUrl: a.imageUrl,
   }));
 
-  // Reviews: featured first, then any published. Filtered to homepage =
-  // no city/procedure filter so we pull the global aggregate.
-  let aggregate: Awaited<ReturnType<typeof getAggregateStats>> = null;
+  // Patient testimonial content from DB (featured first). The aggregate
+  // rating digits come from the canonical GBP source, not the DB count.
   let featuredReviews: Awaited<ReturnType<typeof getPublishedReviews>> = [];
   try {
-    [aggregate, featuredReviews] = await Promise.all([
-      getAggregateStats(),
-      getPublishedReviews({ featuredOnly: true, limit: 3 }),
-    ]);
+    featuredReviews = await getPublishedReviews({ featuredOnly: true, limit: 3 });
     if (featuredReviews.length < 3) {
       const fill = await getPublishedReviews({ limit: 3 - featuredReviews.length });
       featuredReviews = [...featuredReviews, ...fill].slice(0, 3);
     }
   } catch {
-    aggregate = null;
     featuredReviews = [];
   }
 
@@ -60,13 +54,11 @@ export default async function CardWithForm() {
     <>
       <PhysicianJsonLd />
       <MedicalBusinessJsonLd />
-      {aggregate ? (
-        <AggregateRatingJsonLd
-          ratingValue={aggregate.ratingValue}
-          reviewCount={aggregate.reviewCount}
-          itemId={`${SITE_URL}/#physician`}
-        />
-      ) : null}
+      <AggregateRatingJsonLd
+        ratingValue={AGGREGATE_RATING.ratingValue}
+        reviewCount={AGGREGATE_RATING.reviewCount}
+        itemId={`${SITE_URL}/#physician`}
+      />
       {featuredReviews.length ? (
         <ReviewListJsonLd
           reviews={featuredReviews}
@@ -77,11 +69,7 @@ export default async function CardWithForm() {
       {featuredReviews.length ? (
         <TestimonialStrip
           reviews={featuredReviews}
-          subheading={
-            aggregate
-              ? `Rated ${aggregate.ratingValue}/5 across ${aggregate.reviewCount} patient reviews`
-              : undefined
-          }
+          subheading={`Rated ${AGGREGATE_RATING.ratingValue}/5 across ${AGGREGATE_RATING.reviewCount}+ Google reviews`}
         />
       ) : null}
     </>

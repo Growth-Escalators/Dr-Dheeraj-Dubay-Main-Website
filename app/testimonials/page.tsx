@@ -1,6 +1,9 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 import { LazyYouTubeCard } from "@/components/Testimonials/LazyYouTubeCard";
 import { AsSeenOnStrip } from "@/components/Testimonials/AsSeenOnStrip";
+import { GoogleReviewButton } from "@/components/ui/GoogleReviewButton";
+import { AggregateRatingJsonLd } from "@/components/seo/JsonLd";
+import { AGGREGATE_RATING } from "@/lib/clinic-info";
 import FinalCTA from "@/components/home/FinalCTA";
 import { db } from "@/lib/db";
 import GTM from "@/utils/GTM";
@@ -85,6 +88,11 @@ const TestimonialsPage = async () => {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }}
         />
       )}
+      <AggregateRatingJsonLd
+        ratingValue={AGGREGATE_RATING.ratingValue}
+        reviewCount={AGGREGATE_RATING.reviewCount}
+        itemId="https://www.drdubay.in/#physician"
+      />
 
       {/* Header */}
       <section className="py-12 bg-white">
@@ -95,10 +103,14 @@ const TestimonialsPage = async () => {
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
             Patient Testimonials
           </h1>
-          <p className="text-gray-600 max-w-xl mx-auto">
+          <p className="text-gray-600 max-w-xl mx-auto mb-5">
             Real patient stories from Dr. Dheeraj Dubay&apos;s joint replacement
             surgeries — knee, hip, robotic, and minimally invasive procedures.
           </p>
+          <p className="text-sm text-amber-700 mb-3">
+            ⭐ Rated {AGGREGATE_RATING.ratingValue}/5 across {AGGREGATE_RATING.reviewCount}+ Google reviews
+          </p>
+          <GoogleReviewButton />
         </div>
       </section>
 

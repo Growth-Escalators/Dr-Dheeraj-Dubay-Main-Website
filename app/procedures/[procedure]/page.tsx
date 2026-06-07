@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation'
 import { BreadcrumbNav, CTASection, FAQAccordion, RecoveryTimeline, TrustBadges } from '@/components/pages'
 import { AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
-import { getAggregateStats, getPublishedReviews } from '@/lib/reviews'
+import { getPublishedReviews } from '@/lib/reviews'
+import { AGGREGATE_RATING } from '@/lib/clinic-info'
 import type { Metadata } from 'next'
 import { defaultSEO } from '@/lib/seo.config'
 
@@ -49,11 +50,13 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
   const page = PROCEDURE_PAGES.find(p => p.slug === params.procedure)
   if (!page) return notFound()
 
-  // Reviews + aggregate scoped to this procedure
-  const [procedureReviews, aggregate] = await Promise.all([
-    getPublishedReviews({ procedureSlug: page.slug, limit: 3 }),
-    getAggregateStats({ procedureSlug: page.slug }),
-  ])
+  // Procedure-scoped testimonials from DB; aggregate rating digits come
+  // from the canonical GBP source.
+  const procedureReviews = await getPublishedReviews({
+    procedureSlug: page.slug,
+    limit: 3,
+  })
+  const aggregate = AGGREGATE_RATING
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
