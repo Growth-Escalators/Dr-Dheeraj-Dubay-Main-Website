@@ -9,6 +9,7 @@ import { ToastProvider } from "@/components/providers/toast-provider";
 import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
 import MobileBookingCTA from "@/components/ui/MobileBookingCTA";
 import EmergencyBanner from "@/components/ui/EmergencyBanner";
+import { LeadMagnetPopup } from "@/components/ui/LeadMagnetPopup";
 import { AnalyticsListener } from "@/components/analytics/Analytics";
 import { defaultSEO } from "@/lib/seo.config";
 
@@ -128,6 +129,7 @@ export default function RootLayout({
           {children}
           <MobileBookingCTA />
           <WhatsAppFloat />
+          <LeadMagnetPopup />
         </ThemeProvider>
       </body>
     </html>

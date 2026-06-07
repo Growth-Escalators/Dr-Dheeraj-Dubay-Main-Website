@@ -23,22 +23,27 @@ model Lead {
   phone String?
   age Int?
   remark String?
-  address String? 
+  address String?
   gender GenderType? @default(Male)
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
   patientStatus String?
   doad DateTime?
-  dood DateTime? 
+  dood DateTime?
   dx String?
   surgery String?
   side Side @default(LEFT)
-  implant  String? 
+  implant  String?
   ipdReg Int?
   bill Int?
   tpa TPA @default(Private)
   payment Payments[]
   cities String?
+  // Where this lead originated. Examples: "booking" (public site booking
+  // form), "lead-magnet" (Hindi PDF popup), "admin" (manual entry by
+  // clinic staff), "campaign-reply" (responded to a WhatsApp blast).
+  // Lets admin filter the patient list by acquisition channel.
+  source String?
   }
 
 model Payments {
