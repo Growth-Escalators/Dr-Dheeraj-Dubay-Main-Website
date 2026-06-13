@@ -1,7 +1,13 @@
 // Single source of truth for awards shown on the homepage AwardsSlider.
 // The full canonical list lives in the DB Achievement model and renders on
 // /achievements — this static array is just the curated slider order.
-// To swap an image: drop a file in public/assets/awards/ and update `image`.
+//
+// Each award holds an array of photos so we can show ceremony shots,
+// dignitaries, certificate, etc. as a thumbnail strip on the slider.
+// Drop files in /public/assets/awards/{id}/1.jpg, 2.jpg, 3.jpg — paths
+// that don't exist on disk fall back to /assets/images/hero.png
+// (handled by ImageWithFallback), so it's safe to ship the placeholder
+// paths now and add the real photos later.
 
 export interface Award {
   id: string;
@@ -9,8 +15,15 @@ export interface Award {
   issuingBody: string;
   year: string;
   oneLine: string;
-  image: string; // path under /public/
+  images: string[]; // first entry is the cover; rest are extra photos for the gallery strip
 }
+
+// Build 3-slot placeholder array for awards that don't have real photos yet.
+const placeholders = (id: string) => [
+  `/assets/awards/${id}/1.jpg`,
+  `/assets/awards/${id}/2.jpg`,
+  `/assets/awards/${id}/3.jpg`,
+];
 
 export const AWARDS: Award[] = [
   {
@@ -19,7 +32,7 @@ export const AWARDS: Award[] = [
     issuingBody: "Forbes",
     year: "2024",
     oneLine: "34 joint replacement surgeries performed in a single day — a global first.",
-    image: "/assets/images/hero.png", // TODO(jatin): replace with Forbes award photo
+    images: placeholders("forbes-world-record"),
   },
   {
     id: "uk-honour",
@@ -28,7 +41,7 @@ export const AWARDS: Award[] = [
     year: "2024",
     oneLine:
       "International recognition for excellence in robotic joint replacement surgery.",
-    image: "/assets/images/uk-honour.png", // TODO(jatin): confirm path
+    images: placeholders("uk-honour"),
   },
   {
     id: "et-inspiring-leaders",
@@ -37,7 +50,7 @@ export const AWARDS: Award[] = [
     year: "2025",
     oneLine:
       "Honoured as one of India's most inspiring healthcare leaders.",
-    image: "/assets/images/et-award.png", // TODO(jatin): confirm path
+    images: placeholders("et-inspiring-leaders"),
   },
   {
     id: "most-trusted-surgeon",
@@ -46,7 +59,7 @@ export const AWARDS: Award[] = [
     year: "2023",
     oneLine:
       "Industry recognition based on patient outcomes and peer review.",
-    image: "/assets/images/most-trusted.png", // TODO(jatin): confirm path
+    images: placeholders("most-trusted-surgeon"),
   },
   {
     id: "golden-warriors",
@@ -55,7 +68,7 @@ export const AWARDS: Award[] = [
     year: "Annual",
     oneLine:
       "Annual walk celebrating post-surgery patients who've reclaimed mobility.",
-    image: "/assets/images/golden-warriors.png", // TODO(jatin): confirm path
+    images: placeholders("golden-warriors"),
   },
   {
     id: "health-minister-award",
@@ -63,6 +76,6 @@ export const AWARDS: Award[] = [
     issuingBody: "Government of Rajasthan",
     year: "3 consecutive years",
     oneLine: "State recognition for contributions to orthopedic healthcare.",
-    image: "/assets/images/health-minister.png", // TODO(jatin): confirm path
+    images: placeholders("health-minister-award"),
   },
 ];
