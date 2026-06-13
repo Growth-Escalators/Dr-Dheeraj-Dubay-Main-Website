@@ -26,11 +26,20 @@ interface Props {
   achievements: FeaturedAchievement[];
 }
 
+// Format an ISO date string into "Mon YYYY" deterministically — slice the
+// YYYY-MM portion off the string instead of routing through `new Date()` +
+// `toLocaleDateString`, which can yield different output on the server
+// (UTC) vs. the client (IST) for dates near midnight, triggering a React
+// hydration mismatch.
+const MONTH_SHORT = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
 function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("en-IN", {
-    year: "numeric",
-    month: "short",
-  });
+  const [year, month] = iso.slice(0, 10).split("-");
+  const monthIndex = parseInt(month, 10) - 1;
+  if (isNaN(monthIndex) || monthIndex < 0 || monthIndex > 11) return year ?? "";
+  return `${MONTH_SHORT[monthIndex]} ${year}`;
 }
 
 function CategoryChip({ children }: { children: React.ReactNode }) {
