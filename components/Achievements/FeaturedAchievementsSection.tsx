@@ -3,6 +3,15 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight, CalendarDays } from "lucide-react";
+import { SECTION_HEADING_CLASSES } from "@/lib/design-tokens";
+
+// Featured press / awards / media features pulled from the DB Achievement
+// model on the homepage. Visually distinct from AwardsSlider (carousel)
+// and the Recognition stat tiles — this one is the magazine-style press
+// kit. First item gets a wide hero card; the rest sit in a smaller grid.
+// Emerald palette throughout matches the rest of the site (was on
+// bg-primary blue before).
 
 type FeaturedAchievement = {
   id: string;
@@ -17,63 +26,144 @@ interface Props {
   achievements: FeaturedAchievement[];
 }
 
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString("en-IN", {
+    year: "numeric",
+    month: "short",
+  });
+}
+
+function CategoryChip({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-block bg-emerald-50 text-emerald-700 text-[11px] font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider border border-emerald-200">
+      {children}
+    </span>
+  );
+}
+
+function DatePill({ iso }: { iso: string }) {
+  return (
+    <span className="inline-flex items-center gap-1 text-xs text-gray-500">
+      <CalendarDays className="w-3.5 h-3.5" />
+      {formatDate(iso)}
+    </span>
+  );
+}
+
+function HeroCard({ achievement }: { achievement: FeaturedAchievement }) {
+  return (
+    <Link
+      href={`/achievements/${achievement.slug}`}
+      className="group block bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg hover:border-emerald-300 transition-all"
+    >
+      <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr]">
+        <div className="relative h-64 md:h-80 bg-gray-100 overflow-hidden">
+          <Image
+            src={achievement.imageUrl}
+            alt={achievement.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 55vw"
+            className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
+          />
+          <div className="absolute top-4 left-4">
+            <CategoryChip>{achievement.category}</CategoryChip>
+          </div>
+        </div>
+        <div className="p-6 md:p-8 flex flex-col justify-center">
+          <div className="mb-3">
+            <DatePill iso={achievement.date} />
+          </div>
+          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 group-hover:text-emerald-700 transition-colors leading-snug">
+            {achievement.title}
+          </h3>
+          <span className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-emerald-700 group-hover:gap-2.5 transition-all">
+            Read the story
+            <ArrowRight className="w-4 h-4" />
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function SmallCard({ achievement }: { achievement: FeaturedAchievement }) {
+  return (
+    <Link
+      href={`/achievements/${achievement.slug}`}
+      className="group block bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all"
+    >
+      <div className="relative w-full h-48 bg-gray-100 overflow-hidden">
+        <Image
+          src={achievement.imageUrl}
+          alt={achievement.title}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
+        />
+        <div className="absolute top-3 left-3">
+          <CategoryChip>{achievement.category}</CategoryChip>
+        </div>
+      </div>
+      <div className="p-5">
+        <div className="mb-2">
+          <DatePill iso={achievement.date} />
+        </div>
+        <h4 className="text-base font-bold text-gray-900 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
+          {achievement.title}
+        </h4>
+        <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-emerald-700 group-hover:gap-2 transition-all">
+          Read more
+          <ArrowRight className="w-3.5 h-3.5" />
+        </span>
+      </div>
+    </Link>
+  );
+}
+
 export default function FeaturedAchievementsSection({ achievements }: Props) {
   if (!achievements || achievements.length === 0) return null;
 
+  const [hero, ...rest] = achievements;
+
   return (
-    <section className="w-[90%] mx-auto my-16">
-      <div className="text-center mb-10">
-        <h2 className="text-sm font-semibold text-primary uppercase tracking-wider">
-          Recognition
-        </h2>
-        <h3 className="text-4xl md:text-5xl font-extrabold text-gray-800 mt-2">
-          Awards &amp; Achievements
-        </h3>
-        <p className="mt-4 text-gray-500 text-lg max-w-2xl mx-auto">
-          Milestones that reflect our commitment to excellence in orthopaedic care.
-        </p>
-      </div>
+    <section className="py-16 md:py-20 bg-white">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="text-center mb-12">
+          <span className={SECTION_HEADING_CLASSES.eyebrow}>
+            Featured Press &amp; Media
+          </span>
+          <h2 className={SECTION_HEADING_CLASSES.h2}>
+            Awards &amp; <span className="text-emerald-600">Achievements</span>
+          </h2>
+          <p className={SECTION_HEADING_CLASSES.sub}>
+            Milestones, press features, and moments that reflect our commitment
+            to excellence in orthopaedic care.
+          </p>
+        </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {achievements.map((achievement) => (
+        <div className="space-y-6 md:space-y-8">
+          {/* Hero card — first item gets prominent placement */}
+          <HeroCard achievement={hero} />
+
+          {/* Supporting grid — remaining items */}
+          {rest.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {rest.map((a) => (
+                <SmallCard key={a.id} achievement={a} />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="text-center mt-12">
           <Link
-            key={achievement.id}
-            href={`/achievements/${achievement.slug}`}
-            className="group rounded-2xl overflow-hidden border border-gray-100 shadow-md hover:shadow-xl transition-shadow duration-300"
+            href="/achievements"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition shadow-sm"
           >
-            <div className="relative w-full h-52 bg-gray-100">
-              <Image
-                src={achievement.imageUrl}
-                alt={achievement.title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-            <div className="p-5">
-              <span className="inline-block text-xs font-semibold text-primary bg-primary/10 rounded-full px-3 py-1 mb-3 uppercase tracking-wider">
-                {achievement.category}
-              </span>
-              <h4 className="text-lg font-bold text-gray-800 group-hover:text-primary transition-colors line-clamp-2">
-                {achievement.title}
-              </h4>
-              <p className="text-sm text-gray-500 mt-2">
-                {new Date(achievement.date).toLocaleDateString("en-IN", {
-                  year: "numeric",
-                  month: "long",
-                })}
-              </p>
-            </div>
+            View all achievements
+            <ArrowRight className="w-4 h-4" />
           </Link>
-        ))}
-      </div>
-
-      <div className="text-center mt-10">
-        <Link
-          href="/achievements"
-          className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
-        >
-          View All Achievements
-        </Link>
+        </div>
       </div>
     </section>
   );
