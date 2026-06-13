@@ -1,179 +1,161 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
-import {
-  Award,
-  GraduationCap,
-  Globe2,
-  Trophy,
-  Stethoscope,
-} from "lucide-react";
-import { SECTION_HEADING_CLASSES } from "@/lib/design-tokens";
+import Link from "next/link";
+import CountUp from "react-countup";
+import { SECTION_HEADING_CLASSES, BUTTON } from "@/lib/design-tokens";
 
-// Recognition & Excellence section. Was two side-by-side <ul> lists of plain
-// strings — read like a CV dump and built no real trust. Reworked into a
-// year-tagged card grid with an icon per recognition type so visitors can
-// scan rather than read top-to-bottom. Same content, more credible
-// presentation. Keeps the section under <WhyChoose> on the homepage.
+// Recognition & Excellence. The homepage already has AwardsSlider
+// (carousel) and FeaturedAchievementsSection (image card grid) above this
+// one, so listing every individual award again here was redundant — read
+// like "more of the same, but boring."
 //
-// Each item has:
-//   - type → drives icon + colour (kept emerald-only per design tokens)
-//   - year → extracted into a chip so dates are visible at a glance
-//   - title → the line that used to be the full <li>
+// Reworked into: 4 headline stat tiles + a compact year-grouped timeline.
+// Stats grab attention in <5 seconds (the actual trust signal), the
+// timeline is collapsible-style text — clean and scannable, not 15 cards
+// to scroll past.
 
-type AchievementType = "award" | "conference" | "international" | "record" | "clinical";
+const STATS = [
+  { value: 1, suffix: "", label: "Forbes World Record" },
+  { value: 10, suffix: "+", label: "National Awards" },
+  { value: 5, suffix: "+", label: "International Conferences" },
+  { value: 23, suffix: "+", label: "Years in Practice" },
+];
 
-interface Achievement {
-  type: AchievementType;
-  year: string;
-  title: string;
+interface TimelineItem {
+  text: string;
+  highlight?: boolean;
 }
 
-const ICONS: Record<AchievementType, React.ComponentType<{ className?: string }>> = {
-  award: Award,
-  conference: GraduationCap,
-  international: Globe2,
-  record: Trophy,
-  clinical: Stethoscope,
-};
+interface TimelineYear {
+  year: string;
+  items: TimelineItem[];
+}
 
-const PROFESSIONAL: Achievement[] = [
+const PROFESSIONAL_TIMELINE: TimelineYear[] = [
   {
-    type: "record",
     year: "2024",
-    title:
-      "Forbes-acknowledged World Record Holder for highest number of joint replacement surgeries in a single day (also recognised by IBR and Golden Book of World Records).",
+    items: [
+      {
+        text:
+          "Forbes-acknowledged World Record Holder — highest joint replacement surgeries in a single day",
+        highlight: true,
+      },
+      {
+        text:
+          "Most Trusted Joint Replacement Surgeon of North India — Central Ministers S.P. Bhagel & Athawale, Delhi",
+      },
+      {
+        text:
+          "UP Ratan Samman Award — Central Minister Giriraj Singh",
+      },
+    ],
   },
   {
-    type: "award",
-    year: "2024",
-    title:
-      "Most Trusted Joint Replacement Surgeon of North India, by Central Ministers S.P. Bhagel and Athawale ji in Delhi.",
-  },
-  {
-    type: "award",
-    year: "2024",
-    title:
-      "UP Ratan Samman Award for excellent work in joint replacement, by Central Minister Giriraj Singh ji.",
-  },
-  {
-    type: "award",
     year: "2023",
-    title:
-      "ET Leadership Excellence Award (Times of India) in joint replacement, presented by the Governor of Rajasthan and Miss Universe.",
+    items: [
+      {
+        text:
+          "ET Leadership Excellence Award (Times of India), presented by Governor of Rajasthan",
+      },
+      { text: "Healthcare Achievers Award — Most Trusted Joint Replacement Surgeon of the Year" },
+      { text: "Big FM Excellence Award — Hip & Knee Replacement, Rajasthan" },
+      { text: "International Business Award — presented by Sonu Sood, Delhi" },
+    ],
   },
   {
-    type: "award",
-    year: "2023",
-    title:
-      "Healthcare Achievers Award for Most Trusted Joint Replacement Surgeon of the Year.",
-  },
-  {
-    type: "award",
-    year: "2023",
-    title:
-      "Big FM Excellence Award in Hip and Knee Replacement, Rajasthan.",
-  },
-  {
-    type: "international",
-    year: "2023",
-    title:
-      "International Business Award presented by Sonu Sood, Delhi.",
-  },
-  {
-    type: "award",
     year: "2022",
-    title:
-      "Dainik Bhaskar Healthcare Award for Best Joint Replacement Surgeon of Rajasthan.",
-  },
-  {
-    type: "clinical",
-    year: "ongoing",
-    title:
-      "Highest monthly volume of knee and hip replacements among North India's joint replacement surgeons.",
-  },
-  {
-    type: "clinical",
-    year: "ongoing",
-    title:
-      "Among India's fastest joint replacement surgeons — Zero Technique knee replacement in 10-15 minutes with fast-track rehab.",
+    items: [
+      {
+        text:
+          "Dainik Bhaskar Healthcare Award — Best Joint Replacement Surgeon of Rajasthan",
+      },
+    ],
   },
 ];
 
-const ACADEMIC: Achievement[] = [
+const ACADEMIC_TIMELINE: TimelineYear[] = [
   {
-    type: "international",
     year: "2024",
-    title: "International Conference on Joint Replacement Surgery — London, UK",
+    items: [{ text: "International Conference on Joint Replacement Surgery — London" }],
   },
   {
-    type: "international",
     year: "2023",
-    title: "European Orthopedic Society Annual Meeting — Berlin, Germany",
+    items: [
+      { text: "European Orthopedic Society Annual Meeting — Berlin" },
+      { text: "Asia Pacific Joint Replacement Summit — Singapore" },
+    ],
   },
   {
-    type: "international",
-    year: "2023",
-    title: "Asia Pacific Joint Replacement Summit — Singapore",
-  },
-  {
-    type: "conference",
     year: "2022",
-    title: "Indian Orthopedic Association National Conference — Mumbai",
-  },
-  {
-    type: "international",
-    year: "2022",
-    title: "World Congress on Orthopedic Surgery — Dubai",
+    items: [
+      { text: "Indian Orthopedic Association National Conference — Mumbai" },
+      { text: "World Congress on Orthopedic Surgery — Dubai" },
+    ],
   },
 ];
 
-function AchievementCard({ item, index }: { item: Achievement; index: number }) {
-  const Icon = ICONS[item.type];
+function StatTile({
+  value,
+  suffix,
+  label,
+}: {
+  value: number;
+  suffix: string;
+  label: string;
+}) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.3, delay: Math.min(index * 0.04, 0.4) }}
-      className="bg-white border border-gray-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all flex gap-4"
-    >
-      <div className="flex-shrink-0">
-        <div className="inline-flex items-center justify-center w-11 h-11 rounded-lg bg-emerald-50 text-emerald-600">
-          <Icon className="w-5 h-5" />
-        </div>
+    <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 text-center hover:border-emerald-300 hover:shadow-md transition-all">
+      <div className="text-4xl md:text-5xl font-extrabold text-emerald-600 mb-2 tabular-nums">
+        <CountUp end={value} duration={2} enableScrollSpy scrollSpyOnce />
+        {suffix}
       </div>
-      <div className="flex-1 min-w-0">
-        <span className="inline-block bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider border border-emerald-200 mb-2">
-          {item.year}
-        </span>
-        <p className="text-sm text-gray-700 leading-relaxed">{item.title}</p>
+      <div className="text-xs md:text-sm font-semibold text-gray-600 uppercase tracking-wide">
+        {label}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
-function Column({
-  title,
-  badge,
-  items,
+function TimelineColumn({
+  heading,
+  data,
 }: {
-  title: string;
-  badge: string;
-  items: Achievement[];
+  heading: string;
+  data: TimelineYear[];
 }) {
   return (
     <div>
-      <div className="flex items-baseline gap-3 mb-5">
-        <h3 className="text-xl md:text-2xl font-bold text-gray-900">{title}</h3>
-        <span className="text-xs text-gray-500">
-          {items.length} {badge}
-        </span>
-      </div>
-      <div className="space-y-3">
-        {items.map((item, i) => (
-          <AchievementCard key={item.title} item={item} index={i} />
+      <h3 className="text-base font-bold text-emerald-700 uppercase tracking-wider mb-5 pb-2 border-b border-emerald-200">
+        {heading}
+      </h3>
+      <div className="space-y-6">
+        {data.map((y) => (
+          <div key={y.year} className="flex gap-5">
+            {/* Year anchor */}
+            <div className="flex-shrink-0 w-16 pt-0.5">
+              <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                {y.year}
+              </div>
+            </div>
+            {/* Items list */}
+            <div className="flex-1 space-y-3 border-l-2 border-emerald-100 pl-5 -ml-px">
+              {y.items.map((item, i) => (
+                <p
+                  key={i}
+                  className={`text-sm leading-relaxed relative ${
+                    item.highlight
+                      ? "text-gray-900 font-semibold"
+                      : "text-gray-600"
+                  }`}
+                >
+                  {/* Dot on the timeline */}
+                  <span className="absolute -left-[1.45rem] top-2 w-2 h-2 rounded-full bg-emerald-500" />
+                  {item.text}
+                </p>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </div>
@@ -189,25 +171,38 @@ const AwardsSection = () => {
             Recognition & Excellence
           </span>
           <h2 className={SECTION_HEADING_CLASSES.h2}>
-            Achievements That <span className="text-emerald-600">Build Trust</span>
+            Recognised by <span className="text-emerald-600">India and the World</span>
           </h2>
           <p className={SECTION_HEADING_CLASSES.sub}>
-            Year by year, the awards, conferences, and clinical milestones that
-            have shaped Dr. Dubay&apos;s practice. Every line below is verifiable.
+            From a Forbes World Record to international conference faculty
+            roles — here is the work that built the practice you can trust.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-10">
-          <Column
-            title="Professional Recognition"
-            badge="awards & milestones"
-            items={PROFESSIONAL}
-          />
-          <Column
-            title="Academic & Conferences"
-            badge="international engagements"
-            items={ACADEMIC}
-          />
+        {/* Headline stats — the actual trust signal in 5 seconds */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12 md:mb-16">
+          {STATS.map((s) => (
+            <StatTile
+              key={s.label}
+              value={s.value}
+              suffix={s.suffix}
+              label={s.label}
+            />
+          ))}
+        </div>
+
+        {/* Year-grouped timeline — two columns on desktop, stacked on mobile */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-10 shadow-sm">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-12">
+            <TimelineColumn heading="Professional Recognition" data={PROFESSIONAL_TIMELINE} />
+            <TimelineColumn heading="Academic & International" data={ACADEMIC_TIMELINE} />
+          </div>
+
+          <div className="text-center mt-10 pt-8 border-t border-gray-100">
+            <Link href="/achievements" className={BUTTON.outline}>
+              View full achievements timeline
+            </Link>
+          </div>
         </div>
       </div>
     </section>
