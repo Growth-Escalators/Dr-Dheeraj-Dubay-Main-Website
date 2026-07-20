@@ -237,14 +237,23 @@ const Footer = (props: Props) => {
                 © {new Date().getFullYear()} Dr. Dheeraj Dubay. All rights reserved.
               </p>
               <p className="mt-2 text-sm text-gray-500 dark:text-gray-500">
-                Developed &amp; maintained by{" "}
+                Marketing partner:{" "}
                 <a
-                  href="https://growthescalators.com"
+                  href="https://www.growthescalators.com"
                   target="_blank"
-                  rel="dofollow"
+                  rel="noopener"
                   className="text-gray-700 dark:text-gray-300 underline underline-offset-2 hover:text-emerald-600 transition-colors"
                 >
                   Growth Escalators
+                </a>{" "}
+                &middot; CRM &amp; Tech partner:{" "}
+                <a
+                  href="https://www.wizmatchenterprises.com"
+                  target="_blank"
+                  rel="noopener"
+                  className="text-gray-700 dark:text-gray-300 underline underline-offset-2 hover:text-emerald-600 transition-colors"
+                >
+                  WizMatch
                 </a>
               </p>
             </div>
