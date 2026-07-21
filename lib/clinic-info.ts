@@ -86,9 +86,40 @@ export const SOCIAL_LINKS = [
 // PatientReview content still renders as testimonial body, this just
 // drives the star digits + count.
 //
-// TODO(jatin): confirm current GBP review count and update REVIEW_COUNT
-// before the next major SEO push. Update RATING_VALUE if GBP value drifts.
+// [VERIFY] (WS-4a, 2026-07-21): the old value here (4.9 / reviewCount:
+// 100) was a placeholder against a real footprint of roughly 1,100+
+// Google reviews and ~1,240 JustDial reviews (Vaishali Nagar Shalby
+// listing), per the backlinks audit and corroborated independently by the
+// GSC baseline's "dr. dheeraj dubay reviews" query volume (880 impr).
+// ratingValue/reviewCount below use the Google figure only — Google is
+// the schema-conventional single source for a Physician/LocalBusiness
+// AggregateRating, and it's the platform already linked via
+// googlePlaceId/googleReviewUrl above and the Google Maps `sameAs` in
+// JsonLd.tsx. JustDial's ~1,240 @ 4.9 is a real, corroborating number but
+// was deliberately NOT summed into reviewCount here — blending counts
+// across two platforms into one figure would itself be an invented
+// number, not a verified one, and risks looking inflated to Google's
+// spam systems. Jatin: replace with the exact current GBP count (Google
+// Business Profile → reviews) before the next SEO push; update
+// ratingValue too if it has drifted from ~4.9.
 export const AGGREGATE_RATING = {
   ratingValue: 4.9,
-  reviewCount: 100, // PLACEHOLDER — replace with actual GBP review count
+  reviewCount: 1100, // [VERIFY] — best-known real figure (~1,100+ Google reviews), not an exact GBP pull
 };
+
+// Canonical practice stats — single source of truth so "35,000+ surgeries"
+// / "23+ years experience" can't drift between components. [VERIFY]
+// (WS-4a): these are the numbers used everywhere else on the site; the
+// off-page backlinks audit separately flags a competing "18,000
+// surgeries / 15 years" figure on third-party listings (Practo/JustDial)
+// — that's an EXTERNAL cleanup item (see
+// Backlinks/DrDubay-Cleanup-Checklist.md), not something to change here.
+// Note: components/Hero2/Hero2.tsx *did* independently hardcode "15+
+// Years of Experience" (found + fixed in this same pass, now references
+// EXPERIENCE_YEARS_DISPLAY) — proof this single-source pattern is worth
+// having, not just theoretical. Jatin: confirm 35,000+/23+ is still
+// current before the next SEO push.
+export const SURGERY_COUNT = 35000; // [VERIFY]
+export const SURGERY_COUNT_DISPLAY = "35,000+";
+export const EXPERIENCE_YEARS = 23; // [VERIFY]
+export const EXPERIENCE_YEARS_DISPLAY = "23+";

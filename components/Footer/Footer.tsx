@@ -13,6 +13,7 @@ import Image from "next/image";
 import { CITY_PAGES } from "@/lib/city-pages";
 import { PROCEDURE_PAGES } from "@/lib/procedure-pages";
 import { getWhatsAppBookingUrl } from "@/lib/whatsapp-booking";
+import { SURGERY_COUNT, EXPERIENCE_YEARS } from "@/lib/clinic-info";
 
 type Props = {};
 
@@ -78,7 +79,7 @@ const Footer = (props: Props) => {
               </Link>
               <p className="text-base text-gray-600 dark:text-gray-300">
                 Dr. Dheeraj is one of the leading joint replacement surgeons in
-                North India, with over 23 years of experience and more than 35,000 successful surgeries.
+                North India, with over {EXPERIENCE_YEARS} years of experience and more than {SURGERY_COUNT.toLocaleString()} successful surgeries.
               </p>
               
               {/* Contact Info */}

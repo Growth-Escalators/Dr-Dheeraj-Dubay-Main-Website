@@ -2,6 +2,7 @@ import { generatePageMetadata } from "@/lib/seo.config";
 import { FaqJsonLd } from "@/components/seo/FaqJsonLd";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import Link from "next/link";
+import { SURGERY_COUNT_DISPLAY } from "@/lib/clinic-info";
 
 export const revalidate = 3600;
 
@@ -28,7 +29,7 @@ const faqs = [
   {
     question: "What is the success rate of joint replacement surgery?",
     answer:
-      "Dr. Dheeraj Dubay has performed over 35,000 successful joint replacement surgeries with a very high success rate. He holds the Forbes World Record for most joint replacements in a single day.",
+      `Dr. Dheeraj Dubay has performed over ${SURGERY_COUNT_DISPLAY.replace('+', '')} successful joint replacement surgeries with a very high success rate. He holds the Forbes World Record for most joint replacements in a single day.`,
   },
   {
     question: "How long do knee replacement implants last?",

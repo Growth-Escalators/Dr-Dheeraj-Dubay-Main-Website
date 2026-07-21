@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { SURGERY_COUNT, EXPERIENCE_YEARS } from "@/lib/clinic-info";
 
 type Props = {};
 
@@ -26,21 +27,23 @@ const Section2 = (props: Props) => {
               </li>
               <p className="max-w-4xl mt-2 text-xl lg:text-xl leading-relaxed text-gray-600 dark:text-gray-300 md:mt-8">
                 Dr. Dheeraj Dubay is a renowned joint replacement surgeon in
-                North India with over 23 years of experience. His career
+                North India with over {EXPERIENCE_YEARS} years of experience. His career
                 includes prestigious roles at Sir Gangaram Hospital, New Delhi,
                 and Shalby Hospital, Ahmedabad. Dr. Dubay, who trained in
                 complex and revision joint replacement surgeries at Germanys
                 Aklepios Ortho Center, excels in advanced techniques like
                 computer navigation and minimally invasive surgeries. Currently
                 at Shalby Hospital, Jaipur, he has successfully
-                performed over 35,000 joint replacements, setting a record of 21
+                performed over {SURGERY_COUNT.toLocaleString()} joint replacements, setting a record of 21
                 surgeries in a single day in Rajasthan. Recognized for his
                 contributions, he has received multiple awards from
                 Rajasthan&apos;s Health Minister and was recently honored as
                 North India&apos;s most trusted Joint Replacement Surgeon by the
                 central Health Minister. Dr. Dubay is also dedicated to
                 educating the public about bone and joint health through various
-                social platforms.
+                social platforms. Dr. Dheeraj Dubay&apos;s name is also
+                commonly spelled &quot;Dubey&quot; — both refer to the same
+                surgeon.
               </p>
             </div>
             <div className="w-full px-4 md:my-8 mb-10 lg:w-1/2 lg:mb-0">
@@ -54,7 +57,7 @@ const Section2 = (props: Props) => {
                 />
                 <div className="absolute bottom-0 right-0 z-10 p-4 bg-white shadow sm:p-8 dark:text-gray-300 dark:bg-gray-800 ">
                   <p className="text-lg font-semibold">
-                    23 Years of Experience in the joint replacement surgery
+                    {EXPERIENCE_YEARS} Years of Experience in the joint replacement surgery
                   </p>
                 </div>
                 <div className="absolute hidden w-full h-full bg-primary rounded -bottom-6 left-6 lg:block"></div>

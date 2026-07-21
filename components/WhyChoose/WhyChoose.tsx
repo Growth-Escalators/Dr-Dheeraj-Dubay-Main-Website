@@ -10,6 +10,7 @@ import {
   Activity,
 } from "lucide-react";
 import { SECTION_HEADING_CLASSES } from "@/lib/design-tokens";
+import { SURGERY_COUNT_DISPLAY } from "@/lib/clinic-info";
 import AwardsSection from "../Awards/AwardsSection";
 
 // Six concrete reasons + why each matters to a patient considering surgery.
@@ -22,7 +23,7 @@ const REASONS = [
     icon: ShieldCheck,
     title: "Safety First",
     body:
-      "NABH-certified protocols at every step. 35,000+ surgeries performed with zero compromise on patient safety standards.",
+      `NABH-certified protocols at every step. ${SURGERY_COUNT_DISPLAY} surgeries performed with zero compromise on patient safety standards.`,
   },
   {
     icon: HeartHandshake,

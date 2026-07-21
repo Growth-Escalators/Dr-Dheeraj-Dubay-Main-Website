@@ -2,6 +2,8 @@ import { CONDITION_PAGES } from '@/lib/condition-pages'
 import { HINDI_PAGES } from '@/lib/hindi-pages'
 import { notFound } from 'next/navigation'
 import { BreadcrumbNav, CTASection, FAQAccordion, TrustBadges } from '@/components/pages'
+import { AggregateRatingJsonLd } from '@/components/seo/JsonLd'
+import { AGGREGATE_RATING } from '@/lib/clinic-info'
 import type { Metadata } from 'next'
 import { defaultSEO } from '@/lib/seo.config'
 
@@ -89,6 +91,14 @@ export default function ConditionPage({ params }: { params: { condition: string 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      {/* Physician's real GBP rating, joined to the existing #physician
+          node — condition pages previously carried no aggregate-rating
+          signal at all. */}
+      <AggregateRatingJsonLd
+        ratingValue={AGGREGATE_RATING.ratingValue}
+        reviewCount={AGGREGATE_RATING.reviewCount}
+        itemId={`${defaultSEO.siteUrl}/#physician`}
       />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-10">

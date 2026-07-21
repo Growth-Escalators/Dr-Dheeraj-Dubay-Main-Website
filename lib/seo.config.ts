@@ -1,9 +1,17 @@
+import { SURGERY_COUNT_DISPLAY } from "./clinic-info";
+
 export const defaultSEO = {
   siteName: "Dr. Dheeraj Dubay",
   siteUrl: "https://www.drdubay.in",
-  defaultTitle: "Dr. Dheeraj Dubay | Best Joint Replacement Surgeon in Jaipur",
-  defaultDescription:
-    "Dr. Dheeraj Dubay - Director, Robotic Joint Replacement Surgery at Shalby Hospital Jaipur. 35,000+ successful surgeries, Forbes World Record holder, 23+ years experience.",
+  // CTR fix (WS-4a, from GSC baseline 2026-07-21): homepage was ranking
+  // pos 7.1 for "best orthopedic doctor in jaipur" and pos 5.0 for
+  // "orthopedic doctor jaipur" (0 clicks) without the phrase "orthopedic
+  // doctor" anywhere in the title/meta. Also folds in "knee surgeon" to
+  // work the pos-10.3 "best knee replacement surgeon in jaipur" query
+  // without shipping a competing page. See
+  // GE-Brain/05-Marketing/DrDubay-Copy-Drafts/money-page-titles.md #2.
+  defaultTitle: "Dr. Dheeraj Dubay | Best Orthopedic Doctor & Knee Surgeon, Jaipur",
+  defaultDescription: `Dr. Dheeraj Dubay, Jaipur's leading orthopedic doctor and joint replacement surgeon. ${SURGERY_COUNT_DISPLAY} surgeries, Forbes World Record holder. Book online.`,
   defaultKeywords:
     "joint replacement surgeon jaipur, knee replacement jaipur, hip replacement jaipur, best orthopedic surgeon rajasthan, dr dheeraj dubay",
   twitterHandle: "@drdheerajdubay",

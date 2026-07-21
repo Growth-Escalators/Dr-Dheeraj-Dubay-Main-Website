@@ -10,10 +10,16 @@ import GTM from "@/utils/GTM";
 
 export const revalidate = 3600;
 
+// CTR fix (WS-4a): "dr dheeraj dubay reviews" ranks pos 7.9 with 880
+// impressions but ~0% CTR (1 click) — the old title promised "testimonials"
+// (video content) when the searcher's intent is a star rating + review
+// count. Title/description now mirror that intent and pull the live
+// number from AGGREGATE_RATING (lib/clinic-info.ts) so this page can never
+// drift out of sync with the AggregateRating schema below. See
+// GE-Brain/05-Marketing/DrDubay-Copy-Drafts/money-page-titles.md #4.
 export const metadata = generatePageMetadata({
-  title: "Patient Testimonials | Dr. Dheeraj Dubay",
-  description:
-    "Watch real patient testimonials from Dr. Dheeraj Dubay's joint replacement surgeries — knee, hip, robotic, partial replacement stories from across Rajasthan.",
+  title: `Dr. Dheeraj Dubay Reviews & Ratings | ${AGGREGATE_RATING.reviewCount.toLocaleString()}+ Patients`,
+  description: `See real patient reviews and ratings for Dr. Dheeraj Dubay, Jaipur — rated ${AGGREGATE_RATING.ratingValue}/5 across ${AGGREGATE_RATING.reviewCount.toLocaleString()}+ Google reviews. Read patient stories.`,
   slug: "testimonials",
 });
 

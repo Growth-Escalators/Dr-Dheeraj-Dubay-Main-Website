@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getWhatsAppBookingUrl } from "@/lib/whatsapp-booking";
+import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY } from "@/lib/clinic-info";
 
 const Hero2 = () => {
   return (
@@ -111,10 +112,10 @@ const Hero2 = () => {
                 </div>
 
                 <p className="mt-3 text-xl font-semibold text-gray-800 dark:text-gray-200">
-                  35000+ successful surgeries
+                  {SURGERY_COUNT_DISPLAY} successful surgeries
                 </p>
                 <p className="mt-3 text-xl font-semibold text-gray-800 dark:text-gray-200">
-                  15+ Years of Experience
+                  {EXPERIENCE_YEARS_DISPLAY} Years of Experience
                 </p>
               </div>
             </div>
