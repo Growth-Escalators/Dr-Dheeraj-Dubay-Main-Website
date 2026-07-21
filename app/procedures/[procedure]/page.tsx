@@ -1,6 +1,8 @@
 import { PROCEDURE_PAGES } from '@/lib/procedure-pages'
 import { HINDI_PAGES } from '@/lib/hindi-pages'
+import { PROCEDURE_TO_COST_SLUG } from '@/lib/cost-pages'
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import { BreadcrumbNav, CTASection, FAQAccordion, RecoveryTimeline, TrustBadges } from '@/components/pages'
 import { AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
@@ -50,6 +52,9 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
   const page = PROCEDURE_PAGES.find(p => p.slug === params.procedure)
   if (!page) return notFound()
 
+  // Natural cross-link into the matching /cost page, when one exists (WS-3b).
+  const costSlug = PROCEDURE_TO_COST_SLUG[page.slug]
+
   // Procedure-scoped testimonials from DB; aggregate rating digits come
   // from the canonical GBP source.
   const procedureReviews = await getPublishedReviews({
@@ -78,12 +83,10 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
     preparation: page.schema.preparation,
     howPerformed: page.schema.howPerformed,
     procedureType: { '@type': 'MedicalProcedureType', name: page.category },
-    performer: {
-      '@type': 'Physician',
-      name: 'Dr. Dheeraj Dubay',
-      url: 'https://www.drdubay.in',
-      medicalSpecialty: 'Orthopedic Surgery',
-    },
+    // References the site's existing Physician node by @id (defined once
+    // in components/seo/JsonLd.tsx's PhysicianJsonLd) instead of a fresh
+    // inline Person, per the GE SEO standard's "connected @id graph" rule.
+    performer: { '@id': `${defaultSEO.siteUrl}/#physician` },
   }
 
   const faqSchema = {
@@ -110,19 +113,22 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      {/* AggregateRating/Review are the physician's real GBP rating, not a
+          per-procedure rating we invented — attribute them to the existing
+          #physician node (@id) so they join the same graph as
+          PhysicianJsonLd instead of implying a fresh, unverifiable
+          "MedicalProcedure has 1,100 reviews" claim. */}
       {aggregate ? (
         <AggregateRatingJsonLd
           ratingValue={aggregate.ratingValue}
           reviewCount={aggregate.reviewCount}
-          itemType="MedicalProcedure"
-          itemName={page.schema.procedureName}
+          itemId={`${defaultSEO.siteUrl}/#physician`}
         />
       ) : null}
       {procedureReviews.length ? (
         <ReviewListJsonLd
           reviews={procedureReviews}
-          itemReviewedType="MedicalProcedure"
-          itemReviewedName={page.schema.procedureName}
+          itemReviewedId={`${defaultSEO.siteUrl}/#physician`}
         />
       ) : null}
 
@@ -144,6 +150,14 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
             {page.h1}
           </h1>
           <p className="text-gray-600 text-base leading-relaxed">{page.intro}</p>
+          {costSlug && (
+            <Link
+              href={`/cost/${costSlug}`}
+              className="inline-flex items-center gap-1 mt-4 text-sm font-semibold text-emerald-700 hover:text-emerald-800"
+            >
+              See cost &amp; insurance details for this procedure →
+            </Link>
+          )}
         </div>
 
         <TrustBadges />

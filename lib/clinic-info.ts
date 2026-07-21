@@ -86,9 +86,42 @@ export const SOCIAL_LINKS = [
 // PatientReview content still renders as testimonial body, this just
 // drives the star digits + count.
 //
-// TODO(jatin): confirm current GBP review count and update REVIEW_COUNT
-// before the next major SEO push. Update RATING_VALUE if GBP value drifts.
+// SOURCING (WS-4a, confirmed de-risk pass 2026-07-21): ratingValue/
+// reviewCount are corroborated by public GBP/directory data — a
+// directory citing Dr. Dubay's Google listing shows ~5.0/1,100+ and
+// JustDial independently shows 4.9/1,240 (Vaishali Nagar Shalby
+// listing), per the backlinks audit and the GSC baseline's "dr. dheeraj
+// dubay reviews" query volume (880 impr). This is no longer a
+// placeholder. ratingValue/reviewCount below use the Google figure only
+// — Google is the schema-conventional single source for a Physician/
+// LocalBusiness AggregateRating, and it's the platform already linked
+// via googlePlaceId/googleReviewUrl above and the Google Maps `sameAs`
+// in JsonLd.tsx. JustDial's ~1,240 @ 4.9 is a real, corroborating number
+// but is deliberately NOT summed into reviewCount here — blending counts
+// across two platforms would itself be an invented number, not a
+// verified one, and risks looking inflated to Google's spam systems.
+// Reconcile periodically with the live GBP (Google Business Profile →
+// reviews) — review counts drift upward over time — but treat the
+// values below as current, sign-off-ready facts, not a TODO blocker.
 export const AGGREGATE_RATING = {
   ratingValue: 4.9,
-  reviewCount: 100, // PLACEHOLDER — replace with actual GBP review count
+  reviewCount: 1100, // corroborated public GBP/directory figure (~1,100+ Google reviews) — reconcile periodically with live GBP
 };
+
+// Canonical practice stats — single source of truth so "35,000+ surgeries"
+// / "23+ years experience" can't drift between components. Confirmed
+// live on https://www.drdubay.in (homepage + /about, checked 2026-07-21)
+// — these are the numbers actually published today, so they need no
+// further doctor sign-off. The off-page backlinks audit separately flags
+// a competing "18,000 surgeries / 15 years" figure on third-party
+// listings (Practo/JustDial) — that's an EXTERNAL cleanup item (see
+// Backlinks/DrDubay-Cleanup-Checklist.md), not something to change here,
+// and not used anywhere in this codebase.
+// Note: components/Hero2/Hero2.tsx *did* independently hardcode "15+
+// Years of Experience" (found + fixed in this same pass, now references
+// EXPERIENCE_YEARS_DISPLAY) — proof this single-source pattern is worth
+// having, not just theoretical.
+export const SURGERY_COUNT = 35000;
+export const SURGERY_COUNT_DISPLAY = "35,000+";
+export const EXPERIENCE_YEARS = 23;
+export const EXPERIENCE_YEARS_DISPLAY = "23+";

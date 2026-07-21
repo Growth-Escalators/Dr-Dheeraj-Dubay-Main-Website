@@ -12,7 +12,9 @@ import {
 import Image from "next/image";
 import { CITY_PAGES } from "@/lib/city-pages";
 import { PROCEDURE_PAGES } from "@/lib/procedure-pages";
+import { COST_PAGES } from "@/lib/cost-pages";
 import { getWhatsAppBookingUrl } from "@/lib/whatsapp-booking";
+import { SURGERY_COUNT, EXPERIENCE_YEARS } from "@/lib/clinic-info";
 
 type Props = {};
 
@@ -78,7 +80,7 @@ const Footer = (props: Props) => {
               </Link>
               <p className="text-base text-gray-600 dark:text-gray-300">
                 Dr. Dheeraj is one of the leading joint replacement surgeons in
-                North India, with over 23 years of experience and more than 35,000 successful surgeries.
+                North India, with over {EXPERIENCE_YEARS} years of experience and more than {SURGERY_COUNT.toLocaleString()} successful surgeries.
               </p>
               
               {/* Contact Info */}
@@ -196,6 +198,18 @@ const Footer = (props: Props) => {
               Dr. Dheeraj Dubay serves joint replacement patients across Rajasthan and beyond:
             </p>
             <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+              {/* Hardcoded — hip-replacement-jaipur was removed from
+                  CITY_PAGES (WS-4b, now a dedicated money page) so it no
+                  longer appears via the map below. Kept as an explicit link
+                  so every page still carries this internal-linking signal. */}
+              <li>
+                <Link
+                  href="/hip-replacement-jaipur"
+                  className="text-gray-600 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400 underline-offset-2 hover:underline"
+                >
+                  Hip Replacement Surgeon in Jaipur
+                </Link>
+              </li>
               {CITY_PAGES.map((c) => (
                 <li key={c.slug}>
                   <Link
@@ -222,6 +236,25 @@ const Footer = (props: Props) => {
                     className="text-gray-600 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400 underline-offset-2 hover:underline"
                   >
                     {p.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mt-8 mb-2">
+              Cost &amp; Insurance
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-5">
+              What surgery actually costs, and how insurance and cashless coverage apply:
+            </p>
+            <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+              {COST_PAGES.map((c) => (
+                <li key={c.slug}>
+                  <Link
+                    href={`/cost/${c.slug}`}
+                    className="text-gray-600 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400 underline-offset-2 hover:underline"
+                  >
+                    {c.h1}
                   </Link>
                 </li>
               ))}

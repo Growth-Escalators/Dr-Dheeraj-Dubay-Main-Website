@@ -3,10 +3,17 @@ import { db } from "@/lib/db"
 
 export const dynamic = "force-dynamic"
 
-// Accepts the Hindi PDF popup form (name + phone + city) and creates a
-// Lead row tagged with source='lead-magnet' so admin staff can identify
-// which patients came from organic SEO traffic vs the booking form.
-// Returns the public PDF path the client uses to trigger auto-download.
+// Accepts a lightweight lead form (name + phone [+ city]) and creates a
+// Lead row. Two callers share this endpoint today:
+//   - components/ui/LeadMagnetPopup.tsx (Hindi PDF popup) — omits
+//     `source`/`remark`, so it falls back to the original "lead-magnet"
+//     tagging below and gets a pdfUrl back to trigger the PDF download.
+//   - components/ui/CostInquiryPopup.tsx (cost-inquiry pages) — passes
+//     `source: "cost-inquiry"` and a page-specific `remark` so admin staff
+//     can tell WS-3b traffic apart from the Hindi PDF funnel; it ignores
+//     pdfUrl and opens WhatsApp instead.
+// Keeping one endpoint (vs. a second route) means one Lead-shaped
+// validation path and one place to fix bugs in.
 
 function normalizePhone(raw: string): string | null {
   const digits = (raw || "").replace(/\D/g, "").replace(/^0/, "")
@@ -18,7 +25,7 @@ function normalizePhone(raw: string): string | null {
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { name, phone, city } = body
+    const { name, phone, city, source, remark } = body
 
     if (!name?.trim() || !phone) {
       return NextResponse.json(
@@ -35,19 +42,33 @@ export async function POST(req: Request) {
       )
     }
 
+    // Default preserves the original Hindi-popup behaviour exactly when a
+    // caller doesn't pass source/remark. Only known sources are accepted
+    // so this endpoint can't be used to write an arbitrary tag into Lead.
+    const resolvedSource =
+      typeof source === "string" && source === "cost-inquiry"
+        ? "cost-inquiry"
+        : "lead-magnet"
+    const resolvedRemark =
+      resolvedSource === "cost-inquiry" && typeof remark === "string" && remark.trim()
+        ? remark.trim()
+        : "Hindi knee-pain relief PDF lead"
+
     await db.lead.create({
       data: {
         name: name.trim(),
         phone: normalized,
         cities: city || null,
-        source: "lead-magnet",
-        remark: "Hindi knee-pain relief PDF lead",
+        source: resolvedSource,
+        remark: resolvedRemark,
         patientStatus: "NEW",
       },
     })
 
     return NextResponse.json({
       success: true,
+      // Only meaningful for the lead-magnet caller; cost-inquiry callers
+      // ignore this and open WhatsApp instead.
       pdfUrl: "/downloads/ghutne-ke-dard-se-rahat.pdf",
     })
   } catch (e) {

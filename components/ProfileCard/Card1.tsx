@@ -1,6 +1,12 @@
 import React from "react";
 import Image from "next/image";
 import { getWhatsAppBookingUrl } from "@/lib/whatsapp-booking";
+import {
+  SURGERY_COUNT,
+  SURGERY_COUNT_DISPLAY,
+  EXPERIENCE_YEARS,
+  EXPERIENCE_YEARS_DISPLAY,
+} from "@/lib/clinic-info";
 
 type Props = {};
 //
@@ -28,7 +34,7 @@ const Card1 = (props: Props) => {
               <p className="text-lg lg:text-xl leading-relaxed text-gray-600 dark:text-gray-300">
                 He has more than{" "}
                 <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                  23 years of experience
+                  {EXPERIENCE_YEARS} years of experience
                 </span>{" "}
                 in the field of Joint Replacement Surgeries and is well versed
                 with latest techniques such as computer navigation and minimally
@@ -36,7 +42,7 @@ const Card1 = (props: Props) => {
                 at Shalby Hospital, Jaipur. He has done more
                 than{" "}
                 <span className="text-black font-bold dark:text-gray-200">
-                  35000{" "}
+                  {SURGERY_COUNT.toLocaleString()}{" "}
                 </span>
                 successful Joint Replacement Surgeries. Record of{" "}
                 <span className="text-black font-bold dark:text-gray-200">
@@ -72,7 +78,7 @@ const Card1 = (props: Props) => {
               <div className="flex flex-wrap gap-3">
                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-sm font-semibold text-gray-700 dark:text-gray-200 border border-gray-100 dark:border-gray-700">
                   <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                  35,000+ Surgeries
+                  {SURGERY_COUNT_DISPLAY} Surgeries
                 </span>
                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-sm font-semibold text-gray-700 dark:text-gray-200 border border-gray-100 dark:border-gray-700">
                   <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
@@ -80,7 +86,7 @@ const Card1 = (props: Props) => {
                 </span>
                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-sm font-semibold text-gray-700 dark:text-gray-200 border border-gray-100 dark:border-gray-700">
                   <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                  23+ Years Experience
+                  {EXPERIENCE_YEARS_DISPLAY} Years Experience
                 </span>
               </div>
 

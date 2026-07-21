@@ -6,14 +6,14 @@ const testimonials = [
     city: "Jaipur",
     surgery: "Knee Replacement",
     rating: 5,
-    text: "Dr Dheeraj Dubey is the best doctor for knee replacement. His team's work is excellent. My mother did not face any problem during her stay. The doctor and his team are simply the best.",
+    text: "Dr Dheeraj Dubay is the best doctor for knee replacement. His team's work is excellent. My mother did not face any problem during her stay. The doctor and his team are simply the best.",
   },
   {
     name: "Sakshi Jain",
     city: "Agra",
     surgery: "Knee Replacement",
     rating: 5,
-    text: "I went to Dr Dheeraj Dubey for my father's knee replacement surgery. Amazing and very polite doctor. My father is completely fine now and walking properly.",
+    text: "I went to Dr Dheeraj Dubay for my father's knee replacement surgery. Amazing and very polite doctor. My father is completely fine now and walking properly.",
   },
   {
     name: "RamChandra Chaudhry",

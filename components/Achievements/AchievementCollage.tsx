@@ -21,7 +21,7 @@ const AchievementCollage = () => {
             </div>
             
             <p className="text-lg lg:text-xl leading-relaxed text-gray-600 dark:text-gray-300">
-              Dr. Dheeraj Dubey&apos;s Golden Warriors Walkathon 2025 marked a significant 
+              Dr. Dheeraj Dubay&apos;s Golden Warriors Walkathon 2025 marked a significant
               step toward transforming lives in the field of orthopedics. This landmark 
               event brought together individuals to promote mobility, resilience, and 
               a pain-free future. Together, we are redefining possibilities in joint 

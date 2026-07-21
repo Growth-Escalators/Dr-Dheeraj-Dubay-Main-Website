@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 }
 
-const TOP_CITIES = ["jaipur", "bikaner", "kota", "ajmer", "sikar", "churu"]
+const TOP_CITIES = ["jaipur", "agra", "kota", "ajmer", "sikar", "alwar"]
 const TOP_PROCEDURES = [
   "knee-replacement-surgery",
   "robotic-knee-replacement",
