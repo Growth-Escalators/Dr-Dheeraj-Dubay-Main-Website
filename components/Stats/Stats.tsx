@@ -2,14 +2,15 @@
 import React, { useState, useEffect } from "react";
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
+import { SURGERY_COUNT } from "@/lib/clinic-info";
 
 export const Stats = () => {
-  const [surgeryCount, setSurgeryCount] = useState(35000);
+  const [surgeryCount, setSurgeryCount] = useState(SURGERY_COUNT);
 
   useEffect(() => {
     fetch('/api/surgery-count')
       .then(r => r.json())
-      .then(d => setSurgeryCount(d.count || 35000))
+      .then(d => setSurgeryCount(d.count || SURGERY_COUNT))
       .catch(e => console.error('[Stats/surgery-count]', e));
   }, []);
 

@@ -1,3 +1,5 @@
+import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY } from '@/lib/clinic-info'
+
 export function TrustBadges() {
   const badges = [
     {
@@ -7,12 +9,12 @@ export function TrustBadges() {
     },
     {
       icon: '⚕️',
-      label: '35,000+ Surgeries',
+      label: `${SURGERY_COUNT_DISPLAY} Surgeries`,
       sub: 'Successful joint replacements',
     },
     {
       icon: '⭐',
-      label: '23+ Years Experience',
+      label: `${EXPERIENCE_YEARS_DISPLAY} Years Experience`,
       sub: 'Expert orthopaedic care',
     },
     {

@@ -5,6 +5,8 @@
 // ~500m off the actual clinic door. Replace with exact lat/long from Google
 // Maps after you confirm in Google Business Profile.
 
+import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY } from "@/lib/clinic-info"
+
 const SITE_URL = "https://www.drdubay.in"
 const PHONE = "+91-8955373205"
 const EMAIL = "connect@drdubay.in"
@@ -44,11 +46,18 @@ export const PhysicianJsonLd = () => {
     "@type": "Physician",
     "@id": `${SITE_URL}/#physician`,
     "name": "Dr. Dheeraj Dubay",
-    "alternateName": "डॉ. धीरज दुबे",
+    // "Dubey" is the most common misspelling of the surname across the web
+    // (Practo, TimesMed, some JustDial listings) and is the single biggest
+    // branded query cluster in Search Console ("dr dheeraj dubey" 3,515
+    // impr vs. "dubay" 353 — GSC baseline 2026-07-21). alternateName tells
+    // Google's entity graph both names are the same person, without
+    // changing the canonical visible spelling anywhere on the site. Person
+    // node only — do not add to the Organization/LocalBusiness node.
+    "alternateName": ["डॉ. धीरज दुबे", "Dr. Dheeraj Dubey"],
     "honorificPrefix": "Dr.",
     "description":
       "Director, Robotic Joint Replacement Surgery at Shalby Hospital Jaipur. " +
-      "23+ years experience, 35,000+ successful surgeries, Forbes World Record holder.",
+      `${EXPERIENCE_YEARS_DISPLAY} years experience, ${SURGERY_COUNT_DISPLAY} successful surgeries, Forbes World Record holder.`,
     "url": SITE_URL,
     "telephone": PHONE,
     "email": EMAIL,

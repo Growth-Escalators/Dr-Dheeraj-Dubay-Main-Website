@@ -9,7 +9,7 @@ import { AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { defaultSEO } from '@/lib/seo.config'
 import { getPublishedReviews } from '@/lib/reviews'
-import { AGGREGATE_RATING } from '@/lib/clinic-info'
+import { AGGREGATE_RATING, SURGERY_COUNT_DISPLAY } from '@/lib/clinic-info'
 
 function toSlug(s: string) {
   return s.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
@@ -96,11 +96,10 @@ export default async function CityPage(
       { '@type': 'City', name: 'Jaipur' },
     ],
     medicalSpecialty: 'Orthopedic Surgery',
-    physician: {
-      '@type': 'Physician',
-      name: 'Dr. Dheeraj Dubay',
-      medicalSpecialty: 'Orthopedic Surgery',
-    },
+    // References the site's existing Physician node by @id (defined once
+    // in components/seo/JsonLd.tsx's PhysicianJsonLd) instead of a fresh
+    // inline Person, per the GE SEO standard's "connected @id graph" rule.
+    physician: { '@id': `${defaultSEO.siteUrl}/#physician` },
   }
 
   return (
@@ -110,19 +109,22 @@ export default async function CityPage(
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localServiceSchema) }}
       />
+      {/* AggregateRating/Review are the physician's real GBP rating, not a
+          per-procedure rating we invented — attribute them to the existing
+          #physician node (@id) so they join the same graph as
+          PhysicianJsonLd instead of implying a fresh, unverifiable
+          "MedicalProcedure has 1,100 reviews" claim. */}
       {aggregate ? (
         <AggregateRatingJsonLd
           ratingValue={aggregate.ratingValue}
           reviewCount={aggregate.reviewCount}
-          itemType="MedicalProcedure"
-          itemName={`${page.procedure} by Dr. Dheeraj Dubay`}
+          itemId={`${defaultSEO.siteUrl}/#physician`}
         />
       ) : null}
       {cityReviews.length ? (
         <ReviewListJsonLd
           reviews={cityReviews}
-          itemReviewedName={`${page.procedure} by Dr. Dheeraj Dubay`}
-          itemReviewedType="MedicalProcedure"
+          itemReviewedId={`${defaultSEO.siteUrl}/#physician`}
         />
       ) : null}
       <main style={{
@@ -208,7 +210,7 @@ export default async function CityPage(
       }}>
         {[
           { icon: '🏆', label: 'Forbes World Record', sub: 'Most surgeries in a day' },
-          { icon: '⚕️', label: '35,000+ Surgeries', sub: 'Successful joint replacements' },
+          { icon: '⚕️', label: `${SURGERY_COUNT_DISPLAY} Surgeries`, sub: 'Successful joint replacements' },
           { icon: '⚡', label: 'Zero Technique', sub: 'Walking within 24 hours' },
           { icon: '🎖️', label: 'Health Minister Award', sub: '3 consecutive years' },
         ].map(item => (

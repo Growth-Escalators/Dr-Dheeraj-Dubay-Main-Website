@@ -5,6 +5,7 @@ import { defaultSEO } from "@/lib/seo.config";
 import { FaqJsonLd } from "@/components/seo/FaqJsonLd";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { db } from "@/lib/db";
+import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY } from "@/lib/clinic-info";
 
 export const revalidate = 3600;
 
@@ -98,7 +99,7 @@ function getServiceFAQs(title: string) {
   return [
     {
       question: `What is ${title}?`,
-      answer: `${title} is a specialized orthopedic procedure performed by Dr. Dheeraj Dubay at Shalby Hospital Jaipur with over 23 years of experience and 35,000+ successful surgeries.`,
+      answer: `${title} is a specialized orthopedic procedure performed by Dr. Dheeraj Dubay at Shalby Hospital Jaipur with over ${EXPERIENCE_YEARS_DISPLAY} years of experience and ${SURGERY_COUNT_DISPLAY} successful surgeries.`,
     },
     {
       question: `How long does ${title} take?`,
@@ -118,7 +119,7 @@ function getServiceFAQs(title: string) {
     },
     {
       question: `Why choose Dr. Dheeraj Dubay for ${title}?`,
-      answer: `Dr. Dubay holds the Forbes World Record for most joint replacements in a single day, has performed 35,000+ surgeries over 23 years, and is recognized as one of North India's leading orthopedic surgeons. He uses computer-assisted navigation for superior precision.`,
+      answer: `Dr. Dubay holds the Forbes World Record for most joint replacements in a single day, has performed ${SURGERY_COUNT_DISPLAY} surgeries over ${EXPERIENCE_YEARS_DISPLAY} years, and is recognized as one of North India's leading orthopedic surgeons. He uses computer-assisted navigation for superior precision.`,
     },
   ];
 }
