@@ -4,7 +4,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { defaultSEO } from "@/lib/seo.config";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
+import { FaqJsonLd } from "@/components/seo/FaqJsonLd";
+import { extractFaqsFromHtml } from "@/lib/blog-faq";
 import { db } from "@/lib/db";
+
+// IndexNow (WS-1: lib/indexnow.ts) belongs on the *publish* path, not on
+// every page render. This repo's public API routes under app/api/blogs are
+// read-only (GET) — posts are published through the separate admin app
+// (see the Article model's comment in prisma/schema.prisma for the same
+// pattern), so there is no publish/update route here to hook into. The
+// actual ping fires from scripts/seed-blogs.ts's upsert loop, which is the
+// one place in this repo that flips isPublished today. If a publish
+// endpoint is ever added to this repo (e.g. a PATCH on
+// app/api/blogs/[slug]/route.ts), call
+// `submitUrlsToIndexNow([\`${defaultSEO.siteUrl}/blogs/${slug}\`])`
+// (fire-and-forget, don't await) right after that write succeeds.
 
 export const revalidate = 3600;
 
@@ -91,10 +105,12 @@ const BlogArticleJsonLd = ({ blog }: { blog: any }) => {
     image: blog.coverImage || blog.image1,
     datePublished: blog.publishedAt,
     dateModified: blog.publishedAt,
+    // Reference, not a re-declared entity — resolves against the full
+    // Physician node emitted by <PhysicianJsonLd /> on the homepage/about
+    // page (components/seo/JsonLd.tsx), same @id convention used across
+    // this site (see app/articles/page.tsx, app/testimonials/page.tsx).
     author: {
-      "@type": "Person",
-      name: "Dr. Dheeraj Dubay",
-      url: defaultSEO.siteUrl,
+      "@id": `${defaultSEO.siteUrl}/#physician`,
     },
     publisher: {
       "@type": "Organization",
@@ -125,9 +141,12 @@ export default async function BlogDetailPage({
     notFound();
   }
 
+  const faqs = extractFaqsFromHtml(blog.content1);
+
   return (
     <>
       <BlogArticleJsonLd blog={blog} />
+      {faqs.length > 0 && <FaqJsonLd faqs={faqs} />}
       <BreadcrumbJsonLd items={[
         { name: "Home", url: "https://www.drdubay.in" },
         { name: "Blog", url: "https://www.drdubay.in/blogs" },
