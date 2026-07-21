@@ -12,6 +12,7 @@ import {
 import Image from "next/image";
 import { CITY_PAGES } from "@/lib/city-pages";
 import { PROCEDURE_PAGES } from "@/lib/procedure-pages";
+import { COST_PAGES } from "@/lib/cost-pages";
 import { getWhatsAppBookingUrl } from "@/lib/whatsapp-booking";
 
 type Props = {};
@@ -222,6 +223,25 @@ const Footer = (props: Props) => {
                     className="text-gray-600 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400 underline-offset-2 hover:underline"
                   >
                     {p.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mt-8 mb-2">
+              Cost &amp; Insurance
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-5">
+              What surgery actually costs, and how RGHS / Ayushman / CGHS / private insurance apply:
+            </p>
+            <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+              {COST_PAGES.map((c) => (
+                <li key={c.slug}>
+                  <Link
+                    href={`/cost/${c.slug}`}
+                    className="text-gray-600 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400 underline-offset-2 hover:underline"
+                  >
+                    {c.h1}
                   </Link>
                 </li>
               ))}

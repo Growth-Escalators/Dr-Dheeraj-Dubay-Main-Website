@@ -5,6 +5,7 @@ import { CITY_PAGES } from '@/lib/city-pages'
 import { HINDI_PAGES } from '@/lib/hindi-pages'
 import { PROCEDURE_PAGES } from '@/lib/procedure-pages'
 import { CONDITION_PAGES } from '@/lib/condition-pages'
+import { COST_PAGES } from '@/lib/cost-pages'
 
 export const revalidate = 3600
 
@@ -43,6 +44,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: 'weekly',
     priority: 0.8,
     lastModified: now,
+  }))
+
+  // Cost-inquiry pages (WS-3b). No lastModified — these are new data-file
+  // pages with no real content-change date yet; `new Date()` per build
+  // would be an inaccurate lastmod signal (see GE SEO standard).
+  const costEntries: Entry[] = COST_PAGES.map((c) => ({
+    url: `${BASE}/cost/${c.slug}`,
+    changeFrequency: 'monthly',
+    priority: 0.9,
   }))
 
   const hindiEntries: Entry[] = HINDI_PAGES.map((h) => ({
@@ -111,6 +121,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...staticEntries.map((e) => ({ ...e, lastModified: now })),
     ...procedureEntries,
     ...conditionEntries,
+    ...costEntries,
     ...hindiEntries,
     ...cityEntries,
     ...dynamicEntries,
