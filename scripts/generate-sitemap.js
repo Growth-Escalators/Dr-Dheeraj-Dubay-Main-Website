@@ -22,13 +22,9 @@ const hindiSlugs = [
 ];
 
 const citySlugs = [
-  'knee-replacement-bikaner', 'knee-replacement-agra', 'knee-replacement-kota',
+  'knee-replacement-agra', 'knee-replacement-kota',
   'knee-replacement-alwar', 'knee-replacement-ajmer', 'knee-replacement-sikar',
   'hip-replacement-jaipur', 'joint-replacement-surgeon-jaipur',
-  'knee-replacement-bharatpur', 'knee-replacement-jhunjhunu', 'knee-replacement-churu',
-  'knee-replacement-mathura', 'knee-replacement-sawai-madhopur', 'knee-replacement-tonk',
-  'knee-replacement-dausa', 'knee-replacement-nagaur', 'knee-replacement-hanumangarh',
-  'knee-replacement-pali', 'knee-replacement-dholpur', 'knee-replacement-bundi',
 ];
 
 const staticLinks = [
