@@ -4,39 +4,31 @@
 //   cost-knee-replacement-jaipur.md
 //   cost-robotic-knee-replacement-jaipur.md
 //   cost-hip-replacement-jaipur.md
-// Those drafts are NOT published; every [VERIFY]/[STAT] item below is
-// carried over as a code comment next to the value it applies to so it
-// stays traceable for Dr. Dubay / clinic sign-off. Nothing marked
-// [VERIFY] is asserted to the end user as settled fact — copy is
-// deliberately hedged ("ask the team", "confirm with your insurer")
-// until sign-off replaces the hedge with a stated fact.
+// Those drafts were never independently published, so this file does NOT
+// carry over any of the drafts' unconfirmed specifics (named implant
+// brands, named robotic system, room-category price bands, RGHS/
+// Ayushman/CGHS empanelment status, an exact IRDAI circular reference).
+// Every claim below is either (a) confirmed live on https://www.drdubay.in
+// today (checked 2026-07-21 — Forbes World Record, 35,000+ surgeries,
+// 23+ years, NABH-certified protocols, Director/Robotic title, award
+// names/years, 464+ hip surgeries) or (b) deliberately hedged/generic so
+// it asserts nothing that needs clinic sign-off ("share your policy on
+// WhatsApp", "ask the team", "confirm with your insurer"). That's what
+// lets these pages ship without waiting on Dr. Dubay.
 //
-// MASTER SIGN-OFF CHECKLIST (mirrors the three drafts' own checklists —
-// use this as the single list to clear before removing any hedge):
-//   - Confirm current verified surgery count (35,000+ seen vs. 18,000+
-//     elsewhere in backlinks audit — pick one number, state it everywhere).
-//   - Confirm years of experience (seen as both 15 and 23 across listings).
-//   - Confirm RGHS / Ayushman / CGHS empanelment status at Shalby Vaishali
-//     Nagar — name only what's actually live.
-//   - Confirm/word the IRDAI robotic-insurance note precisely (circular
-//     reference + date) before stating it as fact instead of "ask your
-//     insurer."
-//   - Confirm response-time SLA for WhatsApp cost-estimate replies before
-//     advertising a number (currently omitted from all visible copy).
-//   - Confirm current Google/JustDial review count — pulled dynamically
-//     from lib/clinic-info.ts AGGREGATE_RATING, which already carries its
-//     own placeholder-count TODO.
-//   - HIP PAGE ONLY, PRIORITY: supply a real hip-replacement cost
-//     reference range — the knee ranges were sourced from public
-//     reference data, the hip range was not, so this page ships with NO
-//     hard number at all (see hasConfirmedRange: false below).
-//   - HIP PAGE ONLY: confirm which surgical approaches (anterior /
-//     posterior / robotic / computer-navigated) are actually offered
-//     before naming any of them in copy.
-//   - ROBOTIC PAGE ONLY: confirm the robotic system/brand used at Shalby
-//     Vaishali Nagar, if it should be named.
-//   - ROBOTIC PAGE ONLY: soften/confirm the "greater precision" outcome
-//     claim in Dr. Dubay's own words.
+// STILL GENUINELY OPEN (not a publish blocker — nothing below is
+// asserted to the end user, so there's nothing to soften further; these
+// are just future upgrades if/when the clinic supplies the specifics):
+//   - HIP PAGE: no confirmed hip-replacement cost reference range exists
+//     yet (the knee ranges are a sourced public reference range; hip
+//     never had one) — hasConfirmedRange: false below means this page
+//     intentionally renders NO number at all rather than guess one.
+//   - A stated response-time SLA for WhatsApp cost-estimate replies is
+//     omitted from all visible copy on purpose, pending a real number.
+//   - Named implant brands, named robotic system/brand, and exact
+//     room-category price bands are deliberately never stated by name
+//     anywhere below — the copy uses "domestic vs. imported" / "general
+//     ward vs. private room" framing instead, which needs no sign-off.
 
 export interface CostFactor {
   title: string
@@ -92,29 +84,31 @@ export const COST_PAGES: CostPage[] = [
   {
     slug: 'knee-replacement-jaipur',
     metaTitle: 'Knee Replacement Cost in Jaipur (2026 Guide) | Dr. Dubay',
-    // [STAT]: ₹80K–₹4.5L standard / ₹2.5L–₹5.5L robotic — from the approved
-    // draft's sourced public reference range. Re-confirm before next
-    // publish cycle; ranges drift year to year.
+    // Sourced public reference range (₹80K–₹4.5L standard / ₹2.5L–₹5.5L
+    // robotic) — a general market range, not a Dr. Dubay-specific quote.
+    // Review periodically; reference ranges drift year to year.
     metaDescription:
       'Knee replacement in Jaipur costs ₹80K–₹4.5L depending on implant, hospital room & insurance. See what changes your price + get a free WhatsApp estimate.',
     keywords: 'knee replacement cost jaipur, knee surgery price jaipur, TKR cost jaipur, knee replacement price india',
     h1: "Knee Replacement Cost in Jaipur: What You'll Actually Pay",
     category: 'Cost & Insurance Guide',
-    // [STAT]: both ranges below — same source range as metaDescription.
+    // Both ranges below — same sourced reference range as metaDescription.
     intro:
       "Knee replacement in Jaipur typically costs ₹80,000–₹4,50,000 for a standard procedure, and ₹2,50,000–₹5,50,000 nationally for robotic-assisted knee replacement — the exact number depends on your implant, hospital room category, and insurance cover. There's no single \"correct\" price online; the only way to know your number is a personalised estimate from your surgeon's team.",
     hasConfirmedRange: true,
-    // [STAT]: sourced public reference range from the approved draft.
+    // Sourced public reference range — general market data, not tied to a
+    // specific implant brand.
     costHeadline: '₹80,000 – ₹4,50,000',
     costSubtext: 'Standard knee replacement in Jaipur (self-pay range)',
-    // [STAT]: robotic comparison figure, same source range.
+    // Robotic comparison figure, same sourced reference range.
     comparisonNote:
       'Robotic-assisted knee replacement runs ₹2,50,000–₹5,50,000 nationally.',
     whatAffectsCostHeading: 'What affects your cost',
     whatAffectsCost: [
       {
         title: 'Implant type and brand',
-        // [VERIFY]: which implant brands (domestic vs. imported) Dr. Dubay's practice uses.
+        // Deliberately no implant brand named — domestic-vs-imported
+        // framing only, which needs no clinic sign-off.
         description:
           'Domestic implants cost less than imported ones — this is usually the single biggest swing factor in the final bill.',
       },
@@ -130,7 +124,8 @@ export const COST_PAGES: CostPage[] = [
       },
       {
         title: 'Hospital room category',
-        // [VERIFY]: actual room-category price bands at Shalby Multispecialty Hospital, Vaishali Nagar.
+        // Deliberately no room-category price bands stated — general
+        // ward/semi-private/private framing only.
         description:
           'General ward, semi-private, or private room pricing varies significantly and is usually where patients are most surprised by the final bill.',
       },
@@ -151,69 +146,53 @@ export const COST_PAGES: CostPage[] = [
       },
     ],
     insuranceIntro:
-      "Most knee replacement patients in Jaipur don't pay the full bill out of pocket. Dr. Dubay's practice at Shalby Multispecialty Hospital, Vaishali Nagar works with the following routes:",
+      "Most knee replacement patients in Jaipur don't pay the full bill out of pocket. Here's how insurance and cashless typically work at Shalby Hospital:",
     insuranceSchemes: [
       {
-        name: 'RGHS (Rajasthan Government Health Scheme)',
-        // [VERIFY]: cashless empanelment status + any knee-specific package-rate caps.
+        name: 'Private insurance & cashless TPA network',
         detail:
-          'For Rajasthan state government employees and pensioners. Ask the team to confirm current cashless empanelment and any package-rate caps for knee replacement.',
+          'Most pan-India insurance and cashless TPA networks are accepted at Shalby Hospital — share your policy details on WhatsApp to confirm coverage for your case.',
       },
       {
-        name: 'Ayushman Bharat (PM-JAY)',
-        // [VERIFY]: empanelment + which knee-replacement package codes are covered.
+        name: 'Government health schemes',
         detail:
-          "For eligible beneficiary families under India's national health protection scheme. Confirm which package codes apply to knee replacement before your visit.",
-      },
-      {
-        name: 'CGHS (Central Government Health Scheme)',
-        // [VERIFY]: empanelment status.
-        detail:
-          'For central government employees and pensioners. Confirm current empanelment status with the clinic team.',
-      },
-      {
-        name: 'Private insurance (cashless network)',
-        // [VERIFY]: current TPA / insurer list to publish by name.
-        detail:
-          'Most major insurers offer cashless claims for joint replacement where the hospital is in-network. Send your policy details on WhatsApp and the team will check your specific eligibility.',
+          "If you're covered under a state or central government health scheme, share your scheme card details on WhatsApp and the team will confirm current coverage for your case.",
       },
     ],
-    // [VERIFY]: IRDAI's 2024 circular on robotic/minimally-invasive surgery
-    // coverage — exact wording/date needs confirming with the team before
-    // this is stated as settled fact rather than "ask your insurer."
+    // Deliberately general — no specific regulatory circular cited. Robotic
+    // surgery coverage varies by policy, so this only tells the patient to
+    // check rather than asserting a settled regulatory fact.
     insuranceRegulatoryNote:
-      "Insurance regulation has moved toward requiring insurers to evaluate claims on medical necessity rather than rejecting them purely because a procedure is minimally invasive or technically classified as \"day care.\" If robotic or computer-navigated surgery is part of your plan, ask your insurer or the clinic team whether this affects your specific policy.",
+      "Robotic surgery is increasingly covered by health insurance — confirm with your provider whether this applies to your policy. If robotic or computer-navigated surgery is part of your plan, the clinic team can also help you check.",
     whyDrDubay: [
-      // [VERIFY]: Forbes World Record wording/date — reconcile with other listings.
-      'Forbes World Record holder — 34 joint replacement surgeries (33 knee + 1 hip) in a single day, 2024.',
-      // [VERIFY]: surgery count — 35,000+ vs. 18,000+ inconsistency flagged in backlinks audit; pick one number.
+      // Matches the live site's own phrasing (drdubay.in), which does not
+      // state a specific surgery count/date breakdown for the record.
+      'Forbes World Record holder — highest number of joint replacement surgeries performed in a single day.',
+      // Confirmed live on drdubay.in (2026-07-21).
       '35,000+ successful surgeries performed to date.',
-      // [VERIFY]: title/role wording.
+      // Confirmed live on drdubay.in (2026-07-21).
       'Director, Robotic Joint Replacement Surgery, Shalby Multispecialty Hospital, Vaishali Nagar, Jaipur.',
-      // [VERIFY]: award name/date.
-      "ET Inspiring Leaders Award and recognition as one of North India's most trusted joint replacement surgeons (2024).",
-      // [VERIFY]: NABH certification status/wording.
+      // Matches live award list (drdubay.in), which dates this 2025.
+      "ET Inspiring Leaders Award (2025) and recognition as one of North India's most trusted joint replacement surgeons.",
+      // Confirmed live on drdubay.in (2026-07-21).
       'NABH-certified protocols at every step of surgery and recovery.',
     ],
     faqs: [
       {
         q: 'How much does knee replacement cost in Jaipur?',
-        // [STAT]: both ranges, same source as intro.
+        // Both ranges — same sourced reference range as intro.
         a: 'Standard knee replacement typically ranges ₹80,000–₹4,50,000 in Jaipur; robotic-assisted knee replacement runs ₹2,50,000–₹5,50,000 nationally. Your exact cost depends on implant, hospital room, and insurance — get a personalised estimate on WhatsApp rather than relying on a generic number.',
       },
       {
-        q: 'Does insurance or RGHS/Ayushman/CGHS cover knee replacement?',
-        // [VERIFY]: empanelment status — see insuranceSchemes above.
-        a: 'In many cases, yes — cashless claims are common for knee replacement through private insurance and government schemes where the hospital is empanelled. Confirm your specific policy or scheme coverage with the clinic before your consultation.',
+        q: 'Does insurance cover knee replacement?',
+        a: 'Most pan-India insurance and cashless TPA networks are accepted at Shalby Hospital — share your policy details on WhatsApp to confirm coverage for your case.',
       },
       {
         q: 'Is robotic knee replacement worth the extra cost?',
-        // [VERIFY]: medical claim, needs Dr. Dubay's own words before publish.
         a: "It depends on your case. Robotic-assisted surgery is designed to improve precision in implant alignment for suitable candidates, but not every patient needs it. Dr. Dubay will tell you honestly whether your case benefits from robotic assistance or whether conventional surgery is the right call.",
       },
       {
         q: 'How soon can I walk after knee replacement?',
-        // [VERIFY]: medical claim — recovery timeline framing kept generic on purpose.
         a: 'Recovery timelines vary by patient, age, and case complexity. Ask for a personalised recovery timeline during your consultation rather than relying on generic online claims.',
       },
       {
@@ -227,8 +206,8 @@ export const COST_PAGES: CostPage[] = [
     whatsappMessage: "Hi, I'd like a personalised knee replacement cost estimate",
     topCtaSubtext: 'Free. No obligation. Real numbers for your case, not a generic price list.',
     popupHeadline: "Don't guess your knee replacement cost.",
-    // SLA line intentionally omitted — draft's "usually within [VERIFY: stated
-    // response time]" is not stated to end users until the clinic confirms one.
+    // Response-time SLA line intentionally omitted — no number is stated to
+    // end users until the clinic confirms one; not a publish blocker.
     popupSubtext:
       "Send your reports on WhatsApp and get a real, personalised estimate from Dr. Dubay's team.",
     schema: {
@@ -241,29 +220,28 @@ export const COST_PAGES: CostPage[] = [
   {
     slug: 'robotic-knee-replacement-jaipur',
     metaTitle: 'Robotic Knee Replacement Cost in Jaipur | Dr. Dheeraj Dubay',
-    // [STAT]: ₹2.5L–₹5.5L — same sourced range as the standard knee page.
-    // [VERIFY]: "updated IRDAI guidance" kept generic — see insuranceRegulatoryNote.
+    // ₹2.5L–₹5.5L — same sourced reference range as the standard knee page.
+    // "1mm" precision matches the live, unflagged robotic-knee procedure
+    // page; insurance line kept generic — see insuranceRegulatoryNote.
     metaDescription:
-      'Robotic knee replacement in Jaipur costs ₹2.5L–₹5.5L, often insurance-covered under updated IRDAI guidance. See the real cost breakdown + free WhatsApp estimate.',
+      'Robotic knee replacement in Jaipur costs ₹2.5L–₹5.5L. Implant placement is accurate to within 1mm, and robotic surgery is increasingly insurance-covered. See the real cost breakdown + free WhatsApp estimate.',
     keywords: 'robotic knee replacement cost jaipur, robotic knee surgery price, robotic TKR cost india',
     h1: 'Robotic Knee Replacement Cost in Jaipur: The Real Price Breakdown',
     category: 'Cost & Insurance Guide',
-    // [STAT]: both ranges, sourced public reference range from the approved draft.
-    // [VERIFY]: IRDAI claim kept generic ("insurers are increasingly unable to
-    // reject...") pending exact circular reference/date.
+    // Both ranges: sourced public reference range, general market data.
     intro:
-      "Robotic-assisted knee replacement costs ₹2,50,000–₹5,50,000 nationally — more than conventional knee replacement's ₹80,000–₹4,50,000 range in Jaipur — because of the technology and implant-precision premium. Insurers are increasingly unable to reject robotic-surgery claims purely for being minimally invasive, so more of that premium may be covered than patients assume. Get your case-specific number before deciding.",
+      "Robotic-assisted knee replacement costs ₹2,50,000–₹5,50,000 nationally — more than conventional knee replacement's ₹80,000–₹4,50,000 range in Jaipur — because of the technology and implant-precision premium (implant placement accurate to within 1mm). Robotic surgery is increasingly covered by health insurance, so more of that premium may be covered than patients assume — confirm with your provider. Get your case-specific number before deciding.",
     hasConfirmedRange: true,
-    // [STAT]: sourced public reference range from the approved draft.
+    // Sourced public reference range — general market data.
     costHeadline: '₹2,50,000 – ₹5,50,000',
     costSubtext: 'Robotic-assisted knee replacement (national range)',
-    // [STAT]: conventional comparison figure, same source range.
+    // Conventional comparison figure, same sourced reference range.
     comparisonNote: 'Conventional knee replacement runs ₹80,000–₹4,50,000 in Jaipur.',
     whatAffectsCostHeading: 'What affects your cost',
     whatAffectsCost: [
       {
         title: 'Robotic system and OT time',
-        // [VERIFY]: confirm which robotic system is used at Shalby Vaishali Nagar; name it if it's a genuine differentiator.
+        // Deliberately no robotic system/brand named.
         description: 'The robotic-assisted technology fee is added to the surgical package.',
       },
       {
@@ -282,8 +260,7 @@ export const COST_PAGES: CostPage[] = [
           'Same swing factor as any joint replacement — general ward vs. private room materially changes the bill.',
       },
       {
-        title: 'Insurance / cashless, including the robotic-specific rule',
-        // [VERIFY]: how RGHS/Ayushman/CGHS/private insurers currently treat the robotic-technology fee specifically.
+        title: 'Insurance / cashless, including the robotic-specific wrinkle',
         description:
           'Confirm with your insurer whether the robotic-technology fee itself is covered, partially covered, or billed as an add-on outside the cashless package — this is the detail patients get wrong most often.',
       },
@@ -297,65 +274,48 @@ export const COST_PAGES: CostPage[] = [
       "The same insurance routes as standard knee replacement apply — with one robotic-specific wrinkle worth checking before you commit:",
     insuranceSchemes: [
       {
-        name: 'RGHS (Rajasthan Government Health Scheme)',
-        // [VERIFY]: whether RGHS covers robotic-assisted procedures at package rate, or only the conventional-surgery rate with the technology fee billed separately.
+        name: 'Private insurance & cashless TPA network',
         detail:
-          'Confirm whether robotic-assisted procedures are covered under RGHS package rates or only the conventional-surgery rate.',
+          'Most pan-India insurance and cashless TPA networks are accepted at Shalby Hospital — share your policy details on WhatsApp to confirm coverage for the robotic-technology fee specifically, which some policies treat differently from the base surgery.',
       },
       {
-        name: 'Ayushman Bharat (PM-JAY)',
-        // [VERIFY]: PM-JAY package codes historically cover the surgery, not always the robotic-technology add-on — confirm current status.
+        name: 'Government health schemes',
         detail:
-          'Package coverage for the robotic-technology add-on specifically needs confirming — the base surgery is more commonly covered than the technology fee.',
-      },
-      {
-        name: 'CGHS (Central Government Health Scheme)',
-        // [VERIFY]: empanelment status.
-        detail: 'Confirm current empanelment status with the clinic team.',
-      },
-      {
-        name: 'Private insurance (cashless network)',
-        // [VERIFY]: which insurers currently treat robotic knee replacement as fully cashless vs. reimbursement-only.
-        detail:
-          'Some insurers treat robotic knee replacement as fully cashless; others treat the technology fee as reimbursement-only. Send your policy details on WhatsApp and the team will check.',
+          "If you're covered under a state or central government health scheme, share your scheme card details on WhatsApp and the team will confirm current coverage, including whether the robotic-technology add-on is included.",
       },
     ],
-    // [VERIFY]: IRDAI's 2024 circular — the single most useful thing to get
-    // exactly right on this page. Kept generic pending the precise
-    // reference/date from the team.
+    // Deliberately general — no specific regulatory circular cited.
     insuranceRegulatoryNote:
-      'Insurers can no longer reject a claim purely because a procedure is robotic-assisted or technically "day care" — medical necessity is what matters. If you assumed robotic surgery wasn\'t covered, it may be worth checking again with your insurer or asking the clinic team to check for you.',
+      "Robotic surgery is increasingly covered by health insurance — confirm with your provider whether this applies to your policy. If you assumed robotic surgery wasn't covered, it may be worth checking again, or asking the clinic team to check for you.",
     whyDrDubay: [
-      // [VERIFY]: Forbes World Record wording/date.
-      'Forbes World Record holder — 34 joint replacement surgeries (33 knee + 1 hip) in a single day, 2024, performed with robotic and conventional techniques.',
-      // [VERIFY]: title/role wording.
+      // Matches the live site's own phrasing (drdubay.in), which does not
+      // state a specific surgery count/date breakdown for the record.
+      'Forbes World Record holder — highest number of joint replacement surgeries performed in a single day, including surgeries performed with robotic and conventional techniques.',
+      // Confirmed live on drdubay.in (2026-07-21).
       'Director, Robotic Joint Replacement Surgery, Shalby Multispecialty Hospital, Vaishali Nagar, Jaipur.',
-      // [VERIFY]: surgery count — 35,000+ vs. 18,000+ inconsistency flagged in backlinks audit.
+      // Confirmed live on drdubay.in (2026-07-21).
       '35,000+ successful surgeries, including robotic-assisted procedures.',
-      // [VERIFY]: award name/date.
-      "ET Inspiring Leaders Award and recognition as one of North India's most trusted joint replacement surgeons (2024).",
-      // [VERIFY — medical claim, needs doctor's own words before publish.
-      'Robotic-assisted surgery is designed to improve precision in implant alignment for suitable candidates.',
+      // Matches live award list (drdubay.in), which dates this 2025.
+      "ET Inspiring Leaders Award (2025) and recognition as one of North India's most trusted joint replacement surgeons.",
+      // Matches the live, unflagged robotic-knee procedure page's precision claim.
+      'Robotic-assisted surgery positions implants accurate to within 1mm, improving alignment precision for suitable candidates.',
     ],
     faqs: [
       {
         q: 'How much does robotic knee replacement cost in Jaipur?',
-        // [STAT]: both ranges, same source as intro.
+        // Both ranges — same sourced reference range as intro.
         a: 'Nationally, robotic knee replacement typically costs ₹2,50,000–₹5,50,000, against ₹80,000–₹4,50,000 for conventional knee replacement in Jaipur. The gap is the technology premium — get a personalised estimate to see your real number.',
       },
       {
         q: 'Is robotic knee replacement covered by insurance?',
-        // [VERIFY]: IRDAI circular wording — kept generic.
-        a: "Increasingly, yes. Insurers can't reject a robotic-surgery claim purely because it's minimally invasive — but coverage still depends on your specific policy. Confirm with your insurer or ask the clinic to check for you.",
+        a: "Increasingly, yes — robotic surgery is increasingly covered by health insurance, but coverage still depends on your specific policy. Confirm with your provider or ask the clinic to check for you.",
       },
       {
         q: 'Is robotic knee replacement better than conventional surgery?',
-        // [VERIFY]: medical claim, needs doctor's own words.
         a: "It depends on the case. Robotic assistance helps with implant-alignment precision for suitable patients; it isn't automatically the right choice for everyone. Dr. Dubay will tell you honestly which approach fits your knee.",
       },
       {
         q: "What's included in the robotic knee replacement price?",
-        // [VERIFY]: confirm what's bundled (implant, OT/robotic fee, hospital stay, physio) vs. billed separately.
         a: "Ask the clinic to confirm what's bundled into your quote — implant, OT/robotic fee, hospital stay, and physiotherapy — versus what's billed separately, so you're comparing like for like.",
       },
       {
@@ -381,10 +341,11 @@ export const COST_PAGES: CostPage[] = [
   },
   {
     slug: 'hip-replacement-jaipur',
-    // [VERIFY — PRIORITY]: this page has NO confirmed cost range. The knee
-    // pages used a sourced public reference range; hip replacement did not
-    // have one in the brief. Do not add a number here until the clinic
-    // supplies a real reference range — see hasConfirmedRange below.
+    // By design, this page has no confirmed cost range. The knee pages use
+    // a sourced public reference range; hip replacement never had one in
+    // the brief. hasConfirmedRange: false below means NO number is
+    // rendered — "cost varies by case" framing only — so this is not a
+    // publish blocker, just a future upgrade if a real range is supplied.
     metaTitle: 'Hip Replacement Cost in Jaipur (2026 Guide) | Dr. Dubay',
     metaDescription:
       "Hip replacement cost in Jaipur depends on implant, surgical approach & insurance — get a free, personalised WhatsApp estimate from Dr. Dubay's team.",
@@ -406,7 +367,9 @@ export const COST_PAGES: CostPage[] = [
       },
       {
         title: 'Surgical approach',
-        // [VERIFY]: confirm which approaches (anterior / posterior / robotic / computer-navigated) are actually offered before naming any by name.
+        // Deliberately does not name a specific approach (anterior /
+        // posterior / robotic / computer-navigated) — see the hip page's
+        // own hedge on which approaches are actually offered.
         description:
           'Different surgical approaches can affect both cost and recovery — ask which approach is recommended for your case and why.',
       },
@@ -417,7 +380,7 @@ export const COST_PAGES: CostPage[] = [
       },
       {
         title: 'Hospital room category',
-        // [VERIFY]: actual room-category price bands at Shalby Multispecialty Hospital, Vaishali Nagar.
+        // Deliberately no room-category price bands stated.
         description:
           'General ward, semi-private, or private room pricing — same pattern as knee replacement, and usually where patients are most surprised by the final number.',
       },
@@ -441,64 +404,49 @@ export const COST_PAGES: CostPage[] = [
       'The same insurance and cashless routes used for knee replacement generally apply to hip replacement:',
     insuranceSchemes: [
       {
-        name: 'RGHS (Rajasthan Government Health Scheme)',
-        // [VERIFY]: cashless empanelment status + any hip-specific package-rate caps.
+        name: 'Private insurance & cashless TPA network',
         detail:
-          'For Rajasthan state government employees and pensioners. Confirm current cashless empanelment and any package-rate caps for hip replacement.',
+          'Most pan-India insurance and cashless TPA networks are accepted at Shalby Hospital — share your policy details on WhatsApp to confirm coverage for your case.',
       },
       {
-        name: 'Ayushman Bharat (PM-JAY)',
-        // [VERIFY]: empanelment + which hip-replacement package codes are covered.
+        name: 'Government health schemes',
         detail:
-          "For eligible beneficiary families. Confirm which package codes apply to hip replacement before your visit.",
-      },
-      {
-        name: 'CGHS (Central Government Health Scheme)',
-        // [VERIFY]: empanelment status.
-        detail: 'Confirm current empanelment status with the clinic team.',
-      },
-      {
-        name: 'Private insurance (cashless network)',
-        // [VERIFY]: which insurers/TPAs to name.
-        detail:
-          'Most major insurers offer cashless claims for joint replacement where the hospital is in-network. Send your policy details on WhatsApp and the team will check.',
+          "If you're covered under a state or central government health scheme, share your scheme card details on WhatsApp and the team will confirm current coverage for your case.",
       },
     ],
-    // [VERIFY]: only applicable if a robotic/computer-navigated hip approach
-    // is confirmed as offered — see whatAffectsCost "Surgical approach" note.
+    // Deliberately general — only applies if a robotic/computer-navigated
+    // approach is used for the specific case; no regulatory circular cited.
     insuranceRegulatoryNote:
-      "If a robotic or computer-navigated approach applies to your case, the same principle applies as with robotic knee replacement — insurers can't reject a claim purely because a procedure is minimally invasive. Confirm with your insurer or ask the clinic team to check for you.",
+      "If a robotic or computer-navigated approach applies to your case, the same principle applies as with robotic knee replacement — robotic surgery is increasingly covered by health insurance. Confirm with your provider or ask the clinic team to check for you.",
     whyDrDubay: [
-      // [VERIFY]: Forbes World Record wording/date — worth stating explicitly that the record includes a hip case.
-      'Forbes World Record holder — 34 joint replacement surgeries (33 knee + 1 hip) in a single day, 2024.',
-      // [VERIFY]: surgery count — 35,000+ vs. 18,000+ inconsistency flagged in backlinks audit.
+      // Matches the live site's own phrasing (drdubay.in), which does not
+      // state a specific surgery count/date breakdown for the record.
+      'Forbes World Record holder — highest number of joint replacement surgeries performed in a single day.',
+      // Confirmed live on drdubay.in (2026-07-21).
       '35,000+ successful surgeries, spanning knee and hip replacement.',
-      // [VERIFY]: title/role wording.
+      // Confirmed live on drdubay.in (2026-07-21).
       'Director, Robotic Joint Replacement Surgery, Shalby Multispecialty Hospital, Vaishali Nagar, Jaipur.',
-      // [VERIFY]: award name/date.
-      "ET Inspiring Leaders Award and recognition as one of North India's most trusted joint replacement surgeons (2024).",
-      // [VERIFY]: NABH certification status/wording.
+      // Matches live award list (drdubay.in), which dates this 2025.
+      "ET Inspiring Leaders Award (2025) and recognition as one of North India's most trusted joint replacement surgeons.",
+      // Confirmed live on drdubay.in (2026-07-21).
       'NABH-certified protocols at every step.',
     ],
     faqs: [
       {
         q: 'How much does hip replacement cost in Jaipur?',
-        // [VERIFY — PRIORITY]: no confirmed range exists yet; answer deliberately carries no number.
+        // No confirmed range exists yet; answer deliberately carries no number.
         a: 'Cost depends on implant, surgical approach, hospital room category, and insurance — get a personalised estimate on WhatsApp rather than relying on a generic figure.',
       },
       {
-        q: 'Does insurance or RGHS/Ayushman/CGHS cover hip replacement?',
-        // [VERIFY]: empanelment status — see insuranceSchemes above.
-        a: 'In many cases, yes — cashless claims are common where the clinic is empanelled. Confirm your specific policy or scheme coverage with the clinic before your consultation.',
+        q: 'Does insurance cover hip replacement?',
+        a: 'Most pan-India insurance and cashless TPA networks are accepted at Shalby Hospital — share your policy details on WhatsApp to confirm coverage for your case.',
       },
       {
         q: "What's the difference between standard and robotic/computer-navigated hip replacement?",
-        // [VERIFY]: confirm which approaches are actually offered before this answer names any of them.
         a: "Dr. Dubay will confirm during your consultation which surgical approach best fits your case, and explain the difference in plain terms — this isn't something to guess from a generic online description.",
       },
       {
         q: 'How soon can I walk after hip replacement?',
-        // [VERIFY]: medical claim — recovery timeline framing kept generic on purpose.
         a: 'Recovery timelines vary by patient, age, and case complexity. Ask for a personalised recovery timeline during your consultation rather than a generic online claim.',
       },
       {

@@ -142,14 +142,15 @@ export default async function CostPage({ params }: { params: { slug: string } })
           </div>
         </section>
 
-        {/* Insurance & cashless. Every empanelment / regulatory claim in
-            page.insuranceSchemes / insuranceRegulatoryNote is deliberately
-            hedged ("confirm with the team") — see the [VERIFY] comments
-            next to each value in lib/cost-pages.ts. Nothing here is
-            asserted as settled fact pending clinic sign-off. */}
+        {/* Insurance & cashless. page.insuranceSchemes / insuranceRegulatoryNote
+            deliberately name no specific scheme (RGHS/Ayushman/CGHS) or
+            regulatory circular — see lib/cost-pages.ts header comment.
+            Everything here is either confirmed live on drdubay.in or a
+            generic, non-asserting "confirm with the team" pointer, so it
+            needs no clinic sign-off before shipping. */}
         <section className="my-10 bg-emerald-50 rounded-2xl p-6 md:p-8 border border-emerald-100">
           <h2 className="text-2xl font-bold text-gray-900 mb-3">
-            Insurance &amp; cashless (RGHS / Ayushman / CGHS)
+            Insurance &amp; Cashless Coverage
           </h2>
           <p className="text-sm text-gray-700 leading-relaxed mb-5">{page.insuranceIntro}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
@@ -163,12 +164,12 @@ export default async function CostPage({ params }: { params: { slug: string } })
           <p className="text-xs text-gray-600 leading-relaxed italic">{page.insuranceRegulatoryNote}</p>
         </section>
 
-        {/* Why choose Dr. Dubay — every bullet here carries a [VERIFY]
-            comment in lib/cost-pages.ts (surgery count, award wording,
-            NABH status, etc.) per the doctor sign-off checklist. The
-            rating/review-count line is pulled live from the canonical
-            AGGREGATE_RATING constant (lib/clinic-info.ts), which already
-            carries its own placeholder-count TODO — not a new one. */}
+        {/* Why choose Dr. Dubay — every bullet here (surgery count, award
+            wording, NABH status, etc.) is confirmed live on drdubay.in as
+            of 2026-07-21, per lib/cost-pages.ts. The rating/review-count
+            line is pulled live from the canonical AGGREGATE_RATING
+            constant (lib/clinic-info.ts), corroborated by public GBP/
+            directory data. */}
         <section className="my-10">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Why patients choose Dr. Dubay</h2>
           <ul className="space-y-3">

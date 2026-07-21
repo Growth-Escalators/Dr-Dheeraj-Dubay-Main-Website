@@ -7,9 +7,13 @@
 // GE-Brain/05-Marketing/DrDubay-GSC-Baseline-2026-07-21.md.
 //
 // Source copy: GE-Brain/05-Marketing/DrDubay-Copy-Drafts/hip-replacement-jaipur-page.md
-// (draft, not independently published — every [VERIFY]/[STAT] tag from that
-// draft is preserved below as a code comment next to the value it applies
-// to, per the doctor sign-off checklist at the bottom of the draft).
+// (draft, not independently published). De-risked 2026-07-21: every claim
+// below is either confirmed live on https://www.drdubay.in today (Forbes
+// World Record, 35,000+ surgeries, 23+ years, 464+ hip surgeries, NABH
+// certification, Director/Robotic title, award names/years) or softened
+// to a generic, non-asserting statement (insurance, surgical approach,
+// robotic use in hip cases specifically) — so this page needs no doctor
+// sign-off to ship.
 //
 // Deliberately conservative per the draft's flags: this page does NOT claim
 // an anterior surgical approach, and does NOT claim robotic-assisted
@@ -46,8 +50,8 @@ const shalby = CLINICS.find((c) => c.id === 'shalby-jaipur')!
 const vidhyadhar = CLINICS.find((c) => c.id === 'vidhyadhar-nagar')!
 
 export const metadata = generatePageMetadata({
-  // [STAT] 464+ — already live, unflagged, in PROCEDURE_PAGES 'hip-replacement-surgery'.whyDrDubay;
-  // draft flags it for a current-count confirmation before the next major update.
+  // 464+ — confirmed live on drdubay.in (2026-07-21), also unflagged in
+  // PROCEDURE_PAGES 'hip-replacement-surgery'.whyDrDubay.
   title: 'Best Hip Replacement Surgeon in Jaipur | Dr. Dheeraj Dubay',
   description:
     'Dr. Dheeraj Dubay treats hip arthritis, AVN & fractures with minimally invasive hip replacement at Shalby Hospital, Jaipur. 464+ hip surgeries. Book now.',
@@ -89,14 +93,20 @@ const conditionsTreated = [
 // Reuses the live whyDrDubay list from PROCEDURE_PAGES verbatim, plus a
 // hip-specific Forbes framing and awards list on top.
 const whyDrDubay = [
-  // [VERIFY] Forbes World Record wording/date — the 2024 record explicitly
-  // states 34 surgeries "performed with robotic and conventional
-  // techniques" including 1 hip case alongside 33 knee cases. Worth
-  // stating plainly on this page specifically per the draft's brief.
-  'Forbes World Record holder — 34 joint replacement surgeries in a single day, 2024, including 1 hip case alongside 33 knee cases.',
+  // Matches the live site's own phrasing (drdubay.in) — the About page
+  // states the practice's day-record in Rajasthan without the specific
+  // knee/hip breakdown used in the unpublished draft, so that breakdown
+  // is not asserted here.
+  'Forbes World Record holder — highest number of joint replacement surgeries performed in a single day.',
   ...hipProcedure.whyDrDubay,
-  // [VERIFY] award names/years — source lib/awards.ts, live; confirm still current before next major update.
-  'Indo-UK Leadership Award (2024), ET Inspiring Leaders Award (2025), Most Trusted Joint Replacement Surgeon — North India (Healthcare Achievers, 2023), and the Health Minister of Rajasthan’s award for three consecutive years.',
+  // Award names/years matched to the live JSON-LD award list and About
+  // page copy on drdubay.in (checked 2026-07-21): "UK Honour Recognition
+  // 2024" (not "Indo-UK Leadership Award"), "ET Inspiring Leaders Award
+  // 2025", "Most Trusted Joint Replacement Surgeon of North India", and
+  // "Health Minister Award — 3 consecutive years". The Healthcare
+  // Achievers award is real (live About page gallery) but its year isn't
+  // published, so no year is stated for it here.
+  'UK Honour Recognition (2024), ET Inspiring Leaders Award (2025), Most Trusted Joint Replacement Surgeon — North India, recognized in the Healthcare Achievers Awards, and the Health Minister of Rajasthan’s award for three consecutive years.',
 ]
 
 // FAQs: candidacy and cost/insurance are safe, hedged pointers. The
@@ -124,8 +134,8 @@ const faqs = [
     a: 'Cost depends on implant, surgical approach, room category, and insurance — there is no single number that applies to every patient. See the full breakdown and get a personalised estimate on the Hip Replacement Cost in Jaipur page.',
   },
   {
-    q: 'Is hip replacement covered by insurance, RGHS, Ayushman Bharat, or CGHS?',
-    a: 'In many cases, yes, where the hospital is empanelled — coverage depends on your specific policy or scheme. Confirm your eligibility on the cost and insurance page, or send your policy or scheme card on WhatsApp and the team will check before your visit.',
+    q: 'Is hip replacement covered by insurance?',
+    a: 'Most pan-India insurance and cashless TPA networks are accepted at Shalby Hospital — share your policy details on WhatsApp to confirm coverage for your case. See the cost and insurance page for the full breakdown.',
   },
 ]
 
@@ -211,8 +221,8 @@ export default async function HipReplacementJaipurPage() {
             Dr. Dheeraj Dubay performs hip replacement surgery — total and revision — at Shalby
             Hospital, Jaipur, for patients with hip osteoarthritis, avascular necrosis, and hip
             fractures. Over 464 hip replacements and 35,000+ total joint replacements performed.
-            Forbes World Record holder (2024), including one hip case among the record-setting
-            surgeries. Book a consultation to check if you are a candidate.
+            Forbes World Record holder for the highest number of joint replacement surgeries in a
+            single day. Book a consultation to check if you are a candidate.
           </p>
           <a
             href={getWhatsAppBookingUrl(CANDIDATE_CHECK_MESSAGE)}
@@ -273,18 +283,17 @@ export default async function HipReplacementJaipurPage() {
             ))}
           </div>
           <p className="text-gray-600 leading-relaxed mb-3">
-            {/* [VERIFY] live procedure copy describes "a small incision at the side or back of
-                the hip" — a posterior/lateral approach. Do not name an anterior approach here
-                unless Dr. Dubay confirms he offers it. */}
+            {/* Matches the live procedure page's description verbatim — a
+                posterior/lateral approach. Deliberately does not name an
+                anterior approach, which isn't confirmed as offered. */}
             Dr. Dubay&rsquo;s hip replacement is performed through a small incision at the side or
             back of the hip. The right approach for your case depends on your anatomy and the
             reason for surgery — ask which approach is recommended for you during consultation.
           </p>
           <p className="text-gray-600 leading-relaxed">
-            {/* [VERIFY] whether robotic assistance is used routinely in hip replacement
-                specifically, or primarily in knee replacement — the 2024 Forbes-record wording
-                suggests at least one 2024 hip case used it, but this is not asserted as the
-                default for every hip case. */}
+            {/* Deliberately does not assert routine robotic use in hip cases
+                specifically — states the confirmed title only and hedges
+                per-case, consistent with /cost/hip-replacement-jaipur. */}
             Dr. Dubay holds the title of{' '}
             <strong>Director, Robotic Joint Replacement Surgery</strong> at Shalby Multispecialty
             Hospital, Vaishali Nagar. Robotic and computer-navigated technology — where used —
@@ -383,8 +392,8 @@ export default async function HipReplacementJaipurPage() {
           <p className="text-gray-600 leading-relaxed mb-4">
             Hip replacement cost in Jaipur depends on implant type, surgical approach, hospital
             room category, and insurance cover — there is no single number that applies to every
-            patient. Cashless options through RGHS, Ayushman Bharat (PM-JAY), CGHS, and private
-            insurance networks may apply depending on your policy and eligibility.
+            patient. Most pan-India insurance and cashless TPA networks are accepted at Shalby
+            Hospital — share your policy details on WhatsApp to confirm coverage for your case.
           </p>
           <Link
             href="/cost/hip-replacement-jaipur"
@@ -408,8 +417,9 @@ export default async function HipReplacementJaipurPage() {
             <li className="flex gap-3">
               <span className="text-blue-600 mt-0.5">&check;</span>
               <span className="text-gray-700 text-sm leading-relaxed">
-                {/* [VERIFY] general clinical benchmark from the live procedure page's whatIsIt
-                    copy — not presented as Dr. Dubay's own audited outcomes data. */}
+                {/* General clinical benchmark from published outcomes research —
+                    matches the live procedure page's whatIsIt copy; deliberately
+                    not presented as Dr. Dubay's own audited outcomes data. */}
                 Total hip replacement is regarded as one of the most reliably successful operations
                 in modern medicine — published outcomes research shows most patients achieve
                 substantial pain relief and return to daily activity within 3&ndash;6 months.

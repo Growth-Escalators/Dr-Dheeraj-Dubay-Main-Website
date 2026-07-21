@@ -245,7 +245,7 @@ const Footer = (props: Props) => {
               Cost &amp; Insurance
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-5">
-              What surgery actually costs, and how RGHS / Ayushman / CGHS / private insurance apply:
+              What surgery actually costs, and how insurance and cashless coverage apply:
             </p>
             <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
               {COST_PAGES.map((c) => (
