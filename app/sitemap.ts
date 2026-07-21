@@ -11,6 +11,10 @@ export const revalidate = 3600
 const BASE = defaultSEO.siteUrl
 type Entry = MetadataRoute.Sitemap[number]
 
+// Static routes have no real "last changed" date we can source from the DB
+// or a content file, so `lastModified` is omitted entirely per the GE SEO
+// standard: a fabricated/build-time date teaches Google to ignore the
+// sitemap's lastmod signal altogether.
 const staticEntries: Entry[] = [
   { url: `${BASE}/`, changeFrequency: 'daily', priority: 1.0 },
   { url: `${BASE}/about`, changeFrequency: 'monthly', priority: 0.8 },
@@ -28,51 +32,50 @@ const staticEntries: Entry[] = [
   { url: `${BASE}/podcasts`, changeFrequency: 'monthly', priority: 0.6 },
 ]
 
+// Data-file-driven pages (procedures/conditions/cities/hindi) have no real
+// change-date field either — same rule applies, `lastModified` is omitted.
+const procedureEntries: Entry[] = PROCEDURE_PAGES.map((p) => ({
+  url: `${BASE}/procedures/${p.slug}`,
+  changeFrequency: 'weekly',
+  priority: 0.9,
+}))
+
+const conditionEntries: Entry[] = CONDITION_PAGES.map((c) => ({
+  url: `${BASE}/conditions/${c.slug}`,
+  changeFrequency: 'weekly',
+  priority: 0.8,
+}))
+
+const hindiEntries: Entry[] = HINDI_PAGES.map((h) => ({
+  url: `${BASE}/hindi/${h.slug}`,
+  changeFrequency: 'weekly',
+  priority: 0.8,
+}))
+
+const cityEntries: Entry[] = CITY_PAGES.map((c) => ({
+  url: `${BASE}/${c.slug}`,
+  changeFrequency: 'monthly',
+  priority: 0.7,
+}))
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const now = new Date()
-
-  const procedureEntries: Entry[] = PROCEDURE_PAGES.map((p) => ({
-    url: `${BASE}/procedures/${p.slug}`,
-    changeFrequency: 'weekly',
-    priority: 0.9,
-    lastModified: now,
-  }))
-
-  const conditionEntries: Entry[] = CONDITION_PAGES.map((c) => ({
-    url: `${BASE}/conditions/${c.slug}`,
-    changeFrequency: 'weekly',
-    priority: 0.8,
-    lastModified: now,
-  }))
-
-  const hindiEntries: Entry[] = HINDI_PAGES.map((h) => ({
-    url: `${BASE}/hindi/${h.slug}`,
-    changeFrequency: 'weekly',
-    priority: 0.8,
-    lastModified: now,
-  }))
-
-  const cityEntries: Entry[] = CITY_PAGES.map((c) => ({
-    url: `${BASE}/${c.slug}`,
-    changeFrequency: 'monthly',
-    priority: 0.7,
-    lastModified: now,
-  }))
-
   // Dynamic DB entries — best-effort; failures must not break the build.
   const dynamicEntries: Entry[] = []
   try {
     const [blogs, services, achievements] = await Promise.all([
       db.blogs.findMany({
         where: { isPublished: true, slug: { not: null } },
-        select: { slug: true },
+        select: { slug: true, publishedAt: true },
       }),
+      // Services has no date field in the schema (no createdAt/updatedAt/
+      // publishedAt) — there is no real change date to source, so these
+      // entries omit `lastModified` rather than fabricate one.
       db.services.findMany({
         where: { slug: { not: null } },
         select: { slug: true },
       }),
       db.achievement.findMany({
-        select: { slug: true },
+        select: { slug: true, createdAt: true },
       }),
     ])
 
@@ -82,7 +85,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${BASE}/blogs/${b.slug}`,
         changeFrequency: 'weekly',
         priority: 0.7,
-        lastModified: now,
+        ...(b.publishedAt ? { lastModified: b.publishedAt } : {}),
       })
     }
     for (const s of services) {
@@ -91,7 +94,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${BASE}/services/${s.slug}`,
         changeFrequency: 'monthly',
         priority: 0.8,
-        lastModified: now,
       })
     }
     for (const a of achievements) {
@@ -100,7 +102,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${BASE}/achievements/${a.slug}`,
         changeFrequency: 'monthly',
         priority: 0.6,
-        lastModified: now,
+        ...(a.createdAt ? { lastModified: a.createdAt } : {}),
       })
     }
   } catch (e) {
@@ -108,7 +110,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   return [
-    ...staticEntries.map((e) => ({ ...e, lastModified: now })),
+    ...staticEntries,
     ...procedureEntries,
     ...conditionEntries,
     ...hindiEntries,
