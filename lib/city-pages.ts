@@ -71,18 +71,12 @@ export const CITY_PAGES = [
     distance: '110 km from Jaipur',
     patientNote: 'Hundreds of patients from the Shekhawati region have been successfully treated.',
   },
-  {
-    slug: 'hip-replacement-jaipur',
-    city: 'Jaipur',
-    procedure: 'Hip Replacement',
-    title: 'Best Hip Replacement Surgeon in Jaipur — Dr. Dheeraj Dubay',
-    description: 'Dr. Dheeraj Dubay is Jaipur\'s leading hip replacement surgeon at Shalby Hospital. Minimally invasive techniques, fast recovery, 35,000+ surgeries.',
-    h1: 'Hip Replacement Surgery in Jaipur',
-    intro: 'Dr. Dheeraj Dubay at Shalby Hospital, Vaishali Nagar, Jaipur is the city\'s most experienced hip replacement surgeon. Using minimally invasive techniques and the latest implants, Dr. Dubay ensures patients recover faster with less pain.',
-    campNote: 'Walk-in OPD available at Shalby Hospital Vaishali Nagar and Dr. Dubay Hip & Knee Clinic, Vidhyadhar Nagar. Call +91-8955373205.',
-    distance: 'Based in Jaipur',
-    patientNote: 'Thousands of Jaipur patients have been successfully treated.',
-  },
+  // 'hip-replacement-jaipur' removed (WS-4b) — reclaimed as a dedicated
+  // static route at app/hip-replacement-jaipur/page.tsx with full money-page
+  // content. Keeping it here would let generateStaticParams on
+  // [cityProcedure] also try to prerender this slug, conflicting with the
+  // static route (which wins at the routing layer either way, but the
+  // duplicate params entry is dead weight/confusing — remove it).
   {
     slug: 'joint-replacement-surgeon-jaipur',
     city: 'Jaipur',
