@@ -198,6 +198,18 @@ const Footer = (props: Props) => {
               Dr. Dheeraj Dubay serves joint replacement patients across Rajasthan and beyond:
             </p>
             <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+              {/* Hardcoded — hip-replacement-jaipur was removed from
+                  CITY_PAGES (WS-4b, now a dedicated money page) so it no
+                  longer appears via the map below. Kept as an explicit link
+                  so every page still carries this internal-linking signal. */}
+              <li>
+                <Link
+                  href="/hip-replacement-jaipur"
+                  className="text-gray-600 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400 underline-offset-2 hover:underline"
+                >
+                  Hip Replacement Surgeon in Jaipur
+                </Link>
+              </li>
               {CITY_PAGES.map((c) => (
                 <li key={c.slug}>
                   <Link

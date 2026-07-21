@@ -28,6 +28,10 @@ const staticEntries: Entry[] = [
   { url: `${BASE}/events`, changeFrequency: 'monthly', priority: 0.6 },
   { url: `${BASE}/faq`, changeFrequency: 'monthly', priority: 0.6 },
   { url: `${BASE}/locations`, changeFrequency: 'monthly', priority: 0.7 },
+  // Money page (WS-4b) — reclaimed from the thin CITY_PAGES entry with full
+  // clinical/authority content. lastModified omitted per the sitemap
+  // standard (no real content-change date to report yet at first publish).
+  { url: `${BASE}/hip-replacement-jaipur`, changeFrequency: 'weekly', priority: 0.9 },
   { url: `${BASE}/articles`, changeFrequency: 'weekly', priority: 0.6 },
   { url: `${BASE}/videos`, changeFrequency: 'monthly', priority: 0.6 },
   { url: `${BASE}/podcasts`, changeFrequency: 'monthly', priority: 0.6 },
