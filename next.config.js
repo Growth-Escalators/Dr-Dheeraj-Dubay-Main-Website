@@ -40,6 +40,22 @@ const nextConfig = {
       // Phase 6: /youtube page renamed to /testimonials. Permanent 301
       // preserves any backlinks + GSC indexing already accrued.
       { source: '/youtube', destination: '/testimonials', permanent: true },
+      // WS-3a: 13 zero-impression thin city pages pruned (0 impressions /
+      // 6 months in GSC, no city-level search demand). Permanent redirect
+      // to /locations consolidates any residual link equity + crawl paths.
+      { source: '/knee-replacement-bikaner', destination: '/locations', permanent: true },
+      { source: '/knee-replacement-bharatpur', destination: '/locations', permanent: true },
+      { source: '/knee-replacement-jhunjhunu', destination: '/locations', permanent: true },
+      { source: '/knee-replacement-churu', destination: '/locations', permanent: true },
+      { source: '/knee-replacement-mathura', destination: '/locations', permanent: true },
+      { source: '/knee-replacement-sawai-madhopur', destination: '/locations', permanent: true },
+      { source: '/knee-replacement-tonk', destination: '/locations', permanent: true },
+      { source: '/knee-replacement-dausa', destination: '/locations', permanent: true },
+      { source: '/knee-replacement-nagaur', destination: '/locations', permanent: true },
+      { source: '/knee-replacement-hanumangarh', destination: '/locations', permanent: true },
+      { source: '/knee-replacement-pali', destination: '/locations', permanent: true },
+      { source: '/knee-replacement-dholpur', destination: '/locations', permanent: true },
+      { source: '/knee-replacement-bundi', destination: '/locations', permanent: true },
     ]
   },
   async headers() {
