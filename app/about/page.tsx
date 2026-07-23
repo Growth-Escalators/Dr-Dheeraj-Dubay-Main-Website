@@ -33,13 +33,12 @@ const page = async (props: Props) => {
       <head>
         <GTM gtmId="GTM-MDF4W4JT" />
 
-        <title>Dr. Dubay</title>
-        <meta
-          name="description"
-          content="Dr. Dheeraj Dubay, Joint and Hip Replacement Surgeon in Rajasthan"
-        />
-
-        {/* Favicon for branding */}
+        {/* No <title>/<meta description> here: the metadata export above
+            already sets both via Next's Metadata API. This block used to
+            hardcode a competing <title>Dr. Dubay</title> + a weaker,
+            generic description, producing two conflicting <title> tags
+            in the rendered HTML (invalid; crawlers pick one unpredictably)
+            and silently overriding the real SEO copy above. */}
         <link rel="icon" href="/assets/images/logonew.png" />
       </head>
       <Section2 />

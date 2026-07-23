@@ -24,7 +24,17 @@ export const metadata: Metadata = {
   metadataBase: new URL(defaultSEO.siteUrl),
   title: {
     default: defaultSEO.defaultTitle,
-    template: `%s | ${defaultSEO.siteName}`,
+    // No " | Dr. Dheeraj Dubay" suffix here: every page's own title
+    // (via generatePageMetadata / lib/seo.config.ts, or a page-level
+    // metadata export) already includes the brand name. With a template
+    // of `%s | ${siteName}` here too, Next.js appended it a SECOND time
+    // to every page's <title> sitewide (confirmed live on /services,
+    // /about, /testimonials, /hip-replacement-jaipur, /procedures/*,
+    // etc. — e.g. "...Ratings | 1,100+ Patients | Dr. Dheeraj Dubay").
+    // That silently undermined the WS-4a/WS-4b CTR title rewrites the
+    // moment they shipped. `%s` (no suffix) makes each page's own title
+    // authoritative; `default` still covers any page that sets none.
+    template: `%s`,
   },
   description: defaultSEO.defaultDescription,
   keywords: defaultSEO.defaultKeywords,

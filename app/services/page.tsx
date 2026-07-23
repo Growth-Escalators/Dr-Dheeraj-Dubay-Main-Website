@@ -4,13 +4,22 @@ import { PROCEDURE_PAGES } from "@/lib/procedure-pages";
 import { ProcedureCard } from "@/components/ui/ProcedureCard";
 import FinalCTA from "@/components/home/FinalCTA";
 import GTM from "@/utils/GTM";
+import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY } from "@/lib/clinic-info";
 
 export const revalidate = 3600;
 
+// CTR fix (2026-07-23, from GSC baseline 2026-07-21 + GSC Page Indexing):
+// /services ranks pos ~2.76 with 2,558 impressions but only 0.6% CTR — a
+// generic "all procedures" directory title gives searchers no reason to
+// click over a specific-procedure result. New copy leads with the real,
+// verifiable count (9 procedures in lib/procedure-pages.ts) and the
+// site's existing verified stats (SURGERY_COUNT_DISPLAY /
+// EXPERIENCE_YEARS_DISPLAY, lib/clinic-info.ts) instead of a bare list
+// promise. Also see app/layout.tsx for the sitewide title-template fix
+// that was silently doubling every page's brand suffix.
 export const metadata = generatePageMetadata({
-  title: "Joint Replacement Services | Dr. Dheeraj Dubay Jaipur",
-  description:
-    "All joint replacement procedures performed by Dr. Dheeraj Dubay — robotic knee, hip replacement, partial knee, revision, bilateral, minimally invasive, and more.",
+  title: "9 Joint Replacement Procedures in Jaipur | Dr. Dheeraj Dubay",
+  description: `Compare all 9 knee & hip replacement procedures by Dr. Dheeraj Dubay — robotic, minimally invasive, revision & more. ${SURGERY_COUNT_DISPLAY} surgeries, ${EXPERIENCE_YEARS_DISPLAY} years experience.`,
   slug: "services",
 });
 
