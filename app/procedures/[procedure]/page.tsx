@@ -4,7 +4,7 @@ import { PROCEDURE_TO_COST_SLUG } from '@/lib/cost-pages'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { BreadcrumbNav, CTASection, FAQAccordion, RecoveryTimeline, TrustBadges } from '@/components/pages'
-import { AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
+import { PhysicianJsonLd, AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { getPublishedReviews } from '@/lib/reviews'
 import { AGGREGATE_RATING } from '@/lib/clinic-info'
@@ -120,6 +120,15 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      {/* Full Physician entity (2026-07-24 entity-split fix). Previously
+          this page only referenced the physician by `@id` — the actual
+          alternateName/credentials/sameAs node was never emitted on
+          procedure pages, so the "Dr. Dheeraj Dubey" misspelling-
+          consolidation signal never reached raw HTML here, only on the
+          homepage/about/blog. Rendering the full node here (it already
+          exists sitewide with the same @id, so this merges rather than
+          duplicates) closes that gap for every procedure page. */}
+      <PhysicianJsonLd />
       {/* AggregateRating/Review are the physician's real GBP rating, not a
           per-procedure rating we invented — attribute them to the existing
           #physician node (@id) so they join the same graph as
@@ -288,6 +297,19 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
                   </a>
                 )
               })}
+              {/* Cross-links to money pages outside PROCEDURE_PAGES (e.g. the
+                  dedicated surgeon-intent /hip-replacement-jaipur route).
+                  Undefined for every entry except knee-replacement-surgery,
+                  so this has no effect on other procedure pages. */}
+              {page.crossLinks?.map((link, i) => (
+                <a
+                  key={`cross-${i}`}
+                  href={link.href}
+                  className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-full hover:bg-emerald-100 transition-colors"
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
           </section>
         )}

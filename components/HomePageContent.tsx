@@ -68,6 +68,18 @@ export default function HomePageContent({
              why these were one duplicated pair of blocks before) */}
       <ProceduresSection />
 
+      {/* Internal-link hub (2026-07-24, rebased 2026-08-03 onto the
+          post-CRM-refactor homepage): /hip-replacement-jaipur is a
+          dedicated surgeon-intent money page, not a PROCEDURE_PAGES
+          entry, so it doesn't appear in ProceduresSection's grid above —
+          link it explicitly with a descriptive anchor. */}
+      <p className="text-center text-sm text-gray-500 -mt-8 mb-8">
+        Looking for hip replacement specifically?{' '}
+        <a href="/hip-replacement-jaipur" className="text-emerald-700 font-semibold hover:underline">
+          Hip Replacement Surgeon in Jaipur →
+        </a>
+      </p>
+
       {/* 4. Conditions We Treat (scrollable rail) */}
       <ConditionsSection />
 

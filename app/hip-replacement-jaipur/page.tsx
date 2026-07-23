@@ -30,7 +30,7 @@
 
 import { PROCEDURE_PAGES } from '@/lib/procedure-pages'
 import { BreadcrumbNav, CTASection, FAQAccordion, RecoveryTimeline, TrustBadges } from '@/components/pages'
-import { AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
+import { PhysicianJsonLd, AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { getPublishedReviews } from '@/lib/reviews'
 import { AGGREGATE_RATING, CLINICS, SURGERY_COUNT_DISPLAY } from '@/lib/clinic-info'
@@ -190,6 +190,12 @@ export default async function HipReplacementJaipurPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      {/* Full Physician entity (2026-07-24 entity-split fix) — this page
+          previously only referenced the physician by `@id`; the actual
+          alternateName ("Dr. Dheeraj Dubey")/credentials/sameAs node was
+          never emitted in this page's raw HTML. Rendering it here closes
+          that gap on the hip surgeon money page specifically. */}
+      <PhysicianJsonLd />
       {aggregate ? (
         <AggregateRatingJsonLd
           ratingValue={aggregate.ratingValue}
@@ -464,6 +470,21 @@ export default async function HipReplacementJaipurPage() {
               className="text-sm text-blue-700 bg-blue-50 border border-blue-200 px-4 py-2 rounded-full hover:bg-blue-100 transition-colors"
             >
               Avascular Necrosis (AVN)
+            </a>
+            {/* Internal-link hub (2026-07-24): ties the three surgical-intent
+                money pages together — robotic-knee ↔ knee-surgeon ↔ hip —
+                per GE-Brain competitor teardown Part 4. */}
+            <a
+              href="/procedures/knee-replacement-surgery"
+              className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-full hover:bg-emerald-100 transition-colors"
+            >
+              Knee Replacement Surgeon in Jaipur
+            </a>
+            <a
+              href="/procedures/robotic-knee-replacement"
+              className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-full hover:bg-emerald-100 transition-colors"
+            >
+              Robotic Knee Replacement in Jaipur
             </a>
           </div>
         </section>
