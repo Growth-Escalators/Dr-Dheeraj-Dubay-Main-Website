@@ -83,9 +83,11 @@ export default async function CityPage(
     description: page.description,
     url: `${defaultSEO.siteUrl}/${page.slug}`,
     telephone: '+91-8955373205',
+    // Full GBP-matching address (2026-07-24 NAP alignment pass) — see
+    // lib/clinic-info.ts for the canonical source.
     address: {
       '@type': 'PostalAddress',
-      streetAddress: '200 Feet Bypass Road, Vaishali Nagar',
+      streetAddress: 'Ajmer Expressway 200 Feet Bypass Road, near Gandhi Path, Chitrakoot Sector 3, Vaishali Nagar',
       addressLocality: 'Jaipur',
       addressRegion: 'Rajasthan',
       postalCode: '302021',

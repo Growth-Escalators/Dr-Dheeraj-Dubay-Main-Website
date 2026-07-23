@@ -28,7 +28,11 @@ const LOCATIONS = [
   {
     name: "Shalby Hospital Jaipur",
     type: "Hospital OPD",
-    address: "200 Feet Bypass Road, Vaishali Nagar, Jaipur, Rajasthan 302021",
+    // Full GBP-matching address (2026-07-24 NAP alignment pass) — see
+    // lib/clinic-info.ts for the canonical source and why the short form
+    // was wrong.
+    address:
+      "Ajmer Expressway 200 Feet Bypass Road, near Gandhi Path, Chitrakoot Sector 3, Vaishali Nagar, Jaipur, Rajasthan 302021",
     phone: "+91-8955373205",
     hours: "Mon–Sat, 9:00 AM – 5:00 PM",
     openHour: 9,

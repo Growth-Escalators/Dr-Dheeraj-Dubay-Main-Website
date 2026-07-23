@@ -4,7 +4,7 @@ import { PROCEDURE_PAGES } from "@/lib/procedure-pages";
 import { ProcedureCard } from "@/components/ui/ProcedureCard";
 import FinalCTA from "@/components/home/FinalCTA";
 import GTM from "@/utils/GTM";
-import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY } from "@/lib/clinic-info";
+import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY, SITE_URL } from "@/lib/clinic-info";
 
 export const revalidate = 3600;
 
@@ -23,6 +23,34 @@ export const metadata = generatePageMetadata({
   slug: "services",
 });
 
+// Server-rendered JSON-LD (GE SEO standard: must be in the raw HTML, not
+// client-injected) for the 9 procedures actually listed on this page as
+// ProcedureCards below — name/description/url are pulled straight from
+// PROCEDURE_PAGES, so this can never list something not visible on the
+// page. `provider` reuses the existing MedicalClinic node's @id
+// (defined once in components/seo/JsonLd.tsx's MedicalBusinessJsonLd,
+// rendered on the homepage) instead of redeclaring name/address/phone
+// here — the same connected-@id-graph pattern already used in
+// app/[cityProcedure]/page.tsx for the physician reference.
+const proceduresListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Joint Replacement Procedures Offered by Dr. Dheeraj Dubay",
+  url: `${SITE_URL}/services`,
+  numberOfItems: PROCEDURE_PAGES.length,
+  itemListElement: PROCEDURE_PAGES.map((p, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    item: {
+      "@type": "MedicalProcedure",
+      name: p.title,
+      description: p.intro,
+      url: `${SITE_URL}/procedures/${p.slug}`,
+    },
+  })),
+  provider: { "@id": `${SITE_URL}/#clinic-shalby` },
+};
+
 const ServicesPage = () => {
   return (
     <>
@@ -30,6 +58,11 @@ const ServicesPage = () => {
         <GTM gtmId="GTM-MDF4W4JT" />
         <link rel="icon" href="/assets/images/logonew.png" />
       </head>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(proceduresListSchema) }}
+      />
 
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">

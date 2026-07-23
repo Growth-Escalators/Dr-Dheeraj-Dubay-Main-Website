@@ -5,12 +5,19 @@
 // ~500m off the actual clinic door. Replace with exact lat/long from Google
 // Maps after you confirm in Google Business Profile.
 
-import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY } from "@/lib/clinic-info"
+import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY, CLINICS } from "@/lib/clinic-info"
 
 const SITE_URL = "https://www.drdubay.in"
 const PHONE = "+91-8955373205"
 const EMAIL = "connect@drdubay.in"
 const HERO_IMAGE = `${SITE_URL}/assets/images/hero.png`
+
+// Read the Shalby address from the single NAP source (lib/clinic-info.ts)
+// instead of a separate hardcoded copy — this file used to carry its own
+// short-form duplicate that had silently drifted from the full GBP
+// address (2026-07-24 NAP alignment pass). Sourcing it here means this
+// can't drift again.
+const SHALBY = CLINICS.find((c) => c.id === "shalby-jaipur")!
 
 const SOCIAL_LINKS = [
   "https://www.facebook.com/drdheerajdubay/",
@@ -18,6 +25,15 @@ const SOCIAL_LINKS = [
   "https://www.youtube.com/@dr.dheerajdubay6664",
   "https://www.linkedin.com/in/dr-dheeraj-dubay-36399599/",
 ]
+
+// Dr. Dubay's Google Business Profile listing. Added to the Physician
+// node's sameAs (2026-07-24) — GBP is the single strongest local-SEO
+// sameAs signal for a Physician entity and was missing entirely before
+// this pass (only social links were listed). This is a different,
+// person-level GBP URL (cid=) from the Place-ID URL already used on the
+// MedicalBusinessJsonLd clinic node below — both point at the same
+// verified listing, just addressed by different Google identifiers.
+const GBP_MAPS_URL = "https://www.google.com/maps?cid=18282795943180212298"
 
 // Cities the practice actively serves through OPD camps + travelling patients.
 // Keep in sync with lib/city-pages.ts.
@@ -76,11 +92,11 @@ export const PhysicianJsonLd = () => {
       "name": "Shalby Hospital Jaipur",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "200 Feet Bypass Road, Vaishali Nagar",
-        "addressLocality": "Jaipur",
-        "addressRegion": "Rajasthan",
-        "postalCode": "302021",
-        "addressCountry": "IN",
+        "streetAddress": SHALBY.address.streetAddress,
+        "addressLocality": SHALBY.address.addressLocality,
+        "addressRegion": SHALBY.address.addressRegion,
+        "postalCode": SHALBY.address.postalCode,
+        "addressCountry": SHALBY.address.addressCountry,
       },
     },
     "award": [
@@ -89,7 +105,7 @@ export const PhysicianJsonLd = () => {
       "UK Honour Recognition 2024",
       "Most Trusted Joint Replacement Surgeon of North India",
     ],
-    "sameAs": SOCIAL_LINKS,
+    "sameAs": [...SOCIAL_LINKS, GBP_MAPS_URL],
   }
   return (
     <script
@@ -118,11 +134,11 @@ export const MedicalBusinessJsonLd = () => {
         "paymentAccepted": "Cash, Credit Card, UPI, Insurance",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Shalby Hospital, 200 Feet Bypass Road, Vaishali Nagar",
-          "addressLocality": "Jaipur",
-          "addressRegion": "Rajasthan",
-          "postalCode": "302021",
-          "addressCountry": "IN",
+          "streetAddress": SHALBY.address.streetAddress,
+          "addressLocality": SHALBY.address.addressLocality,
+          "addressRegion": SHALBY.address.addressRegion,
+          "postalCode": SHALBY.address.postalCode,
+          "addressCountry": SHALBY.address.addressCountry,
         },
         "geo": {
           "@type": "GeoCoordinates",
