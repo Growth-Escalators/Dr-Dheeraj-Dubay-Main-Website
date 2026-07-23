@@ -41,6 +41,15 @@ export interface ProcedurePage {
     followup: string
     preparation: string
     howPerformed: string
+    /**
+     * Optional ISO date (YYYY-MM-DD) marking the last real content edit to
+     * this page. Only set when a genuine content change was made — never a
+     * build timestamp (GE SEO standard: a fabricated freshness date teaches
+     * search engines to distrust the signal). Feeds the visible "Last
+     * updated" line and the FAQPage JSON-LD `dateModified` property in
+     * app/procedures/[procedure]/page.tsx. Left unset on other entries.
+     */
+    dateModified?: string
   }
 }
 
@@ -48,11 +57,18 @@ export const PROCEDURE_PAGES: ProcedurePage[] = [
   {
     slug: 'robotic-knee-replacement',
     title: 'Robotic Knee Replacement',
-    h1: 'Robotic Knee Replacement Surgery in Jaipur',
-    metaTitle: 'Robotic Knee Replacement Surgery Jaipur — Dr. Dheeraj Dubay',
+    h1: 'Robotic Knee Replacement in Jaipur',
+    metaTitle: 'Robotic Knee Replacement in Jaipur | Dr. Dheeraj Dubay',
     metaDescription: 'Expert robotic-assisted knee replacement surgery in Jaipur by Dr. Dheeraj Dubay. Forbes World Record holder. 35,000+ successful surgeries. Book consultation today.',
     category: 'Advanced Procedure',
-    intro: 'Dr. Dheeraj Dubay offers robotic-assisted knee replacement surgery at Shalby Hospital, Jaipur — one of the most advanced orthopaedic procedures available in Rajasthan. Robotic technology allows precise, personalised implant placement that was impossible with traditional techniques, resulting in better outcomes and faster recovery.',
+    // Direct, query-matching answer in the first 40-60 words (GE SEO
+    // standard) naming the proof points no Jaipur competitor matches:
+    // 35,000+ surgeries (vs Jhurani's ~16,000), Forbes World Record, 23+
+    // years, and the Director title — all sourced from lib/clinic-info.ts
+    // and the site-wide "Director, Robotic Joint Replacement Surgery"
+    // credential (confirmed live, see components/seo/JsonLd.tsx and
+    // app/hip-replacement-jaipur/page.tsx for the same exact title string).
+    intro: 'Robotic knee replacement in Jaipur is performed by Dr. Dheeraj Dubay, Director, Robotic Joint Replacement Surgery at Shalby Hospital — a Forbes World Record holder with 35,000+ joint replacement surgeries and 23+ years of experience. Robotic assistance guides implant placement to within a fraction of a millimetre, for a more precise, longer-lasting knee and faster recovery.',
     whatIsIt: {
       heading: 'What is Robotic Knee Replacement Surgery?',
       content: "Robotic knee replacement is a cutting-edge surgical technique where a robotic arm assists the surgeon in performing the procedure with extraordinary precision. Before the surgery, a detailed 3D model of the patient's knee is created using CT scan data. The robotic system uses this model to create a personalised surgical plan specific to that patient's anatomy. During surgery, the robotic arm guides Dr. Dubay's movements to within a fraction of a millimetre, ensuring the implant is positioned exactly as planned. This level of precision is simply not achievable by hand alone, no matter how experienced the surgeon. The robot does not perform the surgery independently — Dr. Dubay is in complete control throughout. The robotic system acts as an intelligent assistant that prevents any movement outside the pre-planned boundaries, protecting the surrounding healthy tissue and ligaments from unnecessary damage. This results in a knee that feels more natural, lasts longer, and allows patients to return to activity faster than with traditional surgery.",
@@ -137,6 +153,10 @@ export const PROCEDURE_PAGES: ProcedurePage[] = [
       followup: 'Physiotherapy begins day 1. Follow-up at 2 weeks, 6 weeks, 3 months, 6 months, and annually thereafter.',
       preparation: 'Pre-operative CT scan, blood tests, anaesthesia assessment, cessation of blood thinners if applicable.',
       howPerformed: 'Robotic-arm assisted surgery with CT-based 3D planning. General or spinal anaesthesia. Hospital stay 3-4 days.',
+      // Real edit date for this flagship-sharpening pass (direct-answer
+      // intro, single H1, freshness signal). Update this value on every
+      // future substantive content edit to this page — never a build date.
+      dateModified: '2026-07-24',
     },
   },
   {

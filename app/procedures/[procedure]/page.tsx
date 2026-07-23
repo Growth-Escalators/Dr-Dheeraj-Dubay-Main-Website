@@ -92,6 +92,13 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
+    // dateModified is a valid CreativeWork/WebPage property (FAQPage
+    // extends WebPage), unlike MedicalProcedure which has no such field in
+    // the schema.org vocab — so the freshness signal lives here. Only
+    // included when the data entry sets a real edit date (see
+    // ProcedurePage['schema']['dateModified'] in lib/procedure-pages.ts);
+    // omitted entirely for every other procedure page.
+    ...(page.schema.dateModified ? { dateModified: page.schema.dateModified } : {}),
     mainEntity: page.faqs.map(faq => ({
       '@type': 'Question',
       name: faq.q,
@@ -150,6 +157,20 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
             {page.h1}
           </h1>
           <p className="text-gray-600 text-base leading-relaxed">{page.intro}</p>
+          {/* Visible freshness signal — only renders when the data entry
+              carries a real dateModified (see lib/procedure-pages.ts).
+              Other procedure pages have no such field yet, so this is a
+              no-op for them. */}
+          {page.schema.dateModified && (
+            <p className="mt-3 text-xs text-gray-400">
+              Medically reviewed by Dr. Dheeraj Dubay · Last updated{' '}
+              {new Date(page.schema.dateModified).toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </p>
+          )}
           {costSlug && (
             <Link
               href={`/cost/${costSlug}`}
