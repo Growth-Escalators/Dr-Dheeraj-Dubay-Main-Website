@@ -4,15 +4,52 @@ import { PROCEDURE_PAGES } from "@/lib/procedure-pages";
 import { ProcedureCard } from "@/components/ui/ProcedureCard";
 import FinalCTA from "@/components/home/FinalCTA";
 import GTM from "@/utils/GTM";
+import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY, SITE_URL } from "@/lib/clinic-info";
 
 export const revalidate = 3600;
 
+// CTR fix (2026-07-23, from GSC baseline 2026-07-21 + GSC Page Indexing):
+// /services ranks pos ~2.76 with 2,558 impressions but only 0.6% CTR — a
+// generic "all procedures" directory title gives searchers no reason to
+// click over a specific-procedure result. New copy leads with the real,
+// verifiable count (9 procedures in lib/procedure-pages.ts) and the
+// site's existing verified stats (SURGERY_COUNT_DISPLAY /
+// EXPERIENCE_YEARS_DISPLAY, lib/clinic-info.ts) instead of a bare list
+// promise. Also see app/layout.tsx for the sitewide title-template fix
+// that was silently doubling every page's brand suffix.
 export const metadata = generatePageMetadata({
-  title: "Joint Replacement Services | Dr. Dheeraj Dubay Jaipur",
-  description:
-    "All joint replacement procedures performed by Dr. Dheeraj Dubay — robotic knee, hip replacement, partial knee, revision, bilateral, minimally invasive, and more.",
+  title: "9 Joint Replacement Procedures in Jaipur | Dr. Dheeraj Dubay",
+  description: `Compare all 9 knee & hip replacement procedures by Dr. Dheeraj Dubay — robotic, minimally invasive, revision & more. ${SURGERY_COUNT_DISPLAY} surgeries, ${EXPERIENCE_YEARS_DISPLAY} years experience.`,
   slug: "services",
 });
+
+// Server-rendered JSON-LD (GE SEO standard: must be in the raw HTML, not
+// client-injected) for the 9 procedures actually listed on this page as
+// ProcedureCards below — name/description/url are pulled straight from
+// PROCEDURE_PAGES, so this can never list something not visible on the
+// page. `provider` reuses the existing MedicalClinic node's @id
+// (defined once in components/seo/JsonLd.tsx's MedicalBusinessJsonLd,
+// rendered on the homepage) instead of redeclaring name/address/phone
+// here — the same connected-@id-graph pattern already used in
+// app/[cityProcedure]/page.tsx for the physician reference.
+const proceduresListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Joint Replacement Procedures Offered by Dr. Dheeraj Dubay",
+  url: `${SITE_URL}/services`,
+  numberOfItems: PROCEDURE_PAGES.length,
+  itemListElement: PROCEDURE_PAGES.map((p, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    item: {
+      "@type": "MedicalProcedure",
+      name: p.title,
+      description: p.intro,
+      url: `${SITE_URL}/procedures/${p.slug}`,
+    },
+  })),
+  provider: { "@id": `${SITE_URL}/#clinic-shalby` },
+};
 
 const ServicesPage = () => {
   return (
@@ -21,6 +58,11 @@ const ServicesPage = () => {
         <GTM gtmId="GTM-MDF4W4JT" />
         <link rel="icon" href="/assets/images/logonew.png" />
       </head>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(proceduresListSchema) }}
+      />
 
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">

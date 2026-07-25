@@ -33,14 +33,24 @@ export const CLINICS: Clinic[] = [
   {
     id: "shalby-jaipur",
     name: "Dr. Dheeraj Dubay — Shalby Hospital Jaipur",
+    // Full GBP-matching address (2026-07-24 NAP alignment pass). The old
+    // short form ("200 Feet Bypass Road, Vaishali Nagar") dropped "Ajmer
+    // Expressway", "near Gandhi Path", and "Chitrakoot Sector 3" — all
+    // present on the live Google Business Profile listing and already
+    // used correctly in components/ui/map.tsx. NAP must be character-
+    // identical to GBP for local-SEO citation matching, so every other
+    // consumer of this address (JSON-LD, LocationsBlock, city-procedure
+    // schema, events schema) now reads from here instead of carrying its
+    // own short-form copy.
     address: {
-      streetAddress: "Shalby Hospital, 200 Feet Bypass Road, Vaishali Nagar",
+      streetAddress:
+        "Ajmer Expressway 200 Feet Bypass Road, near Gandhi Path, Chitrakoot Sector 3, Vaishali Nagar",
       addressLocality: "Jaipur",
       addressRegion: "Rajasthan",
       postalCode: "302021",
       addressCountry: "IN",
       fullDisplay:
-        "200 Feet Bypass Road, Vaishali Nagar, Jaipur, Rajasthan 302021",
+        "Ajmer Expressway 200 Feet Bypass Road, near Gandhi Path, Chitrakoot Sector 3, Vaishali Nagar, Jaipur, Rajasthan 302021",
     },
     phone: PRIMARY_PHONE,
     email: PRIMARY_EMAIL,
