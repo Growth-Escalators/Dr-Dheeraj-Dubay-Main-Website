@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     "Press coverage of Dr. Dheeraj Dubay (Times of India, Economic Times, India TV, Forbes) and surgeon-authored articles on robotic joint replacement, recovery and implant choice.",
 };
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 const SITE_URL = "https://www.drdubay.in";
 

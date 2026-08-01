@@ -3,7 +3,7 @@ import Section1 from "@/components/AboutUs/Section1";
 import { PhysicianJsonLd } from "@/components/seo/JsonLd";
 import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY } from "@/lib/clinic-info";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export const metadata = generatePageMetadata({
   title: "About Dr. Dheeraj Dubay | Joint Replacement Specialist Jaipur",

@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { db } from "@/lib/db";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export const metadata = generatePageMetadata({
   title: "Orthopedic Health Blog | Dr. Dheeraj Dubay",

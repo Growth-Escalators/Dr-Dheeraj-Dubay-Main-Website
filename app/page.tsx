@@ -1,6 +1,14 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 
-export const revalidate = 3600;
+// 60s, not the 3600 this and every other CRM-driven page used to carry.
+//
+// An edit made in the CRM was taking up to an hour to appear here, which reads
+// as "the save didn't work" and gets done twice. The admin does POST
+// /api/revalidate after every write for an instant refresh, but that needs
+// REVALIDATE_SECRET + PUBLIC_SITE_URL set on both Vercel projects and silently
+// no-ops without them — so this is the floor that works with no configuration
+// at all. Pages that render only hardcoded copy (faq, locations) stay at 3600.
+export const revalidate = 60;
 import HomePageContent from "@/components/HomePageContent";
 import {
   PhysicianJsonLd,

@@ -1,7 +1,7 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 import { db } from "@/lib/db";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 import EventsClient from "./EventsClient";
 
 export const metadata = generatePageMetadata({

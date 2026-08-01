@@ -5,7 +5,7 @@ import { ProcedureCard } from "@/components/ui/ProcedureCard";
 import FinalCTA from "@/components/home/FinalCTA";
 import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY, SITE_URL } from "@/lib/clinic-info";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 // CTR fix (2026-07-23, from GSC baseline 2026-07-21 + GSC Page Indexing):
 // /services ranks pos ~2.76 with 2,558 impressions but only 0.6% CTR — a

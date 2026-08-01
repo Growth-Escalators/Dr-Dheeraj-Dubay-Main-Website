@@ -7,7 +7,7 @@ import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { db } from "@/lib/db";
 import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY } from "@/lib/clinic-info";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 async function getServiceBySlug(slug: string) {
   try {

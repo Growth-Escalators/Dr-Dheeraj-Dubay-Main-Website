@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 import { safeImageUrl } from "@/lib/image-url";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 const ACHIEVEMENT_IMAGE_FALLBACK = "/assets/images/hero.png";
 

@@ -1,6 +1,6 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export const metadata = generatePageMetadata({
   title: "Surgery & Educational Videos | Dr. Dheeraj Dubay",
