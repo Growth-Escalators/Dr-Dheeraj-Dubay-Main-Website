@@ -16,14 +16,12 @@ type NavItem =
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "/" },
-  {
-    label: "Why Dr. Dubay",
-    children: [
-      { label: "About", href: "/about" },
-      { label: "Achievements", href: "/achievements" },
-      { label: "Events", href: "/events" },
-    ],
-  },
+  // Achievements and Events were promoted out of the "Why Dr. Dubay"
+  // dropdown to top-level items. That left only About behind it, so the
+  // dropdown became a plain link to /about rather than a one-item menu.
+  { label: "Why Dr. Dubay", href: "/about" },
+  { label: "Achievements", href: "/achievements" },
+  { label: "Events", href: "/events" },
   { label: "Services", href: "/services" },
   { label: "Testimonials", href: "/testimonials" },
   {
@@ -41,7 +39,7 @@ function DesktopDropdown({ label, items }: { label: string; items: { label: stri
       {({ open }) => (
         <>
           <Popover.Button
-            className={`inline-flex items-center gap-1 px-4 py-2 text-base font-semibold text-gray-800 rounded-md hover:text-primary focus:outline-none ${
+            className={`inline-flex items-center gap-1 px-3 xl:px-4 py-2 text-[15px] xl:text-base font-semibold text-gray-800 rounded-md hover:text-primary focus:outline-none ${
               open ? "text-primary" : ""
             }`}
           >
@@ -172,14 +170,16 @@ const Navbar = () => {
           )}
         </Disclosure>
 
-        {/* Desktop menu */}
+        {/* Desktop menu. Padding/size tighten at lg so seven top-level items
+            still fit on one row after Achievements and Events were promoted
+            out of the "Why Dr. Dubay" dropdown. */}
         <div className="hidden lg:flex lg:items-center lg:gap-1">
           {NAV_ITEMS.map((item) =>
             "href" in item ? (
               <Link
                 key={item.label}
                 href={item.href}
-                className="inline-block px-4 py-2 text-base font-semibold text-gray-800 rounded-md hover:text-primary focus:outline-none"
+                className="inline-block px-3 xl:px-4 py-2 text-[15px] xl:text-base font-semibold text-gray-800 rounded-md hover:text-primary focus:outline-none whitespace-nowrap"
               >
                 {item.label}
               </Link>

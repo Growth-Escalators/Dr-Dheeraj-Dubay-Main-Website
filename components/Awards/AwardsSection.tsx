@@ -2,25 +2,20 @@
 
 import React from "react";
 import Link from "next/link";
-import CountUp from "react-countup";
 import { SECTION_HEADING_CLASSES, BUTTON } from "@/lib/design-tokens";
 
-// Recognition & Excellence. The homepage already has AwardsSlider
+// Recognition & Excellence. The homepage already has AwardsShowcase
 // (carousel) and FeaturedAchievementsSection (image card grid) above this
 // one, so listing every individual award again here was redundant — read
 // like "more of the same, but boring."
 //
-// Reworked into: 4 headline stat tiles + a compact year-grouped timeline.
-// Stats grab attention in <5 seconds (the actual trust signal), the
-// timeline is collapsible-style text — clean and scannable, not 15 cards
-// to scroll past.
-
-const STATS = [
-  { value: 1, suffix: "", label: "Forbes World Record" },
-  { value: 10, suffix: "+", label: "National Awards" },
-  { value: 5, suffix: "+", label: "International Conferences" },
-  { value: 23, suffix: "+", label: "Years in Practice" },
-];
+// This section is now purely the year-grouped timeline: clean, scannable
+// text, not 15 cards to scroll past. Its former stat tiles live in
+// components/home/MilestonesSection.tsx alongside the surgery/patient counts.
+//
+// The timeline content is CRM-managed (`Award` rows with showInTimeline, at
+// /admin/awards). It arrives as props from app/page.tsx; the two arrays below
+// are the fallback used when the DB is unreachable or no rows are flagged.
 
 interface TimelineItem {
   text: string;
@@ -32,7 +27,20 @@ interface TimelineYear {
   items: TimelineItem[];
 }
 
-const PROFESSIONAL_TIMELINE: TimelineYear[] = [
+const FALLBACK_PROFESSIONAL: TimelineYear[] = [
+  {
+    // The ET Inspiring Leaders Award is asserted by both the awards slider
+    // (lib/awards.ts) and the Physician JSON-LD, but was missing from this
+    // timeline — so the homepage listed a 2025 award above and a timeline
+    // that stopped at 2024 below it.
+    year: "2025",
+    items: [
+      {
+        text:
+          "ET Inspiring Leaders Award — Economic Times, for leadership in healthcare",
+      },
+    ],
+  },
   {
     year: "2024",
     items: [
@@ -74,7 +82,7 @@ const PROFESSIONAL_TIMELINE: TimelineYear[] = [
   },
 ];
 
-const ACADEMIC_TIMELINE: TimelineYear[] = [
+const FALLBACK_ACADEMIC: TimelineYear[] = [
   {
     year: "2024",
     items: [{ text: "International Conference on Joint Replacement Surgery — London" }],
@@ -94,28 +102,6 @@ const ACADEMIC_TIMELINE: TimelineYear[] = [
     ],
   },
 ];
-
-function StatTile({
-  value,
-  suffix,
-  label,
-}: {
-  value: number;
-  suffix: string;
-  label: string;
-}) {
-  return (
-    <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 text-center hover:border-emerald-300 hover:shadow-md transition-all">
-      <div className="text-4xl md:text-5xl font-extrabold text-emerald-600 mb-2 tabular-nums">
-        <CountUp end={value} duration={2} enableScrollSpy scrollSpyOnce />
-        {suffix}
-      </div>
-      <div className="text-xs md:text-sm font-semibold text-gray-600 uppercase tracking-wide">
-        {label}
-      </div>
-    </div>
-  );
-}
 
 function TimelineColumn({
   heading,
@@ -162,7 +148,18 @@ function TimelineColumn({
   );
 }
 
-const AwardsSection = () => {
+const AwardsSection = ({
+  professional,
+  academic,
+}: {
+  professional?: TimelineYear[] | null;
+  academic?: TimelineYear[] | null;
+} = {}) => {
+  const professionalRows = professional?.length
+    ? professional
+    : FALLBACK_PROFESSIONAL;
+  const academicRows = academic?.length ? academic : FALLBACK_ACADEMIC;
+
   return (
     <section className="py-16 md:py-20 bg-emerald-50">
       <div className="max-w-6xl mx-auto px-4">
@@ -179,23 +176,18 @@ const AwardsSection = () => {
           </p>
         </div>
 
-        {/* Headline stats — the actual trust signal in 5 seconds */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12 md:mb-16">
-          {STATS.map((s) => (
-            <StatTile
-              key={s.label}
-              value={s.value}
-              suffix={s.suffix}
-              label={s.label}
-            />
-          ))}
-        </div>
+        {/* The four stat tiles that used to sit here (1 Forbes World Record /
+            10+ national awards / 5+ international conferences / 23+ years)
+            moved into components/home/MilestonesSection.tsx, which merges them
+            with the surgery and patient counts from the old "Milestones &
+            Achievements" block near the top of the page. One stat block per
+            homepage; this section is the timeline now. */}
 
         {/* Year-grouped timeline — two columns on desktop, stacked on mobile */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-10 shadow-sm">
           <div className="grid md:grid-cols-2 gap-10 md:gap-12">
-            <TimelineColumn heading="Professional Recognition" data={PROFESSIONAL_TIMELINE} />
-            <TimelineColumn heading="Academic & International" data={ACADEMIC_TIMELINE} />
+            <TimelineColumn heading="Professional Recognition" data={professionalRows} />
+            <TimelineColumn heading="Academic & International" data={academicRows} />
           </div>
 
           <div className="text-center mt-10 pt-8 border-t border-gray-100">

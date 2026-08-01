@@ -57,50 +57,68 @@ const REASONS = [
   },
 ] as const;
 
-const WhyChoose = () => {
+// The nested AwardsSection timeline is CRM-managed; its rows are fetched in
+// app/page.tsx and threaded through here. Both props are optional so any other
+// caller still renders the fallback content.
+const WhyChoose = ({
+  timelineProfessional,
+  timelineAcademic,
+}: {
+  timelineProfessional?: { year: string; items: { text: string; highlight?: boolean }[] }[] | null;
+  timelineAcademic?: { year: string; items: { text: string; highlight?: boolean }[] }[] | null;
+} = {}) => {
   return (
-    <section className="py-16 md:py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-10 md:mb-14">
-          <span className={SECTION_HEADING_CLASSES.eyebrow}>
-            Why Patients Trust Dr. Dubay
-          </span>
-          <h2 className={SECTION_HEADING_CLASSES.h2}>
-            Why Choose <span className="text-emerald-600">Us</span>?
-          </h2>
-          <p className={SECTION_HEADING_CLASSES.sub}>
-            Six things you can verify about the care you&apos;ll receive &mdash;
-            not promises, but commitments backed by record and recognition.
-          </p>
-        </div>
+    <>
+      <section className="py-16 md:py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-10 md:mb-14">
+            <span className={SECTION_HEADING_CLASSES.eyebrow}>
+              Why Patients Trust Dr. Dubay
+            </span>
+            <h2 className={SECTION_HEADING_CLASSES.h2}>
+              Why Choose <span className="text-emerald-600">Us</span>?
+            </h2>
+            <p className={SECTION_HEADING_CLASSES.sub}>
+              Six things you can verify about the care you&apos;ll receive &mdash;
+              not promises, but commitments backed by record and recognition.
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {REASONS.map((reason) => {
-            const Icon = reason.icon;
-            return (
-              <div
-                key={reason.title}
-                className="group bg-white rounded-xl border border-gray-200 p-6 hover:border-emerald-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
-              >
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                  <Icon className="w-6 h-6" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {REASONS.map((reason) => {
+              const Icon = reason.icon;
+              return (
+                <div
+                  key={reason.title}
+                  className="group bg-white rounded-xl border border-gray-200 p-6 hover:border-emerald-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    {reason.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {reason.body}
+                  </p>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
-                  {reason.title}
-                </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  {reason.body}
-                </p>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* Recognition & Excellence section nests here — gets its own redesign
-          in Deploy 2 of this project plan. */}
-      <AwardsSection />
-    </section>
+      {/* Recognition & Excellence follows as a sibling, not a child. Nested
+          inside the section above, its emerald background started flush
+          against the last row of reason cards — no breathing room at the
+          seam, and the white section's own bottom padding ended up BELOW
+          the green block instead of between them. As a sibling it gets the
+          full py-16/py-20 of each section between the two. */}
+      <AwardsSection
+        professional={timelineProfessional}
+        academic={timelineAcademic}
+      />
+    </>
   );
 };
 

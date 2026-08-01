@@ -7,7 +7,7 @@ import { ArrowRight, CalendarDays } from "lucide-react";
 import { SECTION_HEADING_CLASSES } from "@/lib/design-tokens";
 
 // Featured press / awards / media features pulled from the DB Achievement
-// model on the homepage. Visually distinct from AwardsSlider (carousel)
+// model on the homepage. Visually distinct from AwardsShowcase (carousel)
 // and the Recognition stat tiles — this one is the magazine-style press
 // kit. First item gets a wide hero card; the rest sit in a smaller grid.
 // Emerald palette throughout matches the rest of the site (was on

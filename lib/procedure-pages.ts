@@ -78,7 +78,7 @@ export const PROCEDURE_PAGES: ProcedurePage[] = [
         { icon: '⚡', title: 'Faster Recovery', description: 'Patients typically walk within 24 hours and leave hospital in 3 days' },
         { icon: '😌', title: 'Less Post-Op Pain', description: 'Precise cuts mean less trauma to surrounding tissue, resulting in significantly less pain' },
         { icon: '🏃', title: 'More Natural Feeling Knee', description: 'Better alignment means the replaced knee feels and moves more like a natural knee' },
-        { icon: '📅', title: 'Longer Implant Life', description: 'Correctly aligned implants wear more evenly, potentially lasting 25+ years' },
+        { icon: '📅', title: 'Longer Implant Life', description: 'Correctly aligned implants wear more evenly, potentially lasting 20-25 years or more' },
       ],
     },
     whyDrDubay: [
@@ -303,7 +303,7 @@ export const PROCEDURE_PAGES: ProcedurePage[] = [
         { period: 'Weeks 2-6', title: 'Increasing Mobility', description: 'Walking distances increase significantly each week. Hip precautions (avoiding extreme positions) are maintained. Physiotherapy continues.' },
         { period: 'Month 3', title: 'Near Normal Life', description: 'Driving (6 weeks), walking freely (8 weeks), shopping, outings, and most daily activities are comfortable. The limp resolves as strength builds.' },
         { period: 'Month 6', title: 'Full Recovery', description: 'Complete recovery for most patients. Walking long distances, travel, temple visits, and social activities are fully achievable.' },
-        { period: 'Years 15-20+', title: 'Long-Term Success', description: 'Modern hip implants are engineered to last 15-25 years. Annual reviews ensure early detection of any wear. Many patients never need a second operation.' },
+        { period: 'Years 20+', title: 'Long-Term Success', description: 'Modern hip implants are engineered to last 20-25 years. Annual reviews ensure early detection of any wear. Many patients never need a second operation.' },
       ],
     },
     faqs: [
@@ -355,7 +355,7 @@ export const PROCEDURE_PAGES: ProcedurePage[] = [
         { icon: '📐', title: 'Precise Alignment', description: 'Over 95% alignment accuracy versus 70-75% with traditional surgery' },
         { icon: '🦴', title: 'No Intramedullary Rods', description: 'Eliminates the need for rods inserted into the thigh bone, reducing blood loss and fat embolism risk' },
         { icon: '⏱️', title: 'Real-Time Feedback', description: 'Dr. Dubay sees exact measurements throughout surgery and can make adjustments before closing' },
-        { icon: '📅', title: 'Longer Implant Life', description: 'Properly aligned implants wear more evenly, potentially lasting 25+ years' },
+        { icon: '📅', title: 'Longer Implant Life', description: 'Properly aligned implants wear more evenly, potentially lasting 20-25 years or more' },
         { icon: '🧬', title: 'Patient-Specific Planning', description: "The system adapts to each patient's unique anatomy rather than using average measurements" },
         { icon: '💉', title: 'Reduced Blood Loss', description: 'More precise cuts mean less bone and tissue disruption, resulting in less bleeding' },
       ],

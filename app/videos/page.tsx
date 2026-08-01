@@ -1,5 +1,4 @@
 import { generatePageMetadata } from "@/lib/seo.config";
-import GTM from "@/utils/GTM";
 
 export const revalidate = 3600;
 
@@ -12,17 +11,6 @@ export const metadata = generatePageMetadata({
 const Videos = async () => {
   return (
     <>
-      <head>
-        <GTM gtmId="GTM-MDF4W4JT" />
-
-        {/* No <title>/<meta description> here: the metadata export above
-            already sets both via Next's Metadata API. This block used to
-            hardcode a competing <title>Featured Videos - Dr. Dubay</title>
-            + a weaker, generic description, producing two conflicting
-            <title> tags in the rendered HTML (invalid; crawlers pick one
-            unpredictably) and silently overriding the real SEO copy above. */}
-        <link rel="icon" href="/assets/images/logonew.png" />
-      </head>
       <div className="p-4 min-h-screen bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto py-12">
           <div className="text-center mb-12">

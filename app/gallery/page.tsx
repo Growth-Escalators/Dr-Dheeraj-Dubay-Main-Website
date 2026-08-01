@@ -10,7 +10,6 @@ export const metadata = generatePageMetadata({
 
 import Gallery from "@/components/Gallery4/NewGallery";
 import { db } from "@/lib/db";
-import GTM from "@/utils/GTM";
 import React from "react";
 
 type Props = {};
@@ -18,25 +17,15 @@ type Props = {};
 const page = async (props: Props) => {
   let images: any[] = [];
   try {
-    images = await db.image.findMany();
+    images = await db.image.findMany({
+      // CRM drag order first; unordered rows fall in behind them.
+      orderBy: [{ sortOrder: "asc" }],
+    });
   } catch {
     images = [];
   }
   return (
-    <>
-      <head>
-        <GTM gtmId="GTM-MDF4W4JT" />
-
-        {/* No <title>/<meta description> here: the metadata export above
-            already sets both via Next's Metadata API. This block used to
-            hardcode a competing <title>Dr. Dubay</title> + a weaker,
-            generic description, producing two conflicting <title> tags
-            in the rendered HTML (invalid; crawlers pick one unpredictably)
-            and silently overriding the real SEO copy above. */}
-        <link rel="icon" href="/assets/images/logonew.png" />
-      </head>
-      <Gallery images={images} />
-    </>
+    <Gallery images={images} />
   );
 };
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import { Suspense } from "react";
 import "./globals.css";
@@ -19,6 +19,17 @@ const GA4_ID = "G-TW8MWN7YW9";
 const GTM_ID = "GTM-MDF4W4JT";
 
 const inter = Inter({ subsets: ["latin"] });
+
+// Display serif, used only for the Awards & Honours lockup on the homepage
+// (components/home/AwardsShowcase.tsx). Exposed as a CSS variable rather than
+// applied to <body> so nothing else on the site changes typeface. next/font
+// self-hosts the file — no runtime request to Google.
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultSEO.siteUrl),
@@ -45,13 +56,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: defaultSEO.siteUrl,
   },
+  // No /favicon.ico entry: that file does not exist in /public, so every
+  // page emitted a <link> to a 404. The PNG below is the real logo asset and
+  // is what browsers actually rendered in the tab.
   icons: {
-    icon: [
-      { url: "/favicon.ico" },
-      { url: "/assets/images/logonew.png", type: "image/png" },
-    ],
+    icon: [{ url: "/assets/images/logonew.png", type: "image/png" }],
     apple: "/assets/images/logonew.png",
-    shortcut: "/favicon.ico",
+    shortcut: "/assets/images/logonew.png",
   },
   openGraph: {
     type: "website",
@@ -121,7 +132,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} ${playfair.variable}`}>
         {/* Google Tag Manager (noscript fallback) */}
         <noscript>
           <iframe

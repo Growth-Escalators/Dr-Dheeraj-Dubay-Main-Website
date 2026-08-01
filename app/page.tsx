@@ -12,6 +12,10 @@ import { TestimonialStrip } from "@/components/ui/TestimonialStrip";
 import { db } from "@/lib/db";
 import { getPublishedReviews } from "@/lib/reviews";
 import { AGGREGATE_RATING, SITE_URL } from "@/lib/clinic-info";
+import { safeImageUrl } from "@/lib/image-url";
+import { getShowcaseAwards, getAwardTimeline } from "@/lib/awards";
+import { getYouTubeId } from "@/lib/youtube";
+import type { HomeArticle } from "@/components/home/FeaturedArticles";
 
 export const metadata = generatePageMetadata({});
 
@@ -34,8 +38,60 @@ export default async function CardWithForm() {
     slug: a.slug,
     category: a.category,
     date: a.date.toISOString(),
-    imageUrl: a.imageUrl,
+    imageUrl: safeImageUrl(a.imageUrl, "/assets/images/hero.png"),
   }));
+
+  // CRM-managed award content: the showcase carousel and both timeline
+  // columns. Each accessor falls back to the static list in lib/awards.ts if
+  // the DB is unreachable, so the section can't go blank.
+  const [showcaseAwards, timelineProfessional, timelineAcademic] =
+    await Promise.all([
+      getShowcaseAwards(),
+      getAwardTimeline("professional"),
+      getAwardTimeline("academic"),
+    ]);
+
+  // Videos + articles flagged "show on homepage" in the CRM. Fetched here
+  // rather than in the browser so the page never paints empty placeholders
+  // while a request is in flight.
+  let homeVideos: { id: string; videoId: string; title: string | null }[] = [];
+  try {
+    const rows = await db.youTube.findMany({
+      where: { isFeatured: true },
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+      take: 3,
+    });
+    homeVideos = rows
+      .map((r) => ({
+        id: r.id,
+        videoId: getYouTubeId(r.link || ""),
+        title: r.title,
+      }))
+      .filter((v): v is { id: string; videoId: string; title: string | null } =>
+        Boolean(v.videoId),
+      );
+  } catch {
+    homeVideos = [];
+  }
+
+  let homeArticles: HomeArticle[] = [];
+  try {
+    const rows = await db.article.findMany({
+      where: { isFeatured: true, isPublished: true },
+      orderBy: [{ sortOrder: "asc" }, { publishedDate: "desc" }],
+      take: 3,
+    });
+    homeArticles = rows.map((a) => ({
+      id: a.id,
+      title: a.title,
+      journalName: a.journalName,
+      publishedDate: a.publishedDate ? a.publishedDate.toISOString() : null,
+      externalUrl: a.externalUrl,
+      tags: a.tags,
+    }));
+  } catch {
+    homeArticles = [];
+  }
 
   // Patient testimonial content from DB (featured first). The aggregate
   // rating digits come from the canonical GBP source, not the DB count.
@@ -65,7 +121,14 @@ export default async function CardWithForm() {
           itemReviewedId={`${SITE_URL}/#physician`}
         />
       ) : null}
-      <HomePageContent featuredAchievements={featuredAchievements} />
+      <HomePageContent
+        featuredAchievements={featuredAchievements}
+        showcaseAwards={showcaseAwards}
+        timelineProfessional={timelineProfessional}
+        timelineAcademic={timelineAcademic}
+        homeVideos={homeVideos}
+        homeArticles={homeArticles}
+      />
       {featuredReviews.length ? (
         <TestimonialStrip
           reviews={featuredReviews}

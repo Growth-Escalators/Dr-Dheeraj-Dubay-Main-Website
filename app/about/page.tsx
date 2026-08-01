@@ -14,7 +14,6 @@ import Section2 from "@/components/AboutUs/Section2";
 
 import Gallery from "@/components/Gallery4/NewGallery";
 import { db } from "@/lib/db";
-import GTM from "@/utils/GTM";
 import React from "react";
 
 type Props = {};
@@ -22,7 +21,9 @@ type Props = {};
 const page = async (props: Props) => {
   let newimages: any[] = [];
   try {
-    newimages = await db.image.findMany({});
+    newimages = await db.image.findMany({
+      orderBy: [{ sortOrder: "asc" }],
+    });
   } catch {
     newimages = [];
   }
@@ -30,17 +31,11 @@ const page = async (props: Props) => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <PhysicianJsonLd />
-      <head>
-        <GTM gtmId="GTM-MDF4W4JT" />
-
-        {/* No <title>/<meta description> here: the metadata export above
-            already sets both via Next's Metadata API. This block used to
-            hardcode a competing <title>Dr. Dubay</title> + a weaker,
-            generic description, producing two conflicting <title> tags
-            in the rendered HTML (invalid; crawlers pick one unpredictably)
-            and silently overriding the real SEO copy above. */}
-        <link rel="icon" href="/assets/images/logonew.png" />
-      </head>
+      {/* No in-body <head> here. It rendered a <head> element inside a <div>,
+          which React rejects as invalid nesting (console error on every
+          visit), and everything it carried is handled properly elsewhere:
+          <title>/description by the metadata export above, the favicon by
+          `icons` in app/layout.tsx, and GTM globally in the root layout. */}
       <Section2 />
       <Section1 />
       <div className="py-12">

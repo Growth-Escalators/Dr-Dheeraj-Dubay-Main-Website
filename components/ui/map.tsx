@@ -12,7 +12,9 @@ import Link from "next/link";
 
 export default function GoogleMaps() {
   const position1 = { lat: 26.903488202765963, lng: 75.72921788230423 };
-  const position2 = { lat: 26.82723369883703, lng: 75.85228368196005 };
+  // Vidhyadhar Nagar clinic (matches lib/clinic-info.ts). Was pinned in
+  // Jagatpura, ~17 km from the address shown next to it.
+  const position2 = { lat: 26.9633, lng: 75.7693 };
 
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -82,9 +84,9 @@ export default function GoogleMaps() {
                 Dr. Dubay Hip & Knee clinic{" "}
               </span>{" "}
               <br /> 297, Gali Number 6, Kusum Vihar, Vidhyadhar Nagar,
-              Jagatpura, Jaipur, Rajasthan 302017
+              Jaipur, Rajasthan 302017
             </h2>
-            <Map zoom={12} center={position1} mapId="2356584220fb1eb7">
+            <Map zoom={12} center={position2} mapId="2356584220fb1eb7">
               <AdvancedMarker
                 position={position2}
                 onClick={() => {

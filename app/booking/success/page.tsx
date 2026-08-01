@@ -1,19 +1,17 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import GTM from "@/utils/GTM";
+import type { Metadata } from "next";
+
+// Was an in-body <head> (invalid nesting). Same copy, via the Metadata API.
+export const metadata: Metadata = {
+  title: "Booking Successful | Dr. Dubay",
+  description:
+    "Dr. Dheeraj Dubay, Joint and Hip Replacement Surgeon in Rajasthan",
+};
 
 const BookingSuccess = async () => {
   return (
     <>
-      <head>
-        <GTM gtmId="GTM-MDF4W4JT" />
-        <title>Booking Successful | Dr. Dubay</title>
-        <meta
-          name="description"
-          content="Dr. Dheeraj Dubay, Joint and Hip Replacement Surgeon in Rajasthan"
-        />
-        <link rel="icon" href="/assets/images/logonew.png" />
-      </head>
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-500 to-indigo-500">
         <div className="bg-white rounded-lg shadow-lg p-8 w-full md:w-2/3 lg:w-1/2 xl:w-1/3">
           <h2 className="text-3xl font-bold text-center mb-4 text-gray-800">

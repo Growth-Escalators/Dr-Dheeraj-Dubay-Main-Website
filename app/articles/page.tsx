@@ -33,7 +33,7 @@ async function getArticles(): Promise<Article[]> {
   try {
     const rows = await db.article.findMany({
       where: { isPublished: true },
-      orderBy: { publishedDate: "desc" },
+      orderBy: [{ sortOrder: "asc" }, { publishedDate: "desc" }],
     });
     return rows.map((r) => ({
       id: r.id,

@@ -1,6 +1,7 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { LazyMapEmbed } from "@/components/ui/LazyMapEmbed";
+import { CLINICS } from "@/lib/clinic-info";
 
 export const revalidate = 3600;
 
@@ -13,24 +14,42 @@ export const metadata = generatePageMetadata({
     "dr dheeraj dubay clinic, shalby hospital jaipur, joint replacement clinic jaipur, knee replacement surgeon near me, hip replacement jaipur location",
 });
 
+// Addresses, phone and timings come from lib/clinic-info.ts — this page
+// previously hardcoded its own copies, and both of them were wrong: Shalby
+// (which is on the Ajmer Expressway in Vaishali Nagar, 302021) was listed
+// as "Plot No. 4 & 5, Sector 2, Vidhyadhar Nagar ... 302039", and the
+// evening clinic as "Near Murlipura Police Station ... 302039" instead of
+// its GBP address in Kusum Vihar, 302017. Two different addresses for the
+// same business break local-SEO citation matching and, worse, send
+// patients to the wrong place.
+const [SHALBY, EVENING_CLINIC] = CLINICS;
+
+// Coordinate-driven embed. The previous two iframes shared one hand-built
+// `pb=` string (same place-id, both centred on 75.78/26.95), so the clinic
+// map showed the hospital's neighbourhood.
+const embedFor = (c: (typeof CLINICS)[number]) =>
+  `https://www.google.com/maps?q=${c.geo.latitude},${c.geo.longitude}&z=15&output=embed`;
+
 const locations = [
   {
     name: "Shalby Hospital",
     type: "Hospital",
-    address: "Plot No. 4 & 5, Sector 2, Vidhyadhar Nagar, Jaipur, Rajasthan 302039",
-    phone: "+91-8955373205",
-    timing: "Mon-Sat: 9:00 AM - 5:00 PM",
-    mapSrc:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3556.7!2d75.78!3d26.95!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db3cb2f0311eb%3A0x6d8e4e6a5c8f1b7a!2sShalby%20Multi-Speciality%20Hospital!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin",
+    address: SHALBY.address.fullDisplay,
+    postalCode: SHALBY.address.postalCode,
+    phone: SHALBY.phone,
+    timing: SHALBY.hours.replace(/–/g, "-"),
+    openingHours: "Mo-Sa 09:00-17:00",
+    mapSrc: embedFor(SHALBY),
   },
   {
     name: "Dr. Dubay Hip & Knee Clinic",
     type: "Private Clinic",
-    address: "Near Murlipura Police Station, Vidhyadhar Nagar, Jaipur, Rajasthan 302039",
-    phone: "+91-8955373205",
-    timing: "Mon-Sat: 6:00 PM - 8:00 PM",
-    mapSrc:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3556.7!2d75.78!3d26.95!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db3cb2f0311eb%3A0x6d8e4e6a5c8f1b7a!2sDr.%20Dubay%20Hip%20%26%20Knee%20Clinic!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin",
+    address: EVENING_CLINIC.address.fullDisplay,
+    postalCode: EVENING_CLINIC.address.postalCode,
+    phone: EVENING_CLINIC.phone,
+    timing: EVENING_CLINIC.hours.replace(/–/g, "-"),
+    openingHours: "Mo-Sa 18:00-20:00",
+    mapSrc: embedFor(EVENING_CLINIC),
   },
 ];
 
@@ -44,11 +63,13 @@ function LocalBusinessJsonLd({ loc }: { loc: typeof locations[0] }) {
       streetAddress: loc.address,
       addressLocality: "Jaipur",
       addressRegion: "Rajasthan",
-      postalCode: "302039",
+      postalCode: loc.postalCode,
       addressCountry: "IN",
     },
     telephone: loc.phone,
-    openingHours: "Mo-Sa 09:00-18:00",
+    // Per-location hours. Both entries previously emitted "Mo-Sa 09:00-18:00",
+    // which matched neither the hospital OPD (9–5) nor the evening clinic (6–8).
+    openingHours: loc.openingHours,
     medicalSpecialty: "Orthopedic Surgery",
     physician: {
       "@type": "Physician",

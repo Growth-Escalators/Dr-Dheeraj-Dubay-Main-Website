@@ -75,6 +75,6 @@ export const CITY_PAGES = [
     intro: 'With over 35,000 successful knee and hip replacement surgeries, Dr. Dheeraj Dubay is Jaipur\'s most experienced joint replacement surgeon. He holds the Forbes World Record for most joint replacement surgeries in a single day and has been awarded by the Health Minister of Rajasthan for three consecutive years.',
     campNote: 'OPD at Shalby Hospital Vaishali Nagar (Mon-Sat) and Dr. Dubay Hip & Knee Clinic Vidhyadhar Nagar. Call +91-8955373205.',
     distance: 'Based in Jaipur',
-    patientNote: 'Thousands of patients from across North India have been successfully treated.',
+    patientNote: 'Over 60,000 patients from Jaipur and across North India have been successfully treated.',
   },
 ]

@@ -50,7 +50,10 @@ const LOCATIONS = [
     hours: "Mon–Sat, 6:00 PM – 8:00 PM",
     openHour: 18,
     closeHour: 20,
-    position: { lat: 26.82723369883703, lng: 75.85228368196005 },
+    // Vidhyadhar Nagar (matches lib/clinic-info.ts geo). The previous pin —
+    // 26.8272 / 75.8523 — dropped the marker in Jagatpura, ~17 km southeast
+    // of the actual clinic, contradicting the address printed right beside it.
+    position: { lat: 26.9633, lng: 75.7693 },
     directionsUrl:
       "https://www.google.com/maps/search/?api=1&query=Dr.+Dubay+Hip+%26+Knee+Clinic+Vidhyadhar+Nagar+Jaipur",
   },

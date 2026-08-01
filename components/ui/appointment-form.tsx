@@ -77,7 +77,14 @@ type AddpatientFormValues = z.infer<typeof formSchema>;
 const Appointment = ({ name, email, userId }: AddpatientProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const urlParams = new URLSearchParams(window.location.search);
+  // `window` is not available while this renders on the server — "use client"
+  // marks a component as interactive, it does NOT skip server rendering. This
+  // line read window.location.search during render, so /booking/booking-form
+  // threw "ReferenceError: window is not defined" and returned 500, on
+  // production as well as locally: the whole date/time booking funnel dead-
+  // ended here. useSearchParams (already imported, previously unused) reads
+  // the same values on both server and client.
+  const urlParams = useSearchParams();
 
   // Retrieve the 'date' and 'time' parameters
   const date = urlParams.get("date");

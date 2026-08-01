@@ -67,7 +67,9 @@ const Section1 = (props: Props) => {
                       />
                     </svg>
                   </span>
-                  The surgery takes about 15- 20 minutes
+                  {/* Was "15- 20 minutes", which contradicted every procedure
+                      page ("60-90 minutes per knee") and the services FAQ. */}
+                  The surgery takes about 60-90 minutes per joint
                 </li>
                 <li className="flex items-center mb-4 text-xl text-gray-600 dark:text-gray-400">
                   <span className="mr-3 text-primary dark:text-blue-400">

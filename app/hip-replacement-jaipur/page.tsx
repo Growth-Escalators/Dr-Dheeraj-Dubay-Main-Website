@@ -33,7 +33,7 @@ import { BreadcrumbNav, CTASection, FAQAccordion, RecoveryTimeline, TrustBadges 
 import { AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { getPublishedReviews } from '@/lib/reviews'
-import { AGGREGATE_RATING, CLINICS } from '@/lib/clinic-info'
+import { AGGREGATE_RATING, CLINICS, SURGERY_COUNT_DISPLAY } from '@/lib/clinic-info'
 import { generatePageMetadata, defaultSEO } from '@/lib/seo.config'
 import { getWhatsAppBookingUrl } from '@/lib/whatsapp-booking'
 import Link from 'next/link'
@@ -220,7 +220,7 @@ export default async function HipReplacementJaipurPage() {
           <p className="text-gray-600 text-base leading-relaxed mb-5">
             Dr. Dheeraj Dubay performs hip replacement surgery — total and revision — at Shalby
             Hospital, Jaipur, for patients with hip osteoarthritis, avascular necrosis, and hip
-            fractures. Over 464 hip replacements and 35,000+ total joint replacements performed.
+            fractures. Over 464 hip replacements and {SURGERY_COUNT_DISPLAY} total joint replacements performed.
             Forbes World Record holder for the highest number of joint replacement surgeries in a
             single day. Book a consultation to check if you are a candidate.
           </p>
@@ -410,7 +410,7 @@ export default async function HipReplacementJaipurPage() {
             <li className="flex gap-3">
               <span className="text-blue-600 mt-0.5">&check;</span>
               <span className="text-gray-700 text-sm leading-relaxed">
-                464+ hip replacements performed, part of 35,000+ total joint replacements across
+                464+ hip replacements performed, part of {SURGERY_COUNT_DISPLAY} total joint replacements across
                 Dr. Dubay&rsquo;s career.
               </span>
             </li>

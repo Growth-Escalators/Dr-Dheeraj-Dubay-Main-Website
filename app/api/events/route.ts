@@ -4,9 +4,9 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const events = await db.event.findMany({
-      orderBy: {
-        createdAt: 'desc'
-      }
+      // CRM drag order first (admin → Events), newest-first for anything that
+      // hasn't been placed explicitly.
+      orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
     });
     
     return NextResponse.json(events);

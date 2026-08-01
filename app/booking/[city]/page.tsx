@@ -1,7 +1,26 @@
 import { db } from "@/lib/db";
 import React from "react";
 import { Booking } from "@/components/ui/booking";
-import GTM from "@/utils/GTM";
+import type { Metadata } from "next";
+
+// Was an in-body <head> carrying a bare "Dr. Dubay" title on every city.
+// Now a real per-city title via the Metadata API.
+export async function generateMetadata({
+  params,
+}: {
+  params: { city: string };
+}): Promise<Metadata> {
+  const city = params.city
+    ? params.city.charAt(0).toUpperCase() + params.city.slice(1)
+    : "";
+  return {
+    title: city
+      ? `Book Appointment in ${city} | Dr. Dheeraj Dubay`
+      : "Book Appointment | Dr. Dheeraj Dubay",
+    description:
+      "Dr. Dheeraj Dubay, Joint and Hip Replacement Surgeon in Rajasthan.",
+  };
+}
 
 const AppointmentPage = async ({ params }: { params: { city: string } }) => {
   let city = null;
@@ -24,22 +43,11 @@ const AppointmentPage = async ({ params }: { params: { city: string } }) => {
   }
 
   return (
-    <>
-      <head>
-        <GTM gtmId="GTM-MDF4W4JT" />
-        <title>Dr. Dubay</title>
-        <meta
-          name="description"
-          content="Dr. Dheeraj Dubay, Joint and Hip Replacement Surgeon in Rajasthan"
-        />
-        <link rel="icon" href="/assets/images/logonew.png" />
-      </head>
-      <Booking
-        closedDays={city.closeddays}
-        days={city.days}
-        city={params.city}
-      />
-    </>
+    <Booking
+      closedDays={city.closeddays}
+      days={city.days}
+      city={params.city}
+    />
   );
 };
 

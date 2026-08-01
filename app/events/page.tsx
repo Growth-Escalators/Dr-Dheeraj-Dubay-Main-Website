@@ -17,7 +17,7 @@ export const metadata = generatePageMetadata({
 async function buildEventSchema() {
   try {
     const events = await db.event.findMany({
-      orderBy: { createdAt: "desc" },
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
       take: 20,
     });
     if (!events.length) return null;

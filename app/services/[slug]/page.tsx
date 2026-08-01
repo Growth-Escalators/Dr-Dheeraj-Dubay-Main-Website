@@ -103,7 +103,11 @@ function getServiceFAQs(title: string) {
     },
     {
       question: `How long does ${title} take?`,
-      answer: `The procedure typically takes 45-90 minutes depending on the complexity. Dr. Dubay is known for his fast-track Zero technique which can complete knee replacement in 10-15 minutes.`,
+      // Operating time standardised to the figure the procedure pages use
+      // (lib/procedure-pages.ts: "60-90 minutes per knee"). This FAQ
+      // previously answered the same question with "45-90 minutes" AND
+      // "10-15 minutes" in one breath, while /about said "15-20 minutes".
+      answer: `The procedure typically takes 60-90 minutes per joint, depending on the complexity. Dr. Dubay's fast-track Zero technique focuses on getting patients walking within 24 hours of surgery rather than on shortening operating time.`,
     },
     {
       question: `What is the recovery time after ${title}?`,

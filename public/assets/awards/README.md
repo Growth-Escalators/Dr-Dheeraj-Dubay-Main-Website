@@ -1,43 +1,37 @@
-# Awards photos — where to drop the files
+# Awards photos
 
-The homepage **Awards & Honours** carousel (`components/home/AwardsSlider.tsx`)
-loads one image per award from this folder. File name = the award's `id`
-from `lib/awards.ts`.
+## Current status: not rendered anywhere
 
-## How to add real photos
+The homepage **Awards & Honours** section
+(`components/home/AwardsShowcase.tsx`) shows **one fixed portrait of Dr. Dubay**
+(`/assets/images/hero.png`) while the card beside it cycles through the awards
+in `lib/awards.ts`. It does **not** load per-award photos.
 
-Drop **one `.jpg` file per award** with the matching id:
+That replaced the old `AwardsSlider`, which did try to load one photo per award
+from this folder — but no photos were ever uploaded, so every slide fell back to
+the same hero image anyway. The new design makes that intentional.
 
-```
-public/assets/awards/
-├── forbes-world-record.jpg       ← Forbes World Record
-├── uk-honour.jpg                 ← Indo-UK Leadership Award
-├── et-inspiring-leaders.jpg      ← ET Inspiring Leaders Award
-├── most-trusted-surgeon.jpg      ← Most Trusted Joint Replacement Surgeon
-├── golden-warriors.jpg           ← Golden Warriors Walkathon
-└── health-minister-award.jpg     ← Health Minister Award
-```
+So: **dropping .jpg files in this folder currently does nothing.** The `image`
+field on each award in `lib/awards.ts` is kept for future use, not read by the
+homepage.
 
-Once a file exists at the matching path, it shows automatically on the
-slider for that award. No code change needed.
+## If you want per-award photos back
 
-## Specs
+Two options, both small changes:
 
-- Aspect ratio: roughly **16:10 / 16:9** works best (image area is wide on desktop)
+1. **Thumbnail on the card** — show the award photo inside the rotating card,
+   keeping the fixed portrait on the left. Best of both.
+2. **Photo replaces the portrait per slide** — reverts to the old behaviour.
+
+Ask and it can be wired up. If you go this route, the specs that worked before:
+
+- Aspect ratio: roughly **16:10 / 16:9**
 - Resolution: 1200×800 minimum
-- Format: `.jpg` (smaller file size) preferred
-- File size: under ~400 KB each — compress with [TinyPNG](https://tinypng.com) before uploading
+- Format: `.jpg`, under ~400 KB (compress with [TinyPNG](https://tinypng.com))
+- File name = the award's `id` in `lib/awards.ts`, e.g.
+  `forbes-world-record.jpg`
 
-## Adding a new award
+## Award photos on /achievements
 
-1. Open `lib/awards.ts` and append a new entry to the `AWARDS` array.
-   Pick a unique kebab-case `id`.
-2. Set `image: "/assets/awards/{id}.jpg"`.
-3. Drop the matching `.jpg` here.
-
-## What happens if a file is missing
-
-Any image path that doesn't exist falls back to `/assets/images/hero.png`
-(handled by `ImageWithFallback`). So it's safe to ship paths that don't
-have real photos yet — visitors will see the generic hero image until
-the real photo lands.
+Separate system — `/achievements` is DB-driven (the `Achievement` model, images
+uploaded through the admin panel). Nothing in this folder affects it.
