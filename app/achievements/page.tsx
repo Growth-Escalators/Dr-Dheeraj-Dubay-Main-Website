@@ -1,6 +1,7 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 import Link from "next/link";
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
+import { safeImageUrl } from "@/lib/image-url";
 
 export const revalidate = 3600;
 
@@ -115,7 +116,10 @@ export default async function AchievementsPage({
               >
                 <div className="relative h-64 md:h-72 overflow-hidden bg-gradient-to-br from-emerald-50 to-emerald-100">
                   <ImageWithFallback
-                    src={achievement.imageUrl || ACHIEVEMENT_IMAGE_FALLBACK}
+                    src={safeImageUrl(
+                      achievement.imageUrl,
+                      ACHIEVEMENT_IMAGE_FALLBACK,
+                    )}
                     fallbackSrc={ACHIEVEMENT_IMAGE_FALLBACK}
                     alt={achievement.title}
                     fill

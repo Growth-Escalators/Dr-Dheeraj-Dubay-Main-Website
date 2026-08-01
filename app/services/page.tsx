@@ -3,7 +3,6 @@ import React from "react";
 import { PROCEDURE_PAGES } from "@/lib/procedure-pages";
 import { ProcedureCard } from "@/components/ui/ProcedureCard";
 import FinalCTA from "@/components/home/FinalCTA";
-import GTM from "@/utils/GTM";
 import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY, SITE_URL } from "@/lib/clinic-info";
 
 export const revalidate = 3600;
@@ -54,10 +53,6 @@ const proceduresListSchema = {
 const ServicesPage = () => {
   return (
     <>
-      <head>
-        <GTM gtmId="GTM-MDF4W4JT" />
-        <link rel="icon" href="/assets/images/logonew.png" />
-      </head>
 
       <script
         type="application/ld+json"

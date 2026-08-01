@@ -1,4 +1,3 @@
-import GTM from "@/utils/GTM";
 import { redirect } from "next/navigation";
 
 // Patient authentication has been removed; redirect to booking page.

@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { db } from '@/lib/db'
+import { getYouTubeId } from '@/lib/youtube'
 
 export const metadata: Metadata = {
   title: 'Podcasts & Video Insights | Dr. Dheeraj Dubay',
@@ -14,7 +15,7 @@ export const revalidate = 3600
 async function getVideos() {
   try {
     const rows = await db.youTube.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
     })
     return rows.map((r) => ({
       id: r.id,
@@ -26,10 +27,6 @@ async function getVideos() {
   }
 }
 
-function getYouTubeId(url: string): string | null {
-  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?\s]+)/)
-  return match ? match[1] : null
-}
 
 export default async function PodcastsPage() {
   const videos = await getVideos()

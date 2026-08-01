@@ -55,7 +55,9 @@ export const CLINICS: Clinic[] = [
     phone: PRIMARY_PHONE,
     email: PRIMARY_EMAIL,
     hours: "Mon–Sat, 9:00 AM – 5:00 PM",
-    geo: { latitude: "26.9100", longitude: "75.7280" },
+    // Precise pin (matches the marker the homepage LocationsBlock has always
+    // used). The older 26.9100/75.7280 rounding sat ~800 m off the entrance.
+    geo: { latitude: "26.903488", longitude: "75.729218" },
     googlePlaceId: "ChIJPSvAWaS0bTkRSpg1PguKuf0",
     googleReviewUrl: "https://g.page/r/CUqYNT4Lirn9EBM/review",
     directionsUrl:
@@ -135,3 +137,36 @@ export const SURGERY_COUNT = 35000;
 export const SURGERY_COUNT_DISPLAY = "35,000+";
 export const EXPERIENCE_YEARS = 23;
 export const EXPERIENCE_YEARS_DISPLAY = "23+";
+
+// Forbes World Record — surgeries performed in a single day.
+//
+// CONSISTENCY PASS (2026-08-01): this number was previously stated FOUR
+// different ways across the site — 34 (homepage Stats, awards slider,
+// procedure pages, blogs), 170 ("170 knee replacements in 24 hours" on
+// /conditions/knee-pain and both Hindi pages), 35 (Certificate2: "34
+// joint replacements AND 1 hip replacement"), and 21 (/about intro).
+// Everything now reads from this constant. 34 was chosen because it is
+// the figure the site already used everywhere the record is the headline
+// claim (Stats tile, lib/awards.ts, the Forbes citation copy). If the
+// doctor confirms a different official figure, change it HERE only.
+export const RECORD_SURGERIES_IN_A_DAY = 34;
+
+// Patients treated/consulted — distinct from SURGERY_COUNT (a patient may
+// consult without operating). Used by the homepage "Happy Patients" tile
+// and the Jaipur city page, which previously carried the same 60,000
+// figure as two unrelated hardcodes.
+export const PATIENTS_TREATED = 60000;
+export const PATIENTS_TREATED_DISPLAY = "60,000+";
+
+// Recognition counts. These used to live only inside
+// components/Awards/AwardsSection.tsx as a local STATS array, which is why
+// they sat in a second stat grid further down the homepage, disconnected from
+// the surgery/patient numbers at the top. Both sets now render together in
+// components/home/MilestonesSection.tsx and read from here.
+export const NATIONAL_AWARDS = 10;
+export const INTERNATIONAL_CONFERENCES = 5;
+
+// Canonical implant-longevity claim. Pages previously mixed "15–20",
+// "20–25", "15–25" and "25+" years for the same question, which reads as
+// carelessness to a patient comparing two pages. One figure, one string.
+export const IMPLANT_LIFESPAN_YEARS = "20–25 years";

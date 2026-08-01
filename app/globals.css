@@ -85,3 +85,35 @@ html {
   background-image: url("/assets/images/col2.jpg");
   background-size: contain;
 }
+
+/* Award card entrance (components/home/AwardsShowcase.tsx) — the card is the
+   only thing that changes between slides, so it gets a short fade + drift to
+   signal the swap. Applied via motion-safe:, so it's skipped entirely for
+   visitors who prefer reduced motion. */
+@keyframes awardIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Display serif — set as a variable in app/layout.tsx (next/font). Applied
+   only where a component asks for it, so the site stays on Inter otherwise. */
+.font-display {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+}
+
+/* Horizontal card rails (Conditions, Hindi) scroll by swipe/drag or the
+   arrow buttons — the native scrollbar under the cards adds visual noise
+   without adding an affordance the buttons don't already give. */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

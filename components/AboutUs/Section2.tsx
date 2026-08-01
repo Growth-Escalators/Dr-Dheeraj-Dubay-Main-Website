@@ -1,6 +1,10 @@
 import React from "react";
 import Image from "next/image";
-import { SURGERY_COUNT, EXPERIENCE_YEARS } from "@/lib/clinic-info";
+import {
+  SURGERY_COUNT,
+  EXPERIENCE_YEARS,
+  RECORD_SURGERIES_IN_A_DAY,
+} from "@/lib/clinic-info";
 
 type Props = {};
 
@@ -22,9 +26,12 @@ const Section2 = (props: Props) => {
                 Director, Robotic Joint Replacement Surgery — Shalby
                 Hospital Jaipur
               </p>
-              <li className="mx-1 font-semibold text-xl text-gray-600 my-4">
+              {/* Was a bare <li> with no <ul> parent — invalid nesting, and
+                  React logged it on every visit to /about. It's a single
+                  credentials line, not a list. */}
+              <p className="mx-1 font-semibold text-xl text-gray-600 my-4">
                 MBBS, MS (Orthopedic), FJRS (Germany)
-              </li>
+              </p>
               <p className="max-w-4xl mt-2 text-xl lg:text-xl leading-relaxed text-gray-600 dark:text-gray-300 md:mt-8">
                 Dr. Dheeraj Dubay is a renowned joint replacement surgeon in
                 North India with over {EXPERIENCE_YEARS} years of experience. His career
@@ -34,8 +41,8 @@ const Section2 = (props: Props) => {
                 Aklepios Ortho Center, excels in advanced techniques like
                 computer navigation and minimally invasive surgeries. Currently
                 at Shalby Hospital, Jaipur, he has successfully
-                performed over {SURGERY_COUNT.toLocaleString()} joint replacements, setting a record of 21
-                surgeries in a single day in Rajasthan. Recognized for his
+                performed over {SURGERY_COUNT.toLocaleString()} joint replacements, setting a record of{" "}
+                {RECORD_SURGERIES_IN_A_DAY} surgeries in a single day in Rajasthan. Recognized for his
                 contributions, he has received multiple awards from
                 Rajasthan&apos;s Health Minister and was recently honored as
                 North India&apos;s most trusted Joint Replacement Surgeon by the

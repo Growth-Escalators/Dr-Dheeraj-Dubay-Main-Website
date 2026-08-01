@@ -6,6 +6,7 @@ import {
   SURGERY_COUNT_DISPLAY,
   EXPERIENCE_YEARS,
   EXPERIENCE_YEARS_DISPLAY,
+  RECORD_SURGERIES_IN_A_DAY,
 } from "@/lib/clinic-info";
 
 type Props = {};
@@ -46,7 +47,7 @@ const Card1 = (props: Props) => {
                 </span>
                 successful Joint Replacement Surgeries. Record of{" "}
                 <span className="text-black font-bold dark:text-gray-200">
-                  34{" "}
+                  {RECORD_SURGERIES_IN_A_DAY}{" "}
                 </span>{" "}
                 joint replacement surgeries in a day in Rajasthan. He has been
                 awarded for excellence in Joint Replacement surgery by the

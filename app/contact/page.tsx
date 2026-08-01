@@ -2,7 +2,6 @@ import { generatePageMetadata } from "@/lib/seo.config";
 import LocationsBlock from "@/components/home/LocationsBlock";
 import FinalCTA from "@/components/home/FinalCTA";
 import { PhoneIcon, MailIcon, MessageCircle } from "lucide-react";
-import GTM from "@/utils/GTM";
 import React from "react";
 
 export const metadata = generatePageMetadata({
@@ -58,10 +57,6 @@ const ContactPage = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactOrgSchema) }}
       />
-      <head>
-        <GTM gtmId="GTM-MDF4W4JT" />
-        <link rel="icon" href="/assets/images/logonew.png" />
-      </head>
 
       {/* Header */}
       <section className="py-16 bg-white">

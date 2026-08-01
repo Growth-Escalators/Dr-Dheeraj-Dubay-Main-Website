@@ -7,7 +7,8 @@
     "build": "prisma generate && next build ",
     "start": "next start",
     "lint": "next lint",
-    "seed:blogs": "tsx scripts/seed-blogs.ts"
+    "seed:blogs": "tsx scripts/seed-blogs.ts",
+    "seed:awards": "tsx scripts/seed-awards.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

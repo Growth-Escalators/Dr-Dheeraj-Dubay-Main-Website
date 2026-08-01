@@ -179,6 +179,9 @@ model ContactUs{
 model YouTube {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   link String
+  title String? // caption shown wherever the video is listed
+  isFeatured Boolean @default(false) // surfaces it on the homepage
+  sortOrder Int? // drag-to-reorder position; null falls back to newest-first
   createdAt DateTime @default(now())
 }
 
@@ -220,6 +223,7 @@ model Image {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   imageUrl String
   description String
+  sortOrder Int?
 }
 
 model Event {
@@ -227,7 +231,11 @@ model Event {
   title       String
   videoLink   String?  // Optional YouTube video link
   imageUrl    String?  // Optional image URL
-  description String   // Add description field
+  // Optional, matching the admin schema. It was required here while the admin
+  // app writes it as optional — an event saved without a description made this
+  // app's client throw on read.
+  description String?
+  sortOrder   Int?
   createdAt   DateTime @default(now())
 }
 
@@ -247,8 +255,33 @@ model Article {
   publishedDate DateTime?
   tags          String[]
   isPublished   Boolean  @default(true)
+  isFeatured    Boolean  @default(false) // surfaces it on the homepage
+  sortOrder     Int?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+// Awards & honours. One row can feed the homepage showcase carousel, the
+// "Recognised by India and the World" timeline, or both — they used to be two
+// hardcoded lists (lib/awards.ts and the arrays inside
+// components/Awards/AwardsSection.tsx) describing the same subject.
+// Keep in sync with drdubey-admin-v2/prisma/schema.prisma.
+model Award {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  issuingBody    String
+  year           String // free text: "2024", "3 consecutive years"
+  oneLine        String
+  imageUrl       String?
+  highlights     String[] // up to 3 proof chips on the showcase card
+  showInShowcase Boolean  @default(true)
+  showcaseOrder  Int?
+  showInTimeline Boolean  @default(true)
+  timelineTrack  String   @default("professional") // professional | academic
+  timelineYear   String? // groups timeline rows; falls back to `year`
+  isHighlighted  Boolean  @default(false) // bold row in the timeline
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 model Achievement {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId

@@ -31,8 +31,7 @@ const Certificate2 = (props: Props) => {
               </h2>
               <p className="text-lg md:text-xl text-gray-700 dark:text-gray-400">
                 Dr. Dubay from Rajasthan, India, made history by performing{" "}
-                <b>34 joint replacement surgeries </b>
-                and <b>1 hip replacement surgery</b> in a single day, earning a
+                <b>34 joint replacement surgeries</b> in a single day, earning a
                 spot in the Forbes World Record.
               </p>
 

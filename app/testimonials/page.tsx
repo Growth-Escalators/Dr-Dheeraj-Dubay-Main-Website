@@ -6,7 +6,7 @@ import { AggregateRatingJsonLd } from "@/components/seo/JsonLd";
 import { AGGREGATE_RATING } from "@/lib/clinic-info";
 import FinalCTA from "@/components/home/FinalCTA";
 import { db } from "@/lib/db";
-import GTM from "@/utils/GTM";
+import { getYouTubeId } from "@/lib/youtube";
 
 export const revalidate = 3600;
 
@@ -23,17 +23,12 @@ export const metadata = generatePageMetadata({
   slug: "testimonials",
 });
 
-function getYouTubeId(url: string): string | null {
-  if (!url) return null;
-  const pattern =
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/;
-  const match = url.match(pattern);
-  return match ? match[1] : null;
-}
 
 async function loadVideos() {
   try {
-    const rows = await db.youTube.findMany({});
+    const rows = await db.youTube.findMany({
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+    });
     return rows
       .map((r) => ({
         id: r.id,
@@ -84,10 +79,6 @@ const TestimonialsPage = async () => {
 
   return (
     <>
-      <head>
-        <GTM gtmId="GTM-MDF4W4JT" />
-        <link rel="icon" href="/assets/images/logonew.png" />
-      </head>
       {videos.length > 0 && (
         <script
           type="application/ld+json"

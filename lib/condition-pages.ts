@@ -113,7 +113,7 @@ export const CONDITION_PAGES: ConditionPage[] = [
       ],
     },
     whyDrDubay: [
-      'Forbes World Record holder — 170 knee replacements in 24 hours',
+      'Forbes World Record holder — 34 joint replacement surgeries in a single day',
       'Over 35,000 successful knee surgeries performed',
       '23+ years of specialised orthopaedic experience in Jaipur',
       'Expert in robotic-assisted and computer-navigated surgery for optimal outcomes',
@@ -233,7 +233,7 @@ export const CONDITION_PAGES: ConditionPage[] = [
       },
       {
         q: 'How long do knee replacement implants last?',
-        a: 'Modern knee implants typically last 15–20 years or longer. With robotic-assisted surgery and precise alignment, longevity is maximised. Lifestyle choices like maintaining healthy weight also significantly impact implant lifespan.',
+        a: 'Modern knee implants typically last 20–25 years or longer. With robotic-assisted surgery and precise alignment, longevity is maximised. Lifestyle choices like maintaining healthy weight also significantly impact implant lifespan.',
       },
       {
         q: 'Is walking good for osteoarthritis?',
