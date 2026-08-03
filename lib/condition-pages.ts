@@ -219,7 +219,7 @@ export const CONDITION_PAGES: ConditionPage[] = [
       'Robotic and computer-navigated surgery expertise for precise implant positioning',
       '35,000+ knee replacement surgeries over 23+ years',
       'Comprehensive non-surgical protocols before recommending knee replacement',
-      'Forbes World Record holder for most knee replacements in 24 hours',
+      'Forbes World Record holder — 34 joint replacement surgeries in a single day',
       'Convenient clinics at Shalby Hospital Vaishali Nagar and Vidhyadhar Nagar, Jaipur',
     ],
     faqs: [
