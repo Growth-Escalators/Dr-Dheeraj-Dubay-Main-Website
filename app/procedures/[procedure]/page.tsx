@@ -4,7 +4,7 @@ import { PROCEDURE_TO_COST_SLUG } from '@/lib/cost-pages'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { BreadcrumbNav, CTASection, FAQAccordion, RecoveryTimeline, TrustBadges } from '@/components/pages'
-import { AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
+import { PhysicianJsonLd, AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { getPublishedReviews } from '@/lib/reviews'
 import { AGGREGATE_RATING } from '@/lib/clinic-info'
@@ -92,6 +92,13 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
+    // dateModified is a valid CreativeWork/WebPage property (FAQPage
+    // extends WebPage), unlike MedicalProcedure which has no such field in
+    // the schema.org vocab — so the freshness signal lives here. Only
+    // included when the data entry sets a real edit date (see
+    // ProcedurePage['schema']['dateModified'] in lib/procedure-pages.ts);
+    // omitted entirely for every other procedure page.
+    ...(page.schema.dateModified ? { dateModified: page.schema.dateModified } : {}),
     mainEntity: page.faqs.map(faq => ({
       '@type': 'Question',
       name: faq.q,
@@ -113,6 +120,15 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      {/* Full Physician entity (2026-07-24 entity-split fix). Previously
+          this page only referenced the physician by `@id` — the actual
+          alternateName/credentials/sameAs node was never emitted on
+          procedure pages, so the "Dr. Dheeraj Dubey" misspelling-
+          consolidation signal never reached raw HTML here, only on the
+          homepage/about/blog. Rendering the full node here (it already
+          exists sitewide with the same @id, so this merges rather than
+          duplicates) closes that gap for every procedure page. */}
+      <PhysicianJsonLd />
       {/* AggregateRating/Review are the physician's real GBP rating, not a
           per-procedure rating we invented — attribute them to the existing
           #physician node (@id) so they join the same graph as
@@ -150,6 +166,20 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
             {page.h1}
           </h1>
           <p className="text-gray-600 text-base leading-relaxed">{page.intro}</p>
+          {/* Visible freshness signal — only renders when the data entry
+              carries a real dateModified (see lib/procedure-pages.ts).
+              Other procedure pages have no such field yet, so this is a
+              no-op for them. */}
+          {page.schema.dateModified && (
+            <p className="mt-3 text-xs text-gray-400">
+              Medically reviewed by Dr. Dheeraj Dubay · Last updated{' '}
+              {new Date(page.schema.dateModified).toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </p>
+          )}
           {costSlug && (
             <Link
               href={`/cost/${costSlug}`}
@@ -267,6 +297,19 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
                   </a>
                 )
               })}
+              {/* Cross-links to money pages outside PROCEDURE_PAGES (e.g. the
+                  dedicated surgeon-intent /hip-replacement-jaipur route).
+                  Undefined for every entry except knee-replacement-surgery,
+                  so this has no effect on other procedure pages. */}
+              {page.crossLinks?.map((link, i) => (
+                <a
+                  key={`cross-${i}`}
+                  href={link.href}
+                  className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-full hover:bg-emerald-100 transition-colors"
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
           </section>
         )}

@@ -34,6 +34,13 @@ export interface ProcedurePage {
   }
   faqs: { q: string; a: string }[]
   relatedProcedures: string[]
+  // Optional: links to money pages outside PROCEDURE_PAGES (e.g. the
+  // dedicated /hip-replacement-jaipur surgeon page, which is a separate
+  // route, not a procedure-page entry). Rendered alongside Related
+  // Procedures when present; undefined for every entry that doesn't need
+  // it, so it has no effect on other procedure pages. Added 2026-07-24 for
+  // the internal-link hub (robotic-knee ↔ knee-surgeon ↔ hip).
+  crossLinks?: { href: string; label: string }[]
   schema: {
     procedureName: string
     description: string
@@ -41,6 +48,15 @@ export interface ProcedurePage {
     followup: string
     preparation: string
     howPerformed: string
+    /**
+     * Optional ISO date (YYYY-MM-DD) marking the last real content edit to
+     * this page. Only set when a genuine content change was made — never a
+     * build timestamp (GE SEO standard: a fabricated freshness date teaches
+     * search engines to distrust the signal). Feeds the visible "Last
+     * updated" line and the FAQPage JSON-LD `dateModified` property in
+     * app/procedures/[procedure]/page.tsx. Left unset on other entries.
+     */
+    dateModified?: string
   }
 }
 
@@ -48,11 +64,18 @@ export const PROCEDURE_PAGES: ProcedurePage[] = [
   {
     slug: 'robotic-knee-replacement',
     title: 'Robotic Knee Replacement',
-    h1: 'Robotic Knee Replacement Surgery in Jaipur',
-    metaTitle: 'Robotic Knee Replacement Surgery Jaipur — Dr. Dheeraj Dubay',
+    h1: 'Robotic Knee Replacement in Jaipur',
+    metaTitle: 'Robotic Knee Replacement in Jaipur | Dr. Dheeraj Dubay',
     metaDescription: 'Expert robotic-assisted knee replacement surgery in Jaipur by Dr. Dheeraj Dubay. Forbes World Record holder. 35,000+ successful surgeries. Book consultation today.',
     category: 'Advanced Procedure',
-    intro: 'Dr. Dheeraj Dubay offers robotic-assisted knee replacement surgery at Shalby Hospital, Jaipur — one of the most advanced orthopaedic procedures available in Rajasthan. Robotic technology allows precise, personalised implant placement that was impossible with traditional techniques, resulting in better outcomes and faster recovery.',
+    // Direct, query-matching answer in the first 40-60 words (GE SEO
+    // standard) naming the proof points no Jaipur competitor matches:
+    // 35,000+ surgeries (vs Jhurani's ~16,000), Forbes World Record, 23+
+    // years, and the Director title — all sourced from lib/clinic-info.ts
+    // and the site-wide "Director, Robotic Joint Replacement Surgery"
+    // credential (confirmed live, see components/seo/JsonLd.tsx and
+    // app/hip-replacement-jaipur/page.tsx for the same exact title string).
+    intro: 'Robotic knee replacement in Jaipur is performed by Dr. Dheeraj Dubay, Director, Robotic Joint Replacement Surgery at Shalby Hospital — a Forbes World Record holder with 35,000+ joint replacement surgeries and 23+ years of experience. Robotic assistance guides implant placement to within a fraction of a millimetre, for a more precise, longer-lasting knee and faster recovery.',
     whatIsIt: {
       heading: 'What is Robotic Knee Replacement Surgery?',
       content: "Robotic knee replacement is a cutting-edge surgical technique where a robotic arm assists the surgeon in performing the procedure with extraordinary precision. Before the surgery, a detailed 3D model of the patient's knee is created using CT scan data. The robotic system uses this model to create a personalised surgical plan specific to that patient's anatomy. During surgery, the robotic arm guides Dr. Dubay's movements to within a fraction of a millimetre, ensuring the implant is positioned exactly as planned. This level of precision is simply not achievable by hand alone, no matter how experienced the surgeon. The robot does not perform the surgery independently — Dr. Dubay is in complete control throughout. The robotic system acts as an intelligent assistant that prevents any movement outside the pre-planned boundaries, protecting the surrounding healthy tissue and ligaments from unnecessary damage. This results in a knee that feels more natural, lasts longer, and allows patients to return to activity faster than with traditional surgery.",
@@ -137,16 +160,31 @@ export const PROCEDURE_PAGES: ProcedurePage[] = [
       followup: 'Physiotherapy begins day 1. Follow-up at 2 weeks, 6 weeks, 3 months, 6 months, and annually thereafter.',
       preparation: 'Pre-operative CT scan, blood tests, anaesthesia assessment, cessation of blood thinners if applicable.',
       howPerformed: 'Robotic-arm assisted surgery with CT-based 3D planning. General or spinal anaesthesia. Hospital stay 3-4 days.',
+      // Real edit date for this flagship-sharpening pass (direct-answer
+      // intro, single H1, freshness signal). Update this value on every
+      // future substantive content edit to this page — never a build date.
+      dateModified: '2026-07-24',
     },
   },
   {
+    // Surgeon-intent re-frame (2026-07-24, per GE-Brain competitor teardown
+    // DrDubay-Competitor-Teardown-Outrank-2026-07-24.md, Page B). Was framed
+    // as "Total Knee Replacement Surgery" (procedure intent). GSC's biggest
+    // striking-distance money query is "best knee replacement surgeon in
+    // jaipur" (344 impr, pos 10.3 — page-1 bottom) and no page on the site
+    // explicitly owned that surgeon framing. Slug/URL unchanged to avoid
+    // cannibalizing the existing ranking signal; only title/H1/opening
+    // retargeted. All numbers below (23+ yrs, 35,000+ surgeries, Forbes
+    // World Record, 24-hour walking) are pre-existing, already-published,
+    // sign-off-ready facts reused from elsewhere on this same page/site —
+    // no new clinical claims introduced.
     slug: 'knee-replacement-surgery',
-    title: 'Total Knee Replacement',
-    h1: 'Total Knee Replacement Surgery in Jaipur',
-    metaTitle: 'Total Knee Replacement Surgery Jaipur — Dr. Dheeraj Dubay | 35,000+ Surgeries',
-    metaDescription: 'Expert total knee replacement surgery in Jaipur by Dr. Dheeraj Dubay. Forbes World Record holder with 35,000+ successful surgeries. Walk within 24 hours. Book today.',
+    title: 'Knee Replacement Surgeon in Jaipur',
+    h1: 'Knee Replacement Surgeon in Jaipur',
+    metaTitle: 'Best Knee Replacement Surgeon in Jaipur | Dr. Dheeraj Dubay',
+    metaDescription: 'Dr. Dheeraj Dubay is a knee replacement surgeon in Jaipur with 35,000+ surgeries and a Forbes World Record. Total, robotic, partial & revision knee replacement. Book now.',
     category: 'Joint Replacement',
-    intro: 'Total knee replacement is one of the most successful surgical procedures in modern medicine, with over 95% of patients reporting significant pain relief and improved mobility. Dr. Dheeraj Dubay has performed over 35,000 knee replacement surgeries at Shalby Hospital Jaipur, making him one of the highest-volume knee replacement surgeons in India. His pioneering Zero technique allows most patients to walk within 24 hours of surgery.',
+    intro: 'Dr. Dheeraj Dubay is a knee replacement surgeon in Jaipur with 23+ years of experience and 35,000+ joint replacement surgeries performed at Shalby Hospital. A Forbes World Record holder for the most joint replacement surgeries in a single day, he offers total, partial, robotic, and revision knee replacement, with most patients walking within 24 hours.',
     whatIsIt: {
       heading: 'What is Total Knee Replacement Surgery?',
       content: "Total knee replacement, also called total knee arthroplasty, is a surgical procedure where the damaged surfaces of the knee joint are removed and replaced with artificial components made of metal alloy, high-grade plastic, and sometimes ceramic. The surgery addresses the three compartments of the knee — the inner side (medial), outer side (lateral), and the kneecap (patella). The artificial components replicate the natural curves and movements of the knee, eliminating the bone-on-bone contact that causes severe pain in advanced arthritis. Modern knee implants are engineered to last 20-25 years and allow patients to resume activities including walking, swimming, cycling, and travel. The procedure has been performed for over 40 years and is considered one of the most reliable and predictable surgeries in all of medicine.",
@@ -225,6 +263,9 @@ export const PROCEDURE_PAGES: ProcedurePage[] = [
       { q: 'Is knee replacement covered by insurance?', a: "Yes, knee replacement surgery is covered by most health insurance policies in India. Dr. Dubay's team handles all TPA paperwork and pre-authorisation. Government employees under CGHS, RGHS, and ESI are also covered. Contact +91-8955373205 for insurance guidance." },
     ],
     relatedProcedures: ['robotic-knee-replacement', 'computer-navigation-surgery', 'zero-technique-knee-replacement', 'bilateral-knee-replacement', 'partial-knee-replacement'],
+    crossLinks: [
+      { href: '/hip-replacement-jaipur', label: 'Hip Replacement Surgeon in Jaipur' },
+    ],
     schema: {
       procedureName: 'Total Knee Replacement Surgery',
       description: 'Total knee arthroplasty performed by Dr. Dheeraj Dubay at Shalby Hospital Jaipur replacing damaged knee joint surfaces with precision-engineered artificial components.',
