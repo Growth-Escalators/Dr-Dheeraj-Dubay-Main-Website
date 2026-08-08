@@ -12,6 +12,15 @@ const nextConfig = {
         hostname: "uploadthing.com",
       },
       {
+        // Vercel Blob — where the CRM now stores uploaded images. UploadThing
+        // stopped accepting uploads (the admin app is on uploadthing v7, which
+        // wants UPLOADTHING_TOKEN, while the deployment still had v6's
+        // UPLOADTHING_SECRET), so admin uploads moved to Blob, which was
+        // already provisioned. Existing utfs.io URLs above still resolve.
+        protocol: "https",
+        hostname: "*.public.blob.vercel-storage.com",
+      },
+      {
         protocol: "https",
         hostname: "aba57f763df38f62713ad7584ba232dc.r2.cloudflarestorage.com",
         pathname: '/drdubey-events-media/**',

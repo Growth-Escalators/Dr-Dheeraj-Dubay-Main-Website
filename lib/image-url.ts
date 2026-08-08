@@ -24,6 +24,9 @@ const ALLOWED_IMAGE_HOSTS = [
 const ALLOWED_IMAGE_HOST_PATTERNS = [
   /\.r2\.cloudflarestorage\.com$/,
   /^pub-.*\.r2\.dev$/,
+  // Vercel Blob — the CRM's upload destination since UploadThing stopped
+  // working. Must stay in step with next.config.js remotePatterns.
+  /\.public\.blob\.vercel-storage\.com$/,
 ];
 
 export function normalizeImageUrl(src: string | null | undefined): string {
