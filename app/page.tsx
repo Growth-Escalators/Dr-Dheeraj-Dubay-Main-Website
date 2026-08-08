@@ -1,14 +1,21 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 
-// 60s, not the 3600 this and every other CRM-driven page used to carry.
+// 10s on the homepage — the page people check straight after editing in the
+// CRM, and the one that made a working pipeline look broken.
 //
-// An edit made in the CRM was taking up to an hour to appear here, which reads
-// as "the save didn't work" and gets done twice. The admin does POST
-// /api/revalidate after every write for an instant refresh, but that needs
-// REVALIDATE_SECRET + PUBLIC_SITE_URL set on both Vercel projects and silently
-// no-ops without them — so this is the floor that works with no configuration
-// at all. Pages that render only hardcoded copy (faq, locations) stay at 3600.
-export const revalidate = 60;
+// It was 3600 (up to an hour). Dropped to 60, then to 10 here: reordering
+// awards or achievements and reloading within a minute still showed the old
+// order, which reads as "the CRM doesn't work" even though the write landed.
+// Ten seconds is short enough that a save-then-reload feels immediate.
+//
+// Cost is one regeneration per 10s *only when someone requests the page*, so
+// it is bounded by traffic, not by the timer. Other CRM-driven pages stay at
+// 60; pages of hardcoded copy (faq, locations) stay at 3600.
+//
+// The instant path is still the admin POSTing /api/revalidate after each
+// write, but that needs REVALIDATE_SECRET + PUBLIC_SITE_URL on both Vercel
+// projects and silently no-ops without them — the site must not depend on it.
+export const revalidate = 10;
 import HomePageContent from "@/components/HomePageContent";
 import {
   PhysicianJsonLd,
