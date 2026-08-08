@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { safeImageUrl } from "@/lib/image-url";
 
 interface Event {
   id: string;
@@ -39,54 +40,30 @@ const EventsClient = () => {
     return match && match[2].length === 11 ? match[2] : null;
   };
 
-  const getSignedUrl = async (fileKey: string) => {
-    try {
-      const response = await fetch(`/api/r2/get-signed-url?key=${encodeURIComponent(fileKey)}`);
-      const data = await response.json();
-      return data.signedUrl;
-    } catch (error) {
-      console.error('Error getting signed URL:', error);
-      return null;
-    }
-  };
-
-  const ImageComponent = ({ src, alt, ...props }: { src: string, alt: string, [key: string]: any }) => {
-    const [signedUrl, setSignedUrl] = useState<string | null>(null);
-
-    useEffect(() => {
-      const fetchSignedUrl = async () => {
-        const fileKey = src.split('/').pop();
-        if (fileKey) {
-          const url = await getSignedUrl(fileKey);
-          setSignedUrl(url);
-        }
-      };
-
-      fetchSignedUrl();
-    }, [src]);
-
-    if (!signedUrl) {
-      return null;
-    }
-
-    if (process.env.NODE_ENV === 'development') {
-      return (
-        <img
-          src={signedUrl}
-          alt={alt}
-          className="absolute top-0 left-0 w-full h-full object-cover rounded-t-lg"
-          {...props}
-        />
-      );
-    }
+  // Renders the event image straight from the stored URL, the same way the
+  // homepage does.
+  //
+  // This used to throw away the URL, keep only the filename, and ask
+  // /api/r2/get-signed-url to sign it as a Cloudflare R2 object — then
+  // `return null` when that produced nothing, leaving a blank box with no
+  // error. No event image is in R2: they are local paths like
+  // /assets/images/HomePagePic.jpeg, and anything uploaded through the CRM
+  // now lands on Vercel Blob. So every image on this page rendered blank
+  // while the same image showed fine on the homepage.
+  const ImageComponent = ({ src, alt }: { src: string; alt: string }) => {
+    const url = safeImageUrl(src, "");
+    if (!url) return null;
 
     return (
       <Image
-        src={signedUrl}
+        src={url}
         alt={alt}
         fill
+        sizes="(max-width: 768px) 100vw, 33vw"
         className="object-cover rounded-t-lg"
-        {...props}
+        // Event images come from whatever the CRM uploaded to; skipping the
+        // optimizer keeps an unconfigured host from throwing here.
+        unoptimized
       />
     );
   };
