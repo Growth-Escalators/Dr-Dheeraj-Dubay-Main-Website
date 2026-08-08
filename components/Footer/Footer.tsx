@@ -242,6 +242,7 @@ const Footer = (props: Props) => {
               <ul className="mt-7 space-y-4">
                 {[
                   { label: "Services", href: "/services" },
+                  { label: "News Mentions", href: "/news" },
                   { label: "Articles", href: "/articles" },
                   { label: "Podcasts", href: "/podcasts" },
                   { label: "Testimonials", href: "/testimonials" },

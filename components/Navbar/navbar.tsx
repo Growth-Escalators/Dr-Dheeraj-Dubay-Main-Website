@@ -27,6 +27,7 @@ const NAV_ITEMS: NavItem[] = [
   {
     label: "Public Mentions",
     children: [
+      { label: "News Mentions", href: "/news" },
       { label: "Articles", href: "/articles" },
       { label: "Podcasts", href: "/podcasts" },
     ],

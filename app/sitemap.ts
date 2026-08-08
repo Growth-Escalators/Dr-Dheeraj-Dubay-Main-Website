@@ -33,6 +33,7 @@ const staticEntries: Entry[] = [
   // standard (no real content-change date to report yet at first publish).
   { url: `${BASE}/hip-replacement-jaipur`, changeFrequency: 'weekly', priority: 0.9 },
   { url: `${BASE}/articles`, changeFrequency: 'weekly', priority: 0.6 },
+  { url: `${BASE}/news`, changeFrequency: 'weekly', priority: 0.6 },
   { url: `${BASE}/videos`, changeFrequency: 'monthly', priority: 0.6 },
   { url: `${BASE}/podcasts`, changeFrequency: 'monthly', priority: 0.6 },
 ]
