@@ -40,7 +40,12 @@ export default async function CardWithForm() {
   try {
     achievements = await db.achievement.findMany({
       where: { isFeatured: true },
-      orderBy: { featuredOrder: "asc" },
+      // Secondary key so the order is fully deterministic. featuredOrder alone
+      // leaves any two rows sharing a value — or a newly-featured row that has
+      // none yet — free to swap position between requests, which looks exactly
+      // like "the CRM ordering doesn't work". Videos and articles already sort
+      // this way; achievements were the odd one out.
+      orderBy: [{ featuredOrder: "asc" }, { date: "desc" }],
       take: 6,
     });
   } catch {
