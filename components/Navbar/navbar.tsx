@@ -26,10 +26,12 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Testimonials", href: "/testimonials" },
   {
     label: "Public Mentions",
+    // Two entries, not three: "written by Dr. Dubay" (Articles) vs "others
+    // covering Dr. Dubay" (press features and podcast appearances, which now
+    // share the /news page).
     children: [
-      { label: "News Mentions", href: "/news" },
       { label: "Articles", href: "/articles" },
-      { label: "Podcasts", href: "/podcasts" },
+      { label: "Podcasts & News Mentions", href: "/news" },
     ],
   },
 ];
