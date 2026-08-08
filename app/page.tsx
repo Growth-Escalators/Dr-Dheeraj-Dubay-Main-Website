@@ -58,7 +58,11 @@ export default async function CardWithForm() {
     slug: a.slug,
     category: a.category,
     date: a.date.toISOString(),
-    imageUrl: safeImageUrl(a.imageUrl, "/assets/images/hero.png"),
+    // Empty, not the hero portrait: the card renders a titled placeholder when
+    // there's no usable image. Falling back to the portrait meant a grid of six
+    // achievements could show the same photo six times — which is exactly what
+    // the dead *.edgeone.app image URLs produced.
+    imageUrl: safeImageUrl(a.imageUrl, ""),
   }));
 
   // CRM-managed award content: the showcase carousel and both timeline

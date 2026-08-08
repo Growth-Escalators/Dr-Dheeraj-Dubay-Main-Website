@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CalendarDays } from "lucide-react";
+import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { SECTION_HEADING_CLASSES } from "@/lib/design-tokens";
 
 // Featured press / awards / media features pulled from the DB Achievement
@@ -67,13 +68,20 @@ function HeroCard({ achievement }: { achievement: FeaturedAchievement }) {
     >
       <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr]">
         <div className="relative h-64 md:h-80 bg-gray-100 overflow-hidden">
-          <Image
-            src={achievement.imageUrl}
-            alt={achievement.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 55vw"
-            className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-          />
+          {/* Images are optional in the CRM. Without this, a missing photo fell
+              back to the doctor's portrait, so several cards showed the same
+              picture — reads as broken rather than intentional. */}
+          {achievement.imageUrl ? (
+            <Image
+              src={achievement.imageUrl}
+              alt={achievement.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 55vw"
+              className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
+            />
+          ) : (
+            <ImagePlaceholder label={achievement.category} kind="award" />
+          )}
           <div className="absolute top-4 left-4">
             <CategoryChip>{achievement.category}</CategoryChip>
           </div>
@@ -102,13 +110,17 @@ function SmallCard({ achievement }: { achievement: FeaturedAchievement }) {
       className="group block bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all"
     >
       <div className="relative w-full h-48 bg-gray-100 overflow-hidden">
-        <Image
-          src={achievement.imageUrl}
-          alt={achievement.title}
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
-        />
+        {achievement.imageUrl ? (
+          <Image
+            src={achievement.imageUrl}
+            alt={achievement.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
+          />
+        ) : (
+          <ImagePlaceholder label={achievement.category} kind="award" />
+        )}
         <div className="absolute top-3 left-3">
           <CategoryChip>{achievement.category}</CategoryChip>
         </div>

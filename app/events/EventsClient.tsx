@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { safeImageUrl } from "@/lib/image-url";
+import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 
 interface Event {
   id: string;
@@ -52,7 +53,9 @@ const EventsClient = () => {
   // while the same image showed fine on the homepage.
   const ImageComponent = ({ src, alt }: { src: string; alt: string }) => {
     const url = safeImageUrl(src, "");
-    if (!url) return null;
+    // Events can be published without a photo — show a labelled panel rather
+    // than a bare gap where the image would be.
+    if (!url) return <ImagePlaceholder label="Event" kind="event" />;
 
     return (
       <Image
@@ -156,9 +159,12 @@ const EventsClient = () => {
                     allowFullScreen
                     className="absolute top-0 left-0 w-full h-full rounded-t-lg"
                   ></iframe>
-                ) : event.imageUrl ? (
-                  <ImageComponent src={event.imageUrl} alt={event.title} />
-                ) : null}
+                ) : (
+                  // Renders the placeholder when imageUrl is absent — three of
+                  // the four current events have no image, and this box left an
+                  // unexplained blank space above the title.
+                  <ImageComponent src={event.imageUrl || ""} alt={event.title} />
+                )}
               </div>
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
@@ -169,6 +175,8 @@ const EventsClient = () => {
                 </p>
                 <div className="flex items-center gap-3 text-sm text-gray-500">
                   <div className="flex items-center gap-1">
+                    {/* "View Image" used to show on every card, including the
+                        ones with no image at all. */}
                     {event.videoLink ? (
                       <>
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -177,14 +185,14 @@ const EventsClient = () => {
                         </svg>
                         <span>Watch Video</span>
                       </>
-                    ) : (
+                    ) : event.imageUrl ? (
                       <>
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         <span>View Image</span>
                       </>
-                    )}
+                    ) : null}
                   </div>
                   <div className="h-3 w-px bg-gray-300"></div>
                   <span>{new Date(event.createdAt).toLocaleDateString()}</span>

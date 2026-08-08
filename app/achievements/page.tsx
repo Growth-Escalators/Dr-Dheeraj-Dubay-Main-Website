@@ -2,6 +2,7 @@ import { generatePageMetadata } from "@/lib/seo.config";
 import Link from "next/link";
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 import { safeImageUrl } from "@/lib/image-url";
+import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 
 export const revalidate = 60;
 
@@ -115,18 +116,26 @@ export default async function AchievementsPage({
                 className="group block bg-white rounded-xl shadow hover:shadow-lg transition-shadow overflow-hidden border border-gray-100"
               >
                 <div className="relative h-64 md:h-72 overflow-hidden bg-gradient-to-br from-emerald-50 to-emerald-100">
-                  <ImageWithFallback
-                    src={safeImageUrl(
-                      achievement.imageUrl,
-                      ACHIEVEMENT_IMAGE_FALLBACK,
-                    )}
-                    fallbackSrc={ACHIEVEMENT_IMAGE_FALLBACK}
-                    alt={achievement.title}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    unoptimized
-                  />
+                  {/* No image is a valid state — the CRM doesn't require one,
+                      and 45 rows currently point at a host that 404s. A titled
+                      placeholder beats repeating the doctor's portrait down the
+                      whole page. */}
+                  {safeImageUrl(achievement.imageUrl, "") ? (
+                    <ImageWithFallback
+                      src={safeImageUrl(achievement.imageUrl, "")}
+                      fallbackSrc={ACHIEVEMENT_IMAGE_FALLBACK}
+                      alt={achievement.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      unoptimized
+                    />
+                  ) : (
+                    <ImagePlaceholder
+                      label={achievement.category}
+                      kind="award"
+                    />
+                  )}
                   <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold bg-white/95 text-emerald-800 shadow">
                     {achievement.category}
                   </span>
