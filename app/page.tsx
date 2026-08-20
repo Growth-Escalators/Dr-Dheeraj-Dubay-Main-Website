@@ -1,21 +1,11 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 
-// 10s on the homepage — the page people check straight after editing in the
-// CRM, and the one that made a working pipeline look broken.
-//
-// It was 3600 (up to an hour). Dropped to 60, then to 10 here: reordering
-// awards or achievements and reloading within a minute still showed the old
-// order, which reads as "the CRM doesn't work" even though the write landed.
-// Ten seconds is short enough that a save-then-reload feels immediate.
-//
-// Cost is one regeneration per 10s *only when someone requests the page*, so
-// it is bounded by traffic, not by the timer. Other CRM-driven pages stay at
-// 60; pages of hardcoded copy (faq, locations) stay at 3600.
-//
-// The instant path is still the admin POSTing /api/revalidate after each
-// write, but that needs REVALIDATE_SECRET + PUBLIC_SITE_URL on both Vercel
-// projects and silently no-ops without them — the site must not depend on it.
-export const revalidate = 10;
+// One-hour fallback only. CRM writes use the authenticated /api/revalidate
+// path to invalidate the exact affected public pages immediately. Keeping a
+// 3600s ISR fallback means the site still self-heals if that cross-project
+// revalidation ever fails, without repeatedly rebuilding this DB-heavy page
+// every 10 seconds when no content changed.
+export const revalidate = 3600;
 import HomePageContent from "@/components/HomePageContent";
 import {
   PhysicianJsonLd,
