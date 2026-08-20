@@ -9,7 +9,7 @@ import {
 import { LazyYouTubeCard } from "@/components/Testimonials/LazyYouTubeCard";
 import { getYouTubeId } from "@/lib/youtube";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 const SITE_URL = defaultSEO.siteUrl;
 

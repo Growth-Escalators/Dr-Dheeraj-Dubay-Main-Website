@@ -6,7 +6,7 @@ import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 import { db } from "@/lib/db";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 const ACHIEVEMENT_IMAGE_FALLBACK = "/assets/images/hero.png";
 

@@ -8,7 +8,7 @@ import FinalCTA from "@/components/home/FinalCTA";
 import { db } from "@/lib/db";
 import { getYouTubeId } from "@/lib/youtube";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 // CTR fix (WS-4a): "dr dheeraj dubay reviews" ranks pos 7.9 with 880
 // impressions but ~0% CTR (1 click) — the old title promised "testimonials"

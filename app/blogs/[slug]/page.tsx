@@ -20,7 +20,7 @@ import { db } from "@/lib/db";
 // `submitUrlsToIndexNow([\`${defaultSEO.siteUrl}/blogs/${slug}\`])`
 // (fire-and-forget, don't await) right after that write succeeds.
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 async function getBlogBySlug(slug: string) {
   try {

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "Surgeon-authored articles by Dr. Dheeraj Dubay on robotic joint replacement, Zero-technique recovery, implant choice and what patients should realistically expect.",
 };
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 const SITE_URL = "https://www.drdubay.in";
 
