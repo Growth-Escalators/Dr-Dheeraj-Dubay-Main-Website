@@ -4,7 +4,7 @@ import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 import { safeImageUrl } from "@/lib/image-url";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 const ACHIEVEMENT_IMAGE_FALLBACK = "/assets/images/hero.png";
 
