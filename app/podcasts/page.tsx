@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: 'Watch educational videos and podcast episodes by Dr. Dheeraj Dubay about joint replacement surgery, patient care, robotic surgery, and orthopaedic health.',
 }
 
-export const revalidate = 60
+export const revalidate = 3600
 
 // Query the YouTube model directly via Prisma. We previously fetched
 // admin.drdubay.in/api/youtube but that endpoint is behind NextAuth
