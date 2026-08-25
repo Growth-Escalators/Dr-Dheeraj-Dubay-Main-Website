@@ -1,20 +1,16 @@
 import type { MetadataRoute } from 'next'
 import { defaultSEO } from '@/lib/seo.config'
 
-const DISALLOW = ['/api/', '/booking/', '/admin/', '/sign-in', '/sign-up', '/_next/']
+const DISALLOW = ['/api/', '/booking/', '/admin/', '/sign-in', '/sign-up']
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
+        allow: ['/', '/_next/static/', '/_next/image/'],
         disallow: DISALLOW,
       },
-      // Explicit allows for retrieval/AI crawlers so engines that read
-      // (rather than train on) the site can fetch it. These crawlers don't
-      // execute JavaScript, so critical content must also exist in raw
-      // HTML — verified separately via `curl -A "<agent>" <url>`.
       {
         userAgent: 'OAI-SearchBot',
         allow: '/',
