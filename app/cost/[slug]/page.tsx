@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { BreadcrumbNav, CTASection, FAQAccordion, TrustBadges, CostEstimateCTA } from '@/components/pages'
 import { BreadcrumbJsonLd } from '@/components/seo/BreadcrumbJsonLd'
 import { FaqJsonLd } from '@/components/seo/FaqJsonLd'
-import { AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { CostInquiryPopup } from '@/components/ui/CostInquiryPopup'
 import { getPublishedReviews } from '@/lib/reviews'
@@ -76,23 +75,6 @@ export default async function CostPage({ params }: { params: { slug: string } })
         dangerouslySetInnerHTML={{ __html: JSON.stringify(procedureSchema) }}
       />
       <FaqJsonLd faqs={page.faqs.map((f) => ({ question: f.q, answer: f.a }))} />
-      {aggregate ? (
-        <AggregateRatingJsonLd
-          ratingValue={aggregate.ratingValue}
-          reviewCount={aggregate.reviewCount}
-          itemType="MedicalProcedure"
-          itemId={`${canonical}#procedure`}
-          itemName={page.schema.procedureName}
-        />
-      ) : null}
-      {reviews.length ? (
-        <ReviewListJsonLd
-          reviews={reviews}
-          itemReviewedType="MedicalProcedure"
-          itemReviewedId={`${canonical}#procedure`}
-          itemReviewedName={page.schema.procedureName}
-        />
-      ) : null}
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
         <BreadcrumbNav crumbs={[{ label: 'Home', href: '/' }, { label: page.h1 }]} />
