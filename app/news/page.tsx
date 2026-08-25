@@ -75,7 +75,9 @@ async function getPressArticles(): Promise<Article[]> {
         publishedDate: r.publishedDate ? r.publishedDate.toISOString() : null,
         tags: r.tags,
       }))
-      .filter(isPress);
+      .filter(isPress)
+      // Seed/demo records must never appear in public HTML or structured data.
+      .filter((article) => !article.title.trim().startsWith("[SAMPLE]"));
   } catch {
     return [];
   }
