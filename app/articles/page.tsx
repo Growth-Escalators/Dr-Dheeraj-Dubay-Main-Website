@@ -18,7 +18,10 @@ import {
 export const metadata: Metadata = {
   title: "Articles & White Papers | Dr. Dheeraj Dubay",
   description:
-    "Surgeon-authored articles by Dr. Dheeraj Dubay on robotic joint replacement, Zero-technique recovery, implant choice and what patients should realistically expect.",
+    "Surgeon-authored articles by Dr. Dheeraj Dubay on robotic joint replacement, recovery, implant choice and what patients should realistically expect.",
+  alternates: {
+    canonical: "https://www.drdubay.in/articles",
+  },
 };
 
 export const revalidate = 3600;
