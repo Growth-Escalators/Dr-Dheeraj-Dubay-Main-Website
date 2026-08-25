@@ -5,6 +5,9 @@ import { getYouTubeId } from '@/lib/youtube'
 export const metadata: Metadata = {
   title: 'Podcasts & Video Insights | Dr. Dheeraj Dubay',
   description: 'Watch educational videos and podcast episodes by Dr. Dheeraj Dubay about joint replacement surgery, patient care, robotic surgery, and orthopaedic health.',
+  alternates: {
+    canonical: 'https://www.drdubay.in/podcasts',
+  },
 }
 
 export const revalidate = 3600
