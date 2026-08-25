@@ -1,9 +1,7 @@
 // JSON-LD for the doctor + both clinic locations.
 //
-// Geo coordinates below are *approximate* (neighborhood-level) — they will get
-// you a valid LocalBusiness in Google's eyes but the marker on Maps may be
-// ~500m off the actual clinic door. Replace with exact lat/long from Google
-// Maps after you confirm in Google Business Profile.
+// Clinic NAP and coordinates come from the shared clinic-info source so the
+// visible locations and structured data cannot drift apart.
 
 import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY, CLINICS } from "@/lib/clinic-info"
 
@@ -18,6 +16,7 @@ const HERO_IMAGE = `${SITE_URL}/assets/images/hero.png`
 // address (2026-07-24 NAP alignment pass). Sourcing it here means this
 // can't drift again.
 const SHALBY = CLINICS.find((c) => c.id === "shalby-jaipur")!
+const VIDHYADHAR_NAGAR = CLINICS.find((c) => c.id === "vidhyadhar-nagar")!
 
 const SOCIAL_LINKS = [
   "https://www.facebook.com/drdheerajdubay/",
@@ -142,8 +141,8 @@ export const MedicalBusinessJsonLd = () => {
         },
         "geo": {
           "@type": "GeoCoordinates",
-          "latitude": "26.9100",
-          "longitude": "75.7280",
+          "latitude": SHALBY.geo.latitude,
+          "longitude": SHALBY.geo.longitude,
         },
         "openingHoursSpecification": [
           {
@@ -180,16 +179,16 @@ export const MedicalBusinessJsonLd = () => {
         "paymentAccepted": "Cash, Credit Card, UPI",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "297, Gali Number 6, Kusum Vihar, Vidhyadhar Nagar",
-          "addressLocality": "Jaipur",
-          "addressRegion": "Rajasthan",
-          "postalCode": "302017",
-          "addressCountry": "IN",
+          "streetAddress": VIDHYADHAR_NAGAR.address.streetAddress,
+          "addressLocality": VIDHYADHAR_NAGAR.address.addressLocality,
+          "addressRegion": VIDHYADHAR_NAGAR.address.addressRegion,
+          "postalCode": VIDHYADHAR_NAGAR.address.postalCode,
+          "addressCountry": VIDHYADHAR_NAGAR.address.addressCountry,
         },
         "geo": {
           "@type": "GeoCoordinates",
-          "latitude": "26.9633",
-          "longitude": "75.7693",
+          "latitude": VIDHYADHAR_NAGAR.geo.latitude,
+          "longitude": VIDHYADHAR_NAGAR.geo.longitude,
         },
         "openingHoursSpecification": [
           {
