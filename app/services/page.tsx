@@ -7,19 +7,14 @@ import { SITE_URL } from "@/lib/clinic-info";
 
 export const revalidate = 3600;
 
-// CTR fix (2026-07-23, from GSC baseline 2026-07-21 + GSC Page Indexing):
-// /services ranks pos ~2.76 with 2,558 impressions but only 0.6% CTR — a
-// generic "all procedures" directory title gives searchers no reason to
-// click over a specific-procedure result. New copy leads with the real,
-// verifiable count (9 procedures in lib/procedure-pages.ts) and the
-// site's existing verified stats (SURGERY_COUNT_DISPLAY /
-// EXPERIENCE_YEARS_DISPLAY, lib/clinic-info.ts) instead of a bare list
-// promise. Also see app/layout.tsx for the sitewide title-template fix
-// that was silently doubling every page's brand suffix.
+// GSC refresh (2026-08-25): /services has 7,330 impressions at position 2.8
+// but only 0.6% CTR, and much of its visibility overlaps branded/homepage
+// queries. Keep this hub focused on treatment comparison while the homepage
+// owns broad "orthopedic doctor in Jaipur" intent.
 export const metadata = generatePageMetadata({
-  title: "Orthopedic Doctor in Jaipur | Knee & Hip Specialist – Dr. Dheeraj Dubay",
+  title: "Knee, Hip & Robotic Surgery in Jaipur | Dr. Dheeraj Dubay",
   description:
-    "Explore knee, hip, robotic and revision joint-replacement services in Jaipur with Dr. Dheeraj Dubay. Compare procedures, recovery and consultation options.",
+    "Compare knee replacement, hip replacement, robotic surgery and revision procedures in Jaipur. See suitability, recovery and consultation information.",
   slug: "services",
 });
 

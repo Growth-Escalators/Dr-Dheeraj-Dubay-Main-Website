@@ -1,14 +1,15 @@
 import { generatePageMetadata } from "@/lib/seo.config";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { LazyMapEmbed } from "@/components/ui/LazyMapEmbed";
-import { CLINICS } from "@/lib/clinic-info";
+import Link from "next/link";
+import { CLINICS, SITE_URL } from "@/lib/clinic-info";
 
 export const revalidate = 3600;
 
 export const metadata = generatePageMetadata({
-  title: "Clinic Locations | Dr. Dheeraj Dubay - Joint Replacement Jaipur",
+  title: "Orthopedic Doctor in Vaishali Nagar, Jaipur | Clinic Locations",
   description:
-    "Visit Dr. Dheeraj Dubay at Shalby Hospital Vaishali Nagar or Dr. Dubay Hip & Knee Clinic Vidhyadhar Nagar, Jaipur. Get directions, timings & contact info.",
+    "Consult Dr. Dheeraj Dubay at Shalby Hospital, Vaishali Nagar, or the Hip & Knee Clinic in Vidhyadhar Nagar, Jaipur. View timings, directions and phone number.",
   slug: "locations",
   keywords:
     "dr dheeraj dubay clinic, shalby hospital jaipur, joint replacement clinic jaipur, knee replacement surgeon near me, hip replacement jaipur location",
@@ -39,6 +40,7 @@ const locations = [
     phone: SHALBY.phone,
     timing: SHALBY.hours.replace(/–/g, "-"),
     openingHours: "Mo-Sa 09:00-17:00",
+    geo: SHALBY.geo,
     mapSrc: embedFor(SHALBY),
   },
   {
@@ -49,6 +51,7 @@ const locations = [
     phone: EVENING_CLINIC.phone,
     timing: EVENING_CLINIC.hours.replace(/–/g, "-"),
     openingHours: "Mo-Sa 18:00-20:00",
+    geo: EVENING_CLINIC.geo,
     mapSrc: embedFor(EVENING_CLINIC),
   },
 ];
@@ -70,11 +73,14 @@ function LocalBusinessJsonLd({ loc }: { loc: typeof locations[0] }) {
     // Per-location hours. Both entries previously emitted "Mo-Sa 09:00-18:00",
     // which matched neither the hospital OPD (9–5) nor the evening clinic (6–8).
     openingHours: loc.openingHours,
-    medicalSpecialty: "Orthopedic Surgery",
-    physician: {
-      "@type": "Physician",
-      name: "Dr. Dheeraj Dubay",
+    url: `${SITE_URL}/locations#${loc.postalCode}`,
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: loc.geo.latitude,
+      longitude: loc.geo.longitude,
     },
+    medicalSpecialty: "Orthopedic Surgery",
+    physician: { "@id": `${SITE_URL}/#physician` },
   };
   return (
     <script
@@ -99,10 +105,11 @@ export default function LocationsPage() {
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
         <div className="max-w-5xl mx-auto px-4 py-16">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-            Our Locations
+            Orthopedic Doctor in Vaishali Nagar & Vidhyadhar Nagar, Jaipur
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-10">
-            Visit Dr. Dheeraj Dubay at either of our two Jaipur locations
+            Visit Dr. Dheeraj Dubay for orthopedic, knee and hip consultations
+            at either of these Jaipur locations.
           </p>
 
           <div className="space-y-10">
@@ -164,6 +171,42 @@ export default function LocationsPage() {
               </div>
             ))}
           </div>
+
+          <section className="mt-12 rounded-2xl border border-emerald-100 bg-emerald-50 p-6 md:p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">
+              Plan your consultation
+            </h2>
+            <p className="text-gray-700 leading-relaxed mb-5">
+              Review the relevant treatment guide before your visit, or contact
+              the clinic team for an appointment and directions.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/procedures/knee-replacement-surgery"
+                className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-emerald-800 border border-emerald-200 hover:border-emerald-400"
+              >
+                Knee replacement in Jaipur
+              </Link>
+              <Link
+                href="/hip-replacement-jaipur"
+                className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-emerald-800 border border-emerald-200 hover:border-emerald-400"
+              >
+                Hip replacement in Jaipur
+              </Link>
+              <Link
+                href="/procedures/robotic-knee-replacement"
+                className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-emerald-800 border border-emerald-200 hover:border-emerald-400"
+              >
+                Robotic knee replacement
+              </Link>
+              <Link
+                href="/contact"
+                className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800"
+              >
+                Contact the clinic
+              </Link>
+            </div>
+          </section>
         </div>
       </div>
     </>
