@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import { Suspense } from "react";
 import "./globals.css";
@@ -17,19 +16,6 @@ import { defaultSEO } from "@/lib/seo.config";
 
 const GA4_ID = "G-TW8MWN7YW9";
 const GTM_ID = "GTM-MDF4W4JT";
-
-const inter = Inter({ subsets: ["latin"] });
-
-// Display serif, used only for the Awards & Honours lockup on the homepage
-// (components/home/AwardsShowcase.tsx). Exposed as a CSS variable rather than
-// applied to <body> so nothing else on the site changes typeface. next/font
-// self-hosts the file — no runtime request to Google.
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-display",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultSEO.siteUrl),
@@ -132,7 +118,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} ${playfair.variable}`}>
+      <body className="font-sans">
         {/* Google Tag Manager (noscript fallback) */}
         <noscript>
           <iframe

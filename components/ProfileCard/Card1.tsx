@@ -19,9 +19,9 @@ const Card1 = (props: Props) => {
         <div className="lg:w-[85%] px-4 mx-auto sm:px-6 lg:px-8">
           <div className="grid items-center grid-cols-1 md:grid-cols-2 gap-12">
             <div data-aos="fade-right" className="space-y-6">
-              <h2 className="text-3xl font-bold leading-tight bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent sm:text-5xl lg:text-6xl">
+              <h1 className="text-3xl font-bold leading-tight bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent sm:text-5xl lg:text-6xl">
                 Dr. Dheeraj Dubay
-              </h2>
+              </h1>
               <p className="text-xl lg:text-2xl font-medium text-emerald-600 dark:text-emerald-400">
                 Director, Robotic Joint Replacement Surgery — Shalby
                 Hospital Jaipur
@@ -119,7 +119,9 @@ const Card1 = (props: Props) => {
                 height={1400}
                 className="relative w-full xl:max-w-lg xl:mx-auto 2xl:scale-125 rounded-2xl shadow-2xl"
                 src="/assets/images/hero.png"
-                alt="Dr. Dheeraj Dubay"
+                alt="Dr. Dheeraj Dubay, orthopedic and joint replacement surgeon in Jaipur"
+                sizes="(max-width: 767px) 100vw, 50vw"
+                quality={72}
                 priority
               />
             </div>

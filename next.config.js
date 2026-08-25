@@ -49,6 +49,11 @@ const nextConfig = {
       // Phase 6: /youtube page renamed to /testimonials. Permanent 301
       // preserves any backlinks + GSC indexing already accrued.
       { source: '/youtube', destination: '/testimonials', permanent: true },
+      { source: '/profile', destination: '/about', permanent: true },
+      { source: '/procedures', destination: '/services', permanent: true },
+      { source: '/conditions/knee-replacement-surgery', destination: '/procedures/knee-replacement-surgery', permanent: true },
+      { source: '/conditions/robotic-knee-replacement', destination: '/procedures/robotic-knee-replacement', permanent: true },
+      { source: '/services/total-knee-replacement.', destination: '/procedures/knee-replacement-surgery', permanent: true },
       // WS-3a: 13 zero-impression thin city pages pruned (0 impressions /
       // 6 months in GSC, no city-level search demand). Permanent redirect
       // to /locations consolidates any residual link equity + crawl paths.

@@ -3,7 +3,7 @@ import React from "react";
 import { PROCEDURE_PAGES } from "@/lib/procedure-pages";
 import { ProcedureCard } from "@/components/ui/ProcedureCard";
 import FinalCTA from "@/components/home/FinalCTA";
-import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY, SITE_URL } from "@/lib/clinic-info";
+import { SITE_URL } from "@/lib/clinic-info";
 
 export const revalidate = 3600;
 
@@ -17,8 +17,9 @@ export const revalidate = 3600;
 // promise. Also see app/layout.tsx for the sitewide title-template fix
 // that was silently doubling every page's brand suffix.
 export const metadata = generatePageMetadata({
-  title: "9 Joint Replacement Procedures in Jaipur | Dr. Dheeraj Dubay",
-  description: `Compare all 9 knee & hip replacement procedures by Dr. Dheeraj Dubay — robotic, minimally invasive, revision & more. ${SURGERY_COUNT_DISPLAY} surgeries, ${EXPERIENCE_YEARS_DISPLAY} years experience.`,
+  title: "Orthopedic Doctor in Jaipur | Knee & Hip Specialist – Dr. Dheeraj Dubay",
+  description:
+    "Explore knee, hip, robotic and revision joint-replacement services in Jaipur with Dr. Dheeraj Dubay. Compare procedures, recovery and consultation options.",
   slug: "services",
 });
 
@@ -66,12 +67,12 @@ const ServicesPage = () => {
               All Procedures
             </span>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-              Joint Replacement Procedures by Dr. Dheeraj Dubay
+              Orthopedic & Joint Replacement Services in Jaipur
             </h1>
             <p className="text-gray-500 max-w-2xl mx-auto">
-              Every joint replacement procedure we perform — robotic and
-              conventional. Click any procedure for a detailed page with
-              outcomes, recovery, and FAQs.
+              Compare knee, hip, robotic and revision procedures offered by
+              Dr. Dheeraj Dubay in Jaipur. Each guide explains suitability,
+              recovery expectations and consultation options.
             </p>
           </div>
 

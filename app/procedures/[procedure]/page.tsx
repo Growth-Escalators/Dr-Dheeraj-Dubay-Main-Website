@@ -68,7 +68,7 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.drdubay.in' },
-      { '@type': 'ListItem', position: 2, name: 'Procedures', item: 'https://www.drdubay.in/procedures' },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://www.drdubay.in/services' },
       { '@type': 'ListItem', position: 3, name: page.title, item: `https://www.drdubay.in/procedures/${page.slug}` },
     ],
   }
@@ -152,7 +152,7 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
         <BreadcrumbNav
           crumbs={[
             { label: 'Home', href: '/' },
-            { label: 'Procedures', href: '/procedures' },
+            { label: 'Services', href: '/services' },
             { label: page.title },
           ]}
         />

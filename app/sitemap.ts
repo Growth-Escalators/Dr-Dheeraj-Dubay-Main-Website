@@ -23,7 +23,7 @@ const staticEntries: Entry[] = [
   { url: `${BASE}/blogs`, changeFrequency: 'weekly', priority: 0.7 },
   { url: `${BASE}/achievements`, changeFrequency: 'weekly', priority: 0.7 },
   { url: `${BASE}/gallery`, changeFrequency: 'monthly', priority: 0.6 },
-  { url: `${BASE}/youtube`, changeFrequency: 'monthly', priority: 0.6 },
+  { url: `${BASE}/testimonials`, changeFrequency: 'monthly', priority: 0.7 },
   { url: `${BASE}/contact`, changeFrequency: 'yearly', priority: 0.5 },
   { url: `${BASE}/events`, changeFrequency: 'monthly', priority: 0.6 },
   { url: `${BASE}/faq`, changeFrequency: 'monthly', priority: 0.6 },
@@ -124,7 +124,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('[sitemap] DB fetch failed, returning static-only:', e)
   }
 
-  return [
+  const entries = [
     ...staticEntries,
     ...procedureEntries,
     ...conditionEntries,
@@ -133,4 +133,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...cityEntries,
     ...dynamicEntries,
   ]
+
+  // A URL can be represented by both a dedicated static route and a
+  // data-driven collection. Submit each canonical URL only once.
+  return Array.from(new Map(entries.map((entry) => [entry.url, entry])).values())
 }
