@@ -1,91 +1,29 @@
-"use client";
-
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import {
-  APIProvider,
-  Map,
-  AdvancedMarker,
-  Pin,
-} from "@vis.gl/react-google-maps";
 import {
   MapPinIcon,
   PhoneIcon,
   ClockIcon,
   NavigationIcon,
 } from "lucide-react";
-import { ACCENT, SECTION_HEADING_CLASSES } from "@/lib/design-tokens";
+import { SECTION_HEADING_CLASSES } from "@/lib/design-tokens";
+import { CLINICS } from "@/lib/clinic-info";
 import { getWhatsAppBookingUrl } from "@/lib/whatsapp-booking";
 
-// Address + map locations block. Adds a single shared Google Map preview
-// at the top so visitors recognise the area before reading addresses; cards
-// below hold the same contact info as before plus a live open/closed
-// indicator computed from current IST time. The interactive iframe approach
-// (one map per clinic) was rejected for hurting Core Web Vitals — this uses
-// the vis.gl Google Maps React wrapper which is lighter and lazy-loads.
-
-const LOCATIONS = [
-  {
-    name: "Shalby Hospital Jaipur",
-    type: "Hospital OPD",
-    // Full GBP-matching address (2026-07-24 NAP alignment pass) — see
-    // lib/clinic-info.ts for the canonical source and why the short form
-    // was wrong.
-    address:
-      "Ajmer Expressway 200 Feet Bypass Road, near Gandhi Path, Chitrakoot Sector 3, Vaishali Nagar, Jaipur, Rajasthan 302021",
-    phone: "+91-8955373205",
-    hours: "Mon–Sat, 9:00 AM – 5:00 PM",
-    openHour: 9,
-    closeHour: 17,
-    position: { lat: 26.903488202765963, lng: 75.72921788230423 },
-    directionsUrl:
-      "https://www.google.com/maps/place/?q=place_id:ChIJPSvAWaS0bTkRSpg1PguKuf0",
-  },
-  {
-    name: "Dr. Dubay Hip & Knee Clinic",
-    type: "Evening Clinic",
-    address:
-      "297, Gali Number 6, Kusum Vihar, Vidhyadhar Nagar, Jaipur, Rajasthan 302017",
-    phone: "+91-8955373205",
-    hours: "Mon–Sat, 6:00 PM – 8:00 PM",
-    openHour: 18,
-    closeHour: 20,
-    // Vidhyadhar Nagar (matches lib/clinic-info.ts geo). The previous pin —
-    // 26.8272 / 75.8523 — dropped the marker in Jagatpura, ~17 km southeast
-    // of the actual clinic, contradicting the address printed right beside it.
-    position: { lat: 26.9633, lng: 75.7693 },
-    directionsUrl:
-      "https://www.google.com/maps/search/?api=1&query=Dr.+Dubay+Hip+%26+Knee+Clinic+Vidhyadhar+Nagar+Jaipur",
-  },
-];
-
-// Shared view centred between the two clinics so both pins fit. zoom=11 is
-// enough that both areas read as "north & east Jaipur".
-const MAP_CENTER = { lat: 26.866, lng: 75.79 };
-
-// Compute open/closed live for each location, recomputed every minute.
-// "now" is normalised to IST so the badge doesn't lie about open status
-// when a patient is browsing from outside India.
-function useIsOpenNow(openHour: number, closeHour: number) {
-  const [isOpen, setIsOpen] = useState(false);
-  useEffect(() => {
-    const check = () => {
-      const istNow = new Date(
-        new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
-      );
-      const day = istNow.getDay();
-      const hour = istNow.getHours();
-      setIsOpen(day >= 1 && day <= 6 && hour >= openHour && hour < closeHour);
-    };
-    check();
-    const id = setInterval(check, 60_000);
-    return () => clearInterval(id);
-  }, [openHour, closeHour]);
-  return isOpen;
-}
+// Keep the homepage location block server-rendered and lightweight. The
+// previous version hydrated a Google Maps SDK and a minute-by-minute status
+// timer far below the fold. That added a sizeable client bundle to every
+// homepage visit despite both cards already linking to Google Directions.
+// The dedicated /locations page retains lazy maps for visitors who need them.
+const LOCATIONS = CLINICS.map((clinic, index) => ({
+  name: index === 0 ? "Shalby Hospital Jaipur" : "Dr. Dubay Hip & Knee Clinic",
+  type: index === 0 ? "Hospital OPD" : "Evening Clinic",
+  address: clinic.address.fullDisplay,
+  phone: clinic.phone,
+  hours: clinic.hours,
+  directionsUrl: clinic.directionsUrl,
+}));
 
 function LocationCard({ loc }: { loc: (typeof LOCATIONS)[number] }) {
-  const isOpen = useIsOpenNow(loc.openHour, loc.closeHour);
   return (
     <article className="bg-white border border-gray-200 rounded-xl p-6 hover:border-emerald-300 hover:shadow-md transition flex flex-col">
       <div className="flex items-start justify-between gap-3 mb-3">
@@ -95,14 +33,6 @@ function LocationCard({ loc }: { loc: (typeof LOCATIONS)[number] }) {
           </span>
           <h3 className="text-lg font-bold text-gray-900">{loc.name}</h3>
         </div>
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap bg-white border border-gray-200">
-          <span
-            className={`w-1.5 h-1.5 rounded-full ${
-              isOpen ? "bg-emerald-500 animate-pulse" : "bg-gray-400"
-            }`}
-          />
-          {isOpen ? "Open now" : "Closed"}
-        </span>
       </div>
 
       <div className="space-y-2.5 text-sm text-gray-600 flex-1">
@@ -160,42 +90,16 @@ export default function LocationsBlock() {
           <span className={SECTION_HEADING_CLASSES.eyebrow}>Visit us</span>
           <h2 className={SECTION_HEADING_CLASSES.h2}>Our Locations</h2>
           <p className={SECTION_HEADING_CLASSES.sub}>
-            Two Jaipur clinics — pick the one closest to you, or tap a pin on
-            the map to see the area before you set out.
+            Orthopedic and joint-replacement consultations in Vaishali Nagar
+            and Vidhyadhar Nagar, Jaipur. Choose a clinic for directions.
           </p>
         </div>
 
-        <APIProvider apiKey="AIzaSyBAi8dE58UCX0blqwVUKRv8z7Yw0zGPYDs">
-          {/* Shared map preview at the top — both pins visible at once.
-              Reduced height vs a full-page map so it doesn't dominate; the
-              cards below are the action surface. */}
-          <div className="relative h-64 md:h-80 mb-8 rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
-            <Map
-              zoom={11}
-              center={MAP_CENTER}
-              mapId="2356584220fb1eb7"
-              gestureHandling="cooperative"
-              disableDefaultUI={true}
-              zoomControl={true}
-            >
-              {LOCATIONS.map((loc) => (
-                <AdvancedMarker key={loc.name} position={loc.position}>
-                  <Pin
-                    background="#10b981"
-                    borderColor="#ffffff"
-                    glyphColor="#ffffff"
-                  />
-                </AdvancedMarker>
-              ))}
-            </Map>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {LOCATIONS.map((loc) => (
-              <LocationCard key={loc.name} loc={loc} />
-            ))}
-          </div>
-        </APIProvider>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {LOCATIONS.map((loc) => (
+            <LocationCard key={loc.name} loc={loc} />
+          ))}
+        </div>
       </div>
     </section>
   );
