@@ -1,8 +1,3 @@
-"use client";
-
-import React from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import { MilestonesSection } from "@/components/home/MilestonesSection";
 import Card1 from "@/components/ProfileCard/Card1";
 import WhyChoose from "@/components/WhyChoose/WhyChoose";
@@ -52,10 +47,6 @@ export default function HomePageContent({
   homeVideos = [],
   homeArticles = [],
 }: HomePageContentProps) {
-  React.useEffect(() => {
-    AOS.init({ duration: 1500, once: false });
-  }, []);
-
   return (
     <div className="overflow-hidden">
       {/* 1. Hero */}
