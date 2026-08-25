@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Poppins&family=Ubuntu&display=swap");
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -101,10 +100,10 @@ html {
   }
 }
 
-/* Display serif — set as a variable in app/layout.tsx (next/font). Applied
-   only where a component asks for it, so the site stays on Inter otherwise. */
+/* Display serif for the homepage awards lockup. System fonts keep builds
+   deterministic and avoid a render-blocking third-party font request. */
 .font-display {
-  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-family: Georgia, "Times New Roman", serif;
 }
 
 /* Horizontal card rails (Conditions, Hindi) scroll by swipe/drag or the
