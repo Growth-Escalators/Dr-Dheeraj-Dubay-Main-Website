@@ -149,9 +149,8 @@ export default async function CostPage({ params }: { params: { slug: string } })
         {/* Why choose Dr. Dubay — every bullet here (surgery count, award
             wording, NABH status, etc.) is confirmed live on drdubay.in as
             of 2026-07-21, per lib/cost-pages.ts. The rating/review-count
-            line is pulled live from the canonical AGGREGATE_RATING
-            constant (lib/clinic-info.ts), corroborated by public GBP/
-            directory data. */}
+            line is pulled from the canonical AGGREGATE_RATING constant
+            (lib/clinic-info.ts), which is sourced from Google reviews. */}
         <section className="my-10">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Why patients choose Dr. Dubay</h2>
           <ul className="space-y-3">
@@ -165,8 +164,8 @@ export default async function CostPage({ params }: { params: { slug: string } })
               <li className="flex gap-3">
                 <span className="text-emerald-600 mt-0.5">✓</span>
                 <span className="text-gray-700 text-sm leading-relaxed">
-                  Rated {aggregate.ratingValue.toFixed(1)}/5 across {aggregate.reviewCount}+ verified
-                  patient reviews on Google and JustDial.
+                  Rated {aggregate.ratingValue.toFixed(1)}/5 across {aggregate.reviewCount}+ patient
+                  reviews on Google.
                 </span>
               </li>
             )}
