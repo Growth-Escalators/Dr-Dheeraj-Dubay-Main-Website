@@ -9,6 +9,19 @@ const LEGACY_HOSTS = new Set([
   "www.jointsreplacementsurgeon.in",
 ]);
 
+// Explicit WordPress → canonical-route mapping for the old
+// jointsreplacementsurgeon.in site. These routes are publicly linked from
+// the legacy navigation today, but their slugs do not match the Next.js site.
+// Mapping them here prevents an authority-transfer cutover from turning known
+// legacy pages into 404s when the old domain is pointed at this deployment.
+const LEGACY_WORDPRESS_ROUTES: Record<string, string> = {
+  "/": "/",
+  "/about-us": "/about",
+  "/contact-us": "/contact",
+  "/services": "/services",
+  "/blog": "/blogs",
+};
+
 const PRIVATE_PREFIXES = [
   "/admin",
   "/api/csv",
@@ -27,11 +40,41 @@ function hiddenResponse() {
   });
 }
 
+function normalisePath(pathname: string) {
+  if (pathname === "/") return pathname;
+  return pathname.replace(/\/+$/, "") || "/";
+}
+
+function legacyWordPressDestination(pathname: string) {
+  const normalised = normalisePath(pathname);
+  const exact = LEGACY_WORDPRESS_ROUTES[normalised];
+  if (exact) return exact;
+
+  // Old posts/service-detail URLs were not all discoverable from the public
+  // search index. Route descendants to the closest live content hub rather
+  // than preserving a WordPress-only prefix that cannot exist on Next.js.
+  if (normalised.startsWith("/blog/")) return "/blogs";
+  if (normalised.startsWith("/services/")) return "/services";
+
+  // Preserve any other path. If a matching route already exists on the new
+  // site it keeps its equity; genuinely unknown URLs remain honest 404s rather
+  // than being blanket-redirected to the homepage (which Google can treat as
+  // a soft 404).
+  return pathname;
+}
+
 export function middleware(request: NextRequest) {
   const { pathname, search, hostname } = request.nextUrl;
 
   if (LEGACY_HOSTS.has(hostname)) {
     let destinationPath = pathname;
+
+    if (
+      hostname === "jointsreplacementsurgeon.in" ||
+      hostname === "www.jointsreplacementsurgeon.in"
+    ) {
+      destinationPath = legacyWordPressDestination(pathname);
+    }
 
     if (hostname === "ortho.drdubay.in") {
       destinationPath =
