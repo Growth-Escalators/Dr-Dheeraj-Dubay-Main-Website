@@ -8,7 +8,7 @@ import { FaqJsonLd } from '@/components/seo/FaqJsonLd'
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { CostInquiryPopup } from '@/components/ui/CostInquiryPopup'
 import { getPublishedReviews } from '@/lib/reviews'
-import { AGGREGATE_RATING } from '@/lib/clinic-info'
+import { getGoogleAggregateRating } from '@/lib/google-rating'
 import { defaultSEO, generatePageMetadata } from '@/lib/seo.config'
 import type { Metadata } from 'next'
 
@@ -40,10 +40,12 @@ export default async function CostPage({ params }: { params: { slug: string } })
     : undefined
 
   // Reuse whatever review pool already exists for the matching procedure
-  // page — same PatientReview rows, same aggregate, so cost pages don't
-  // start from zero social proof and never contradict the procedure page.
-  const reviews = await getPublishedReviews({ procedureSlug: page.relatedProcedureSlug, limit: 3 })
-  const aggregate = AGGREGATE_RATING
+  // page. Aggregate rating/count comes from Google Places when configured,
+  // with the verified static value as a fail-safe.
+  const [reviews, aggregate] = await Promise.all([
+    getPublishedReviews({ procedureSlug: page.relatedProcedureSlug, limit: 3 }),
+    getGoogleAggregateRating(),
+  ])
 
   // MedicalProcedure schema — references the site's existing Physician
   // node by @id (defined once in components/seo/JsonLd.tsx's
@@ -146,11 +148,9 @@ export default async function CostPage({ params }: { params: { slug: string } })
           <p className="text-xs text-gray-600 leading-relaxed italic">{page.insuranceRegulatoryNote}</p>
         </section>
 
-        {/* Why choose Dr. Dubay — every bullet here (surgery count, award
-            wording, NABH status, etc.) is confirmed live on drdubay.in as
-            of 2026-07-21, per lib/cost-pages.ts. The rating/review-count
-            line is pulled from the canonical AGGREGATE_RATING constant
-            (lib/clinic-info.ts), which is sourced from Google reviews. */}
+        {/* Why choose Dr. Dubay — practice facts are sourced from the shared
+            current-data layer. Google rating/count is fetched through the
+            cached Places API source when credentials are configured. */}
         <section className="my-10">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Why patients choose Dr. Dubay</h2>
           <ul className="space-y-3">
@@ -160,15 +160,13 @@ export default async function CostPage({ params }: { params: { slug: string } })
                 <span className="text-gray-700 text-sm leading-relaxed">{point}</span>
               </li>
             ))}
-            {aggregate && (
-              <li className="flex gap-3">
-                <span className="text-emerald-600 mt-0.5">✓</span>
-                <span className="text-gray-700 text-sm leading-relaxed">
-                  Rated {aggregate.ratingValue.toFixed(1)}/5 across {aggregate.reviewCount}+ patient
-                  reviews on Google.
-                </span>
-              </li>
-            )}
+            <li className="flex gap-3">
+              <span className="text-emerald-600 mt-0.5">✓</span>
+              <span className="text-gray-700 text-sm leading-relaxed">
+                Rated {aggregate.ratingValue.toFixed(1)}/5 across {aggregate.reviewCount}+ patient
+                reviews on Google.
+              </span>
+            </li>
           </ul>
         </section>
 
@@ -209,11 +207,7 @@ export default async function CostPage({ params }: { params: { slug: string } })
         <TestimonialStrip
           reviews={reviews}
           heading={`${page.schema.procedureName} — patient experiences`}
-          subheading={
-            aggregate
-              ? `${aggregate.ratingValue}/5 average across ${aggregate.reviewCount} reviews`
-              : undefined
-          }
+          subheading={`${aggregate.ratingValue}/5 average across ${aggregate.reviewCount} reviews`}
         />
       ) : null}
 
