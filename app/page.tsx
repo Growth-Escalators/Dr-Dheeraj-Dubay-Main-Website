@@ -16,7 +16,8 @@ import {
 import { TestimonialStrip } from "@/components/ui/TestimonialStrip";
 import { db } from "@/lib/db";
 import { getPublishedReviews } from "@/lib/reviews";
-import { AGGREGATE_RATING, SITE_URL } from "@/lib/clinic-info";
+import { SITE_URL } from "@/lib/clinic-info";
+import { getGoogleAggregateRating } from "@/lib/google-rating";
 import { safeImageUrl } from "@/lib/image-url";
 import { getShowcaseAwards, getAwardTimeline } from "@/lib/awards";
 import { getYouTubeId } from "@/lib/youtube";
@@ -108,7 +109,8 @@ export default async function CardWithForm() {
   }
 
   // Patient testimonial content from DB (featured first). The aggregate
-  // rating digits come from the canonical GBP source, not the DB count.
+  // rating comes from Google Places when credentials are configured, with the
+  // verified static value used only as a fail-safe.
   let featuredReviews: Awaited<ReturnType<typeof getPublishedReviews>> = [];
   try {
     featuredReviews = await getPublishedReviews({ featuredOnly: true, limit: 3 });
@@ -120,13 +122,15 @@ export default async function CardWithForm() {
     featuredReviews = [];
   }
 
+  const aggregateRating = await getGoogleAggregateRating();
+
   return (
     <>
       <PhysicianJsonLd />
       <MedicalBusinessJsonLd />
       <AggregateRatingJsonLd
-        ratingValue={AGGREGATE_RATING.ratingValue}
-        reviewCount={AGGREGATE_RATING.reviewCount}
+        ratingValue={aggregateRating.ratingValue}
+        reviewCount={aggregateRating.reviewCount}
         itemId={`${SITE_URL}/#physician`}
       />
       {featuredReviews.length ? (
@@ -146,7 +150,7 @@ export default async function CardWithForm() {
       {featuredReviews.length ? (
         <TestimonialStrip
           reviews={featuredReviews}
-          subheading={`Rated ${AGGREGATE_RATING.ratingValue}/5 across ${AGGREGATE_RATING.reviewCount}+ Google reviews`}
+          subheading={`Rated ${aggregateRating.ratingValue}/5 across ${aggregateRating.reviewCount}+ Google reviews`}
         />
       ) : null}
     </>
