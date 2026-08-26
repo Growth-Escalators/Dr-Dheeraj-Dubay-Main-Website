@@ -10,13 +10,11 @@ import HomePageContent from "@/components/HomePageContent";
 import {
   PhysicianJsonLd,
   MedicalBusinessJsonLd,
-  AggregateRatingJsonLd,
-  ReviewListJsonLd,
 } from "@/components/seo/JsonLd";
 import { TestimonialStrip } from "@/components/ui/TestimonialStrip";
 import { db } from "@/lib/db";
 import { getPublishedReviews } from "@/lib/reviews";
-import { AGGREGATE_RATING, SITE_URL } from "@/lib/clinic-info";
+import { AGGREGATE_RATING } from "@/lib/clinic-info";
 import { safeImageUrl } from "@/lib/image-url";
 import { getShowcaseAwards, getAwardTimeline } from "@/lib/awards";
 import { getYouTubeId } from "@/lib/youtube";
@@ -107,8 +105,10 @@ export default async function CardWithForm() {
     homeArticles = [];
   }
 
-  // Patient testimonial content from DB (featured first). The aggregate
-  // rating digits come from the canonical GBP source, not the DB count.
+  // Patient testimonial content from DB (featured first). Testimonials remain
+  // visible to users, but we intentionally do not mark up first-party reviews
+  // as AggregateRating/Review structured data because Google treats that as
+  // self-serving review markup for business-owned pages.
   let featuredReviews: Awaited<ReturnType<typeof getPublishedReviews>> = [];
   try {
     featuredReviews = await getPublishedReviews({ featuredOnly: true, limit: 3 });
@@ -124,17 +124,6 @@ export default async function CardWithForm() {
     <>
       <PhysicianJsonLd />
       <MedicalBusinessJsonLd />
-      <AggregateRatingJsonLd
-        ratingValue={AGGREGATE_RATING.ratingValue}
-        reviewCount={AGGREGATE_RATING.reviewCount}
-        itemId={`${SITE_URL}/#physician`}
-      />
-      {featuredReviews.length ? (
-        <ReviewListJsonLd
-          reviews={featuredReviews}
-          itemReviewedId={`${SITE_URL}/#physician`}
-        />
-      ) : null}
       <HomePageContent
         featuredAchievements={featuredAchievements}
         showcaseAwards={showcaseAwards}
