@@ -38,6 +38,7 @@ const staticEntries: Entry[] = [
   { url: `${BASE}/faq`, changeFrequency: 'monthly', priority: 0.6 },
   { url: `${BASE}/locations`, changeFrequency: 'monthly', priority: 0.75 },
   { url: `${BASE}/hip-replacement-jaipur`, changeFrequency: 'weekly', priority: 0.95 },
+  { url: `${BASE}/insurance-cashless-jaipur`, changeFrequency: 'monthly', priority: 0.85, lastModified: '2026-08-29' },
   { url: `${BASE}/editorial-policy`, changeFrequency: 'monthly', priority: 0.5 },
   { url: `${BASE}/articles`, changeFrequency: 'weekly', priority: 0.6 },
   { url: `${BASE}/news`, changeFrequency: 'weekly', priority: 0.5 },
