@@ -1,11 +1,11 @@
 import type { MetadataRoute } from 'next'
 import { db } from '@/lib/db'
 import { defaultSEO } from '@/lib/seo.config'
-import { CITY_PAGES } from '@/lib/city-pages'
-import { HINDI_PAGES } from '@/lib/hindi-pages'
-import { PROCEDURE_PAGES } from '@/lib/procedure-pages'
-import { CONDITION_PAGES } from '@/lib/condition-pages'
-import { COST_PAGES } from '@/lib/cost-pages'
+import { CITY_PAGES } from '@/lib/city-pages.current'
+import { HINDI_PAGES } from '@/lib/hindi-pages.current'
+import { PROCEDURE_PAGES } from '@/lib/procedure-pages.current'
+import { CONDITION_PAGES } from '@/lib/condition-pages.current'
+import { COST_PAGES } from '@/lib/cost-pages.current'
 
 export const revalidate = 3600
 
