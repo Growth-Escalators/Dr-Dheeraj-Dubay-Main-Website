@@ -35,11 +35,6 @@ export default function PatientGuidePage({ params }: { params: { slug: string } 
     inLanguage: 'en-IN',
     about: guide.category,
     dateModified: '2026-08-30',
-    publisher: {
-      '@type': 'Organization',
-      name: 'Dr. Dheeraj Dubay — Patient Education Website',
-      url: defaultSEO.siteUrl,
-    },
   }
 
   return (
