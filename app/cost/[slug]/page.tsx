@@ -1,16 +1,17 @@
-import { COST_PAGES } from '@/lib/cost-pages'
+import { COST_PAGES as RAW_COST_PAGES } from '@/lib/cost-pages'
+import { applyCostSeoOverrides } from '@/lib/cost-seo-overrides'
 import { PROCEDURE_PAGES } from '@/lib/procedure-pages'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { BreadcrumbNav, CTASection, FAQAccordion, TrustBadges, CostEstimateCTA } from '@/components/pages'
 import { BreadcrumbJsonLd } from '@/components/seo/BreadcrumbJsonLd'
 import { FaqJsonLd } from '@/components/seo/FaqJsonLd'
-import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
-import { CostInquiryPopup } from '@/components/ui/CostInquiryPopup'
-import { getPublishedReviews } from '@/lib/reviews'
-import { AGGREGATE_RATING } from '@/lib/clinic-info'
 import { defaultSEO, generatePageMetadata } from '@/lib/seo.config'
 import type { Metadata } from 'next'
+
+const COST_PAGES = applyCostSeoOverrides(RAW_COST_PAGES)
+const SHALBY_INSURANCE_SOURCE =
+  'https://www.shalby.org/hospitals/jaipur-shalby/insurance-corporate-tpa-tie-ups/'
 
 export async function generateStaticParams() {
   return COST_PAGES.map((p) => ({ slug: p.slug }))
@@ -29,7 +30,7 @@ export async function generateMetadata(
   })
 }
 
-export default async function CostPage({ params }: { params: { slug: string } }) {
+export default function CostPage({ params }: { params: { slug: string } }) {
   const page = COST_PAGES.find((p) => p.slug === params.slug)
   if (!page) return notFound()
 
@@ -39,17 +40,6 @@ export default async function CostPage({ params }: { params: { slug: string } })
     ? COST_PAGES.find((p) => p.slug === page.relatedCostSlug)
     : undefined
 
-  // Reuse whatever review pool already exists for the matching procedure
-  // page — same PatientReview rows, same aggregate, so cost pages don't
-  // start from zero social proof and never contradict the procedure page.
-  const reviews = await getPublishedReviews({ procedureSlug: page.relatedProcedureSlug, limit: 3 })
-  const aggregate = AGGREGATE_RATING
-
-  // MedicalProcedure schema — references the site's existing Physician
-  // node by @id (defined once in components/seo/JsonLd.tsx's
-  // PhysicianJsonLd, which PhysicianJsonLd/MedicalBusinessJsonLd already
-  // render on other pages) instead of a fresh inline Person, per the GE
-  // SEO standard's "connected @id graph" rule.
   const procedureSchema = {
     '@context': 'https://schema.org',
     '@type': 'MedicalProcedure',
@@ -76,115 +66,99 @@ export default async function CostPage({ params }: { params: { slug: string } })
       />
       <FaqJsonLd faqs={page.faqs.map((f) => ({ question: f.q, answer: f.a }))} />
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+      <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
         <BreadcrumbNav crumbs={[{ label: 'Home', href: '/' }, { label: page.h1 }]} />
 
-        {/* Hero + direct-answer intro — one H1, answer in the first ~55 words. */}
-        <div className="mb-2">
-          <span className="inline-block bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full mb-4 border border-emerald-200">
+        <header className="mb-2">
+          <span className="mb-4 inline-block rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
             {page.category}
           </span>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-4">
+          <h1 className="mb-4 text-3xl font-bold leading-tight text-gray-900 md:text-4xl">
             {page.h1}
           </h1>
-          <p className="text-gray-600 text-base leading-relaxed">{page.intro}</p>
-        </div>
+          <p className="text-base leading-relaxed text-gray-600">{page.intro}</p>
+        </header>
 
-        {/* Top inline CTA — compact, non-blocking, sits above the fold. */}
         <CostEstimateCTA page={page} />
 
-        {/* Cost headline box. hasConfirmedRange=false (hip page today) means
-            NO number is rendered at all — "cost varies" framing only. */}
-        <div className="my-8 rounded-2xl border border-gray-200 bg-gray-50 p-6 md:p-8 text-center">
-          <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold mb-2">
-            {page.hasConfirmedRange ? 'Typical price range' : 'Your estimate'}
+        <div className="my-8 rounded-2xl border border-gray-200 bg-gray-50 p-6 text-center md:p-8">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
+            Patient-specific estimate
           </p>
-          <p className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">{page.costHeadline}</p>
+          <p className="mb-1 text-2xl font-bold text-gray-900 md:text-3xl">{page.costHeadline}</p>
           <p className="text-sm text-gray-600">{page.costSubtext}</p>
-          {page.comparisonNote && (
-            <p className="text-xs text-gray-500 mt-3">{page.comparisonNote}</p>
-          )}
         </div>
 
         <TrustBadges />
 
-        {/* What affects your cost */}
         <section className="my-10">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">{page.whatAffectsCostHeading}</h2>
+          <h2 className="mb-6 text-2xl font-bold text-gray-900">{page.whatAffectsCostHeading}</h2>
           <div className="space-y-4">
-            {page.whatAffectsCost.map((factor, i) => (
-              <div key={i} className="flex gap-3">
-                <span className="flex-shrink-0 w-2 h-2 rounded-full bg-emerald-500 mt-2" />
+            {page.whatAffectsCost.map((factor) => (
+              <div key={factor.title} className="flex gap-3">
+                <span className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-emerald-500" />
                 <div>
-                  <h3 className="font-semibold text-gray-900 text-sm">{factor.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed mt-0.5">{factor.description}</p>
+                  <h3 className="text-sm font-semibold text-gray-900">{factor.title}</h3>
+                  <p className="mt-0.5 text-sm leading-relaxed text-gray-600">{factor.description}</p>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* Insurance & cashless. page.insuranceSchemes / insuranceRegulatoryNote
-            deliberately name no specific scheme (RGHS/Ayushman/CGHS) or
-            regulatory circular — see lib/cost-pages.ts header comment.
-            Everything here is either confirmed live on drdubay.in or a
-            generic, non-asserting "confirm with the team" pointer, so it
-            needs no clinic sign-off before shipping. */}
-        <section className="my-10 bg-emerald-50 rounded-2xl p-6 md:p-8 border border-emerald-100">
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">
-            Insurance &amp; Cashless Coverage
-          </h2>
-          <p className="text-sm text-gray-700 leading-relaxed mb-5">{page.insuranceIntro}</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-            {page.insuranceSchemes.map((scheme, i) => (
-              <div key={i} className="bg-white rounded-xl p-4 border border-emerald-100">
-                <h3 className="font-semibold text-gray-900 text-sm mb-1">{scheme.name}</h3>
-                <p className="text-xs text-gray-600 leading-relaxed">{scheme.detail}</p>
-              </div>
-            ))}
+        <section className="my-10 rounded-2xl border border-emerald-100 bg-emerald-50 p-6 md:p-8">
+          <h2 className="mb-3 text-2xl font-bold text-gray-900">Insurance &amp; Cashless Coverage</h2>
+          <p className="text-sm leading-relaxed text-gray-700">
+            Shalby Hospital Jaipur currently publishes a hospital-specific list of insurer, TPA,
+            government-scheme and institutional tie-ups. The published government list includes
+            Rajasthan Government Health Scheme (RGHS). Cashless approval is not automatic: current
+            empanelment, policy terms, exclusions, medical indication and pre-authorisation must be
+            verified for the planned admission.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link
+              href="/insurance-cashless-jaipur"
+              className="rounded-lg bg-emerald-700 px-5 py-3 text-sm font-semibold text-white hover:bg-emerald-800"
+            >
+              View Shalby Jaipur insurance &amp; scheme list
+            </Link>
+            <a
+              href={SHALBY_INSURANCE_SOURCE}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg border border-emerald-300 bg-white px-5 py-3 text-sm font-semibold text-emerald-800 hover:bg-emerald-100"
+            >
+              Shalby official source ↗
+            </a>
           </div>
-          <p className="text-xs text-gray-600 leading-relaxed italic">{page.insuranceRegulatoryNote}</p>
+          <p className="mt-4 text-xs leading-relaxed text-gray-600">
+            Source checked 29 August 2026. Some names on Shalby&apos;s published page use legacy
+            insurer/scheme branding, so patients should verify the current network before admission.
+          </p>
         </section>
 
-        {/* Why choose Dr. Dubay — every bullet here (surgery count, award
-            wording, NABH status, etc.) is confirmed live on drdubay.in as
-            of 2026-07-21, per lib/cost-pages.ts. The rating/review-count
-            line is pulled from the canonical AGGREGATE_RATING constant
-            (lib/clinic-info.ts), which is sourced from Google reviews. */}
         <section className="my-10">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Why patients choose Dr. Dubay</h2>
+          <h2 className="mb-4 text-2xl font-bold text-gray-900">Dr. Dheeraj Dubay — relevant experience</h2>
           <ul className="space-y-3">
-            {page.whyDrDubay.map((point, i) => (
-              <li key={i} className="flex gap-3">
-                <span className="text-emerald-600 mt-0.5">✓</span>
-                <span className="text-gray-700 text-sm leading-relaxed">{point}</span>
+            {page.whyDrDubay.map((point) => (
+              <li key={point} className="flex gap-3">
+                <span className="mt-0.5 text-emerald-600">✓</span>
+                <span className="text-sm leading-relaxed text-gray-700">{point}</span>
               </li>
             ))}
-            {aggregate && (
-              <li className="flex gap-3">
-                <span className="text-emerald-600 mt-0.5">✓</span>
-                <span className="text-gray-700 text-sm leading-relaxed">
-                  Rated {aggregate.ratingValue.toFixed(1)}/5 across {aggregate.reviewCount}+ patient
-                  reviews on Google.
-                </span>
-              </li>
-            )}
           </ul>
         </section>
 
-        {/* FAQ */}
         <section className="my-10">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+          <h2 className="mb-6 text-2xl font-bold text-gray-900">Frequently Asked Questions</h2>
           <FAQAccordion faqs={page.faqs} />
         </section>
 
-        {/* Related links — cost twin (knee ↔ robotic knee) + the matching
-            /procedures page, so crawl depth stays shallow both ways. */}
         <section className="my-10 flex flex-wrap gap-3">
           {relatedCostPage && (
             <Link
               href={`/cost/${relatedCostPage.slug}`}
-              className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-full hover:bg-emerald-100 transition-colors"
+              className="rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-700 hover:bg-emerald-100"
             >
               {page.relatedCostLabel} →
             </Link>
@@ -192,36 +166,24 @@ export default async function CostPage({ params }: { params: { slug: string } })
           {relatedProcedure && (
             <Link
               href={`/procedures/${relatedProcedure.slug}`}
-              className="text-sm text-blue-700 bg-blue-50 border border-blue-200 px-4 py-2 rounded-full hover:bg-blue-100 transition-colors"
+              className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm text-blue-700 hover:bg-blue-100"
             >
               About {relatedProcedure.title} →
             </Link>
           )}
+          <Link
+            href="/insurance-cashless-jaipur"
+            className="rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-800 hover:bg-amber-100"
+          >
+            Insurance &amp; Cashless Guide →
+          </Link>
         </section>
 
         <CTASection
-          heading="Ready for a real number?"
-          subheading="Send your reports on WhatsApp and Dr. Dubay's team will reply with a personalised estimate — not a generic price list."
+          heading="Need a current hospital estimate?"
+          subheading="Share the available reports and insurance or scheme details. The team can guide you to the appropriate patient-specific estimate and verification process."
         />
       </main>
-
-      {reviews.length ? (
-        <TestimonialStrip
-          reviews={reviews}
-          heading={`${page.schema.procedureName} — patient experiences`}
-          subheading={
-            aggregate
-              ? `${aggregate.ratingValue}/5 average across ${aggregate.reviewCount} reviews`
-              : undefined
-          }
-        />
-      ) : null}
-
-      {/* Scroll-triggered lead capture. Fires once per visit at ~30% scroll,
-          skips entirely if the top CostEstimateCTA was already used — see
-          components/ui/CostInquiryPopup.tsx for the shared flag logic and
-          the mobile bottom-sheet / desktop modal split. */}
-      <CostInquiryPopup page={page} />
     </>
   )
 }
