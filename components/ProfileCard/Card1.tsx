@@ -2,15 +2,12 @@ import React from "react";
 import Image from "next/image";
 import { getWhatsAppBookingUrl } from "@/lib/whatsapp-booking";
 import {
-  SURGERY_COUNT,
   SURGERY_COUNT_DISPLAY,
-  EXPERIENCE_YEARS,
   EXPERIENCE_YEARS_DISPLAY,
   RECORD_SURGERIES_IN_A_DAY,
 } from "@/lib/clinic-info";
 
 type Props = {};
-//
 
 const Card1 = (props: Props) => {
   return (
@@ -23,38 +20,25 @@ const Card1 = (props: Props) => {
                 Dr. Dheeraj Dubay
               </h1>
               <p className="text-xl lg:text-2xl font-medium text-emerald-600 dark:text-emerald-400">
-                Director, Robotic Joint Replacement Surgery — Shalby
-                Hospital Jaipur
+                Director, Robotic Joint Replacement Surgery — Shalby Hospital Jaipur
               </p>
               <div className="inline-flex items-center px-4 py-2 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg">
                 <span className="text-lg font-semibold text-emerald-700 dark:text-emerald-300">
                   MBBS, MS (Orthopedic), FJRS (Germany)
                 </span>
               </div>
-              
+
               <p className="text-lg lg:text-xl leading-relaxed text-gray-600 dark:text-gray-300">
-                He has more than{" "}
+                Dr. Dheeraj Dubay has{" "}
                 <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                  {EXPERIENCE_YEARS} years of experience
+                  {EXPERIENCE_YEARS_DISPLAY} years of orthopedic experience
                 </span>{" "}
-                in the field of Joint Replacement Surgeries and is well versed
-                with latest techniques such as computer navigation and minimally
-                invasive surgeries. Now he is performing replacement surgeries
-                at Shalby Hospital, Jaipur. He has done more
-                than{" "}
+                and has performed more than{" "}
                 <span className="text-black font-bold dark:text-gray-200">
-                  {SURGERY_COUNT.toLocaleString()}{" "}
-                </span>
-                successful Joint Replacement Surgeries. Record of{" "}
-                <span className="text-black font-bold dark:text-gray-200">
-                  {RECORD_SURGERIES_IN_A_DAY}{" "}
-                </span>{" "}
-                joint replacement surgeries in a day in Rajasthan. He has been
-                awarded for excellence in Joint Replacement surgery by the
-                Health Minister of Rajasthan for the last 3 consecutive years.
-                He has recently been felicitated by the Honourable central
-                Health Minister and Social and Family Welfare Minister as the
-                most trusted Joint Replacement Surgeon of North India.
+                  {SURGERY_COUNT_DISPLAY} surgeries
+                </span>.
+                His practice focuses on knee and hip replacement, including robotic,
+                computer-navigated and minimally invasive techniques, at Shalby Hospital Jaipur.
               </p>
 
               <div className="p-6 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/30 dark:to-yellow-900/30 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-amber-200/50 dark:border-amber-700/30">
@@ -66,24 +50,23 @@ const Card1 = (props: Props) => {
                   </div>
                   <div>
                     <h4 className="text-lg font-semibold bg-gradient-to-r from-amber-600 to-yellow-500 dark:from-amber-400 dark:to-yellow-300 bg-clip-text text-transparent mb-1">
-                      Excellence in Joint Replacement Surgery
+                      Forbes World Records — {RECORD_SURGERIES_IN_A_DAY} Joint Replacements in One Day
                     </h4>
                     <p className="text-base text-amber-900 dark:text-amber-200">
-                      Awarded by the Health Minister of Rajasthan for 3 consecutive years
+                      33 knee replacements and 1 hip replacement performed on 9 May 2024
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Trust Badges */}
               <div className="flex flex-wrap gap-3">
                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-sm font-semibold text-gray-700 dark:text-gray-200 border border-gray-100 dark:border-gray-700">
                   <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                  {SURGERY_COUNT_DISPLAY} Surgeries
+                  {SURGERY_COUNT_DISPLAY} Total Surgeries
                 </span>
                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-sm font-semibold text-gray-700 dark:text-gray-200 border border-gray-100 dark:border-gray-700">
                   <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
-                  Forbes World Record
+                  Forbes World Records — {RECORD_SURGERIES_IN_A_DAY} in One Day
                 </span>
                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-sm font-semibold text-gray-700 dark:text-gray-200 border border-gray-100 dark:border-gray-700">
                   <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
@@ -91,7 +74,6 @@ const Card1 = (props: Props) => {
                 </span>
               </div>
 
-              {/* CTA Buttons */}
               <div className="flex flex-wrap gap-4">
                 <a
                   href={getWhatsAppBookingUrl()}
