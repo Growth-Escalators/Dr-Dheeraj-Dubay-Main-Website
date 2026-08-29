@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { BreadcrumbNav, CTASection, FAQAccordion, RecoveryTimeline, TrustBadges } from '@/components/pages'
 import { PhysicianJsonLd } from '@/components/seo/JsonLd'
 import { ProcedureReferences } from '@/components/seo/ProcedureReferences'
+import { RelatedPatientGuides } from '@/components/seo/RelatedPatientGuides'
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { getPublishedReviews } from '@/lib/reviews'
 import type { Metadata } from 'next'
@@ -218,6 +219,7 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
         </section>
 
         <ProcedureReferences procedureSlug={page.slug} />
+        <RelatedPatientGuides currentPath={`/procedures/${page.slug}`} />
 
         {(page.relatedProcedures.length > 0 || page.crossLinks?.length) && (
           <section className="my-10">
