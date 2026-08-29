@@ -5,7 +5,6 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { BreadcrumbNav } from '@/components/pages'
 import { BreadcrumbJsonLd } from '@/components/seo/BreadcrumbJsonLd'
-import { AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { defaultSEO } from '@/lib/seo.config'
 import { getPublishedReviews } from '@/lib/reviews'
@@ -75,7 +74,9 @@ export default async function CityPage(
   const aggregate = AGGREGATE_RATING
 
   // MedicalBusiness + Service schema — Jaipur surgeon serving this city.
-  // The local-pack signal: tie the doctor + procedure + service-area together.
+  // Review/rating structured data is intentionally omitted: Google does not
+  // support self-serving LocalBusiness/Organization review markup on the
+  // entity's own site. Visible patient testimonials remain unchanged.
   const localServiceSchema = {
     '@context': 'https://schema.org',
     '@type': 'MedicalBusiness',
@@ -111,24 +112,6 @@ export default async function CityPage(
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localServiceSchema) }}
       />
-      {/* AggregateRating/Review are the physician's real GBP rating, not a
-          per-procedure rating we invented — attribute them to the existing
-          #physician node (@id) so they join the same graph as
-          PhysicianJsonLd instead of implying a fresh, unverifiable
-          "MedicalProcedure has 1,100 reviews" claim. */}
-      {aggregate ? (
-        <AggregateRatingJsonLd
-          ratingValue={aggregate.ratingValue}
-          reviewCount={aggregate.reviewCount}
-          itemId={`${defaultSEO.siteUrl}/#physician`}
-        />
-      ) : null}
-      {cityReviews.length ? (
-        <ReviewListJsonLd
-          reviews={cityReviews}
-          itemReviewedId={`${defaultSEO.siteUrl}/#physician`}
-        />
-      ) : null}
       <main style={{
       maxWidth: '800px',
       margin: '0 auto',
