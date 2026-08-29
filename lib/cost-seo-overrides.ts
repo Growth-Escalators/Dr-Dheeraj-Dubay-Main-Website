@@ -23,6 +23,91 @@ const INSURANCE_SCHEMES = [
 const REGULATORY_NOTE =
   'Insurance coverage is policy- and procedure-specific. Do not assume that conventional, robotic or navigation-assisted surgery is covered until the insurer/TPA and hospital have confirmed the current terms for your admission.'
 
+const KNEE_FACTORS = [
+  {
+    title: 'Implant selection',
+    description: 'Implant type and fixation are among the factors that can materially change the hospital estimate. Selection should be based on clinical suitability as well as cost.',
+  },
+  {
+    title: 'Conventional or robotic-assisted plan',
+    description: 'Robotic-assisted surgery may involve separate technology or hospital charges. The current estimate should be requested for the exact technique planned for the patient.',
+  },
+  {
+    title: 'One knee or both knees',
+    description: 'Treating one knee, both knees during one admission, or staging the operations changes the services and resources included in the estimate.',
+  },
+  {
+    title: 'Hospital room category',
+    description: 'Room category can change hospital charges. Ask the hospital team which room and related services are included in the estimate.',
+  },
+  {
+    title: 'Investigations and rehabilitation',
+    description: 'Pre-operative tests, medical optimisation, physiotherapy and follow-up requirements vary between patients and may affect the final estimate.',
+  },
+  {
+    title: 'Insurance or scheme eligibility',
+    description: 'What the patient pays out of pocket depends on policy or scheme terms, exclusions, limits and pre-authorisation as well as the hospital bill.',
+  },
+  {
+    title: 'Primary or revision surgery',
+    description: 'Revision surgery can require different implants, investigations and operating resources, so its estimate may differ from a first-time knee replacement.',
+  },
+]
+
+const ROBOTIC_FACTORS = [
+  {
+    title: 'Robotic technology component',
+    description: 'The robotic-assisted plan may include technology or hospital charges that are separate from other components of the surgical package.',
+  },
+  {
+    title: 'Implant selection',
+    description: 'Implant type and fixation can affect the estimate. Robotic assistance does not by itself determine which implant is clinically appropriate.',
+  },
+  {
+    title: 'One knee or both knees',
+    description: 'Unilateral and bilateral plans use different hospital resources and should be estimated separately rather than by simply multiplying a headline price.',
+  },
+  {
+    title: 'Hospital room category',
+    description: 'Room category and related hospital services can change the final estimate.',
+  },
+  {
+    title: 'Medical complexity and investigations',
+    description: 'Pre-operative optimisation, additional investigations and other medical needs can change the services required for a safe admission.',
+  },
+  {
+    title: 'Insurance or scheme eligibility',
+    description: 'Coverage for the planned procedure, including any robotic technology component, must be confirmed with the current insurer/TPA or scheme and the hospital.',
+  },
+]
+
+const HIP_FACTORS = [
+  {
+    title: 'Implant selection',
+    description: 'Implant type, bearing surface and fixation are among the factors that can affect the hospital estimate and should be chosen for the individual patient.',
+  },
+  {
+    title: 'Primary or revision hip replacement',
+    description: 'Revision cases can need different implants, investigations and operating resources, so the estimate may differ substantially from a primary operation.',
+  },
+  {
+    title: 'Diagnosis and case complexity',
+    description: 'The reason for surgery, bone quality, deformity, previous operations and other clinical factors can change the planned procedure and resources required.',
+  },
+  {
+    title: 'Hospital room category',
+    description: 'Room category and related hospital services can change the final estimate.',
+  },
+  {
+    title: 'Investigations and rehabilitation',
+    description: 'Pre-operative testing, medical optimisation and rehabilitation needs vary by patient and may affect the hospital estimate.',
+  },
+  {
+    title: 'Insurance or scheme eligibility',
+    description: 'Cashless or reimbursement eligibility depends on the current policy or scheme, exclusions, limits, medical indication and pre-authorisation.',
+  },
+]
+
 function common(page: CostPage): CostPage {
   return {
     ...page,
@@ -52,6 +137,7 @@ function knee(page: CostPage): CostPage {
     h1: 'Knee Replacement Cost in Jaipur: Factors, Insurance & Estimate',
     intro:
       'There is no single knee replacement price that applies to every patient. The final hospital estimate depends on the type of knee replacement, implant, one or both knees, medical complexity, room category, investigations and insurance eligibility. Use this page to understand the cost factors, then request a patient-specific estimate from the hospital team.',
+    whatAffectsCost: KNEE_FACTORS,
     faqs: [
       {
         q: 'How much does knee replacement cost in Jaipur?',
@@ -87,6 +173,7 @@ function robotic(page: CostPage): CostPage {
     h1: 'Robotic Knee Replacement Cost in Jaipur: What Changes the Estimate',
     intro:
       'Robotic knee replacement does not have one universal package price. The estimate depends on the technology used for the planned case, implant, whether one or both knees are treated, medical complexity, hospital services, room category and insurance eligibility. Robotic assistance is a surgeon-controlled tool and should be chosen for clinical reasons, not from a generic price comparison alone.',
+    whatAffectsCost: ROBOTIC_FACTORS,
     faqs: [
       {
         q: 'How much does robotic knee replacement cost in Jaipur?',
@@ -122,6 +209,7 @@ function hip(page: CostPage): CostPage {
     h1: 'Hip Replacement Cost in Jaipur: Factors, Insurance & Estimate',
     intro:
       'Hip replacement cost varies from case to case. Implant choice, primary versus revision surgery, medical complexity, investigations, hospital services, room category and insurance eligibility all affect the final estimate. The hospital team should provide a current patient-specific estimate after the planned procedure is clear.',
+    whatAffectsCost: HIP_FACTORS,
     faqs: [
       {
         q: 'How much does hip replacement cost in Jaipur?',

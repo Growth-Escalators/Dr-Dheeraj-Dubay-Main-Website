@@ -145,15 +145,15 @@ export default function InsuranceCashlessJaipurPage() {
           <h2 className="text-xl font-bold text-gray-900">What should you send for verification?</h2>
           <p className="mt-2 text-sm leading-relaxed text-gray-700">
             Keep your insurer/TPA or scheme name, policy/card number, patient ID, planned procedure and
-            any existing pre-authorisation documents ready. Shalby&apos;s insurance desk can confirm whether
-            the current plan is eligible for cashless processing and what approval is required.
+            any existing pre-authorisation documents ready. Shalby&apos;s team can confirm whether the
+            current plan is eligible for cashless processing and what approval is required.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <a
-              href="tel:+917413885999"
+              href="tel:+919057901410"
               className="rounded-lg bg-emerald-700 px-5 py-3 text-sm font-semibold text-white hover:bg-emerald-800"
             >
-              Call Shalby Jaipur: +91 74138 85999
+              Call Shalby Jaipur: +91 90579 01410
             </a>
             <a
               href={SOURCE_URL}
