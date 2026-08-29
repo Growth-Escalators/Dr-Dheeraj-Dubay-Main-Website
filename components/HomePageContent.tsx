@@ -13,6 +13,7 @@ import ProceduresSection from "@/components/home/ProceduresSection";
 import ConditionsSection from "@/components/home/ConditionsSection";
 import HindiSection from "@/components/home/HindiSection";
 import PatientGuidesSection from "@/components/home/PatientGuidesSection";
+import AuthorityTransparencySection from "@/components/home/AuthorityTransparencySection";
 import FeaturedAchievementsSection from "@/components/Achievements/FeaturedAchievementsSection";
 
 type FeaturedAchievement = {
@@ -61,6 +62,7 @@ export default function HomePageContent({
 
       <ConditionsSection />
       <PatientGuidesSection />
+      <AuthorityTransparencySection />
       <HindiSection />
 
       <WhyChoose
