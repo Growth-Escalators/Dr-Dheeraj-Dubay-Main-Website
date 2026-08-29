@@ -141,7 +141,10 @@ export function middleware(request: NextRequest) {
 
     const destination = new URL(destinationPath, CANONICAL_ORIGIN);
     destination.search = destinationSearch;
-    return NextResponse.redirect(destination, 308);
+    // Use 301 for domain-migration redirects. Google Search supports both 301
+    // and 308 as permanent redirects, while Search Console's Change of Address
+    // pre-check explicitly checks sample source URLs for 301 redirects.
+    return NextResponse.redirect(destination, 301);
   }
 
   if (PRIVATE_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))) {
