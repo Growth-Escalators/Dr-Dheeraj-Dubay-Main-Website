@@ -9,8 +9,11 @@ import type {
   CostPage,
 } from "./cost-pages";
 import { normalizePracticeFacts } from "./practice-fact-normalizer";
+import { applyCostSeoOverrides } from "./cost-seo-overrides";
 
 export type { CostFactor, InsuranceScheme, CostFaq, CostPage } from "./cost-pages";
 
-export const COST_PAGES: CostPage[] = normalizePracticeFacts(RAW_COST_PAGES);
+export const COST_PAGES: CostPage[] = applyCostSeoOverrides(
+  normalizePracticeFacts(RAW_COST_PAGES),
+);
 export { PROCEDURE_TO_COST_SLUG };

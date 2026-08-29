@@ -1,9 +1,9 @@
 // Runtime source of truth for current clinic-confirmed facts.
 //
-// The legacy clinic-info module still contains the historical figures that
-// were published before the 2026-08-26 clinic update. Site code imports this
-// module through an exact TypeScript path alias, so current facts can be
-// changed in one place without rewriting historical audit comments/data.
+// The legacy clinic-info module still contains historical figures that were
+// published before the 2026-08-26 clinic update. Site code imports this module
+// through an exact TypeScript path alias, so current facts can be changed in
+// one place without rewriting historical audit comments/data.
 
 import * as base from "./clinic-info";
 
@@ -24,13 +24,12 @@ export const SURGERY_COUNT_DISPLAY = "40,000+";
 export const EXPERIENCE_YEARS = 24;
 export const EXPERIENCE_YEARS_DISPLAY = "24";
 
-// The record is described as 34 joint replacements plus 1 hip replacement
-// surgery in the same day. Preserve the existing 34 constant wherever the
-// UI specifically says "joint replacements", and expose the full breakdown
-// for places that can state the record precisely.
-export const RECORD_SURGERIES_IN_A_DAY = base.RECORD_SURGERIES_IN_A_DAY;
+// Verified single-day record used across the current site:
+// 34 joint replacements in total on 9 May 2024 = 33 knee + 1 hip.
+export const RECORD_SURGERIES_IN_A_DAY = 34;
+export const RECORD_KNEE_REPLACEMENTS_IN_A_DAY = 33;
 export const RECORD_HIP_REPLACEMENTS_IN_A_DAY = 1;
-export const RECORD_TOTAL_REPLACEMENTS_IN_A_DAY = 35;
+export const RECORD_TOTAL_REPLACEMENTS_IN_A_DAY = 34;
 
 export const PATIENTS_TREATED = base.PATIENTS_TREATED;
 export const PATIENTS_TREATED_DISPLAY = base.PATIENTS_TREATED_DISPLAY;
