@@ -81,13 +81,9 @@ export const SOCIAL_LINKS = [
   "https://www.linkedin.com/in/dr-dheeraj-dubay-36399599/",
 ];
 
-// Deprecated compatibility object only. Do not display or emit this as
-// AggregateRating/Review schema. The visible Google aggregate will be supplied
-// dynamically from the owned GBP only after the official API is approved.
-export const AGGREGATE_RATING = {
-  ratingValue: 4.9,
-  reviewCount: 1100,
-};
+// Google rating/review count intentionally has no static source-of-truth here.
+// It will be supplied dynamically from the owned GBP only after official API
+// approval, so the website cannot silently publish a stale aggregate.
 
 // Clinic-confirmed current practice statistics — August 2026.
 // SURGERY_COUNT is the career-wide total surgery figure, not a knee-only or
@@ -105,7 +101,7 @@ export const RECORD_HIP_REPLACEMENTS_IN_A_DAY = 1;
 export const RECORD_TOTAL_REPLACEMENTS_IN_A_DAY = 34;
 
 // Legacy compatibility exports. These figures are not used as public homepage
-// proof points until their source inventory is completed.
+// proof points until their source inventory is complete.
 export const PATIENTS_TREATED = 60000;
 export const PATIENTS_TREATED_DISPLAY = "60,000+";
 export const NATIONAL_AWARDS = 10;
