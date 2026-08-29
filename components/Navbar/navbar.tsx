@@ -16,9 +16,6 @@ type NavItem =
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "/" },
-  // Achievements and Events were promoted out of the "Why Dr. Dubay"
-  // dropdown to top-level items. That left only About behind it, so the
-  // dropdown became a plain link to /about rather than a one-item menu.
   { label: "Why Dr. Dubay", href: "/about" },
   { label: "Achievements", href: "/achievements" },
   { label: "Events", href: "/events" },
@@ -26,9 +23,6 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Testimonials", href: "/testimonials" },
   {
     label: "Public Mentions",
-    // Two entries, not three: "written by Dr. Dubay" (Articles) vs "others
-    // covering Dr. Dubay" (press features and podcast appearances, which now
-    // share the /news page).
     children: [
       { label: "Articles", href: "/articles" },
       { label: "Podcasts & News Mentions", href: "/news" },
@@ -109,8 +103,10 @@ const Navbar = () => {
                     alt="Dr. Dheeraj Dubay — Joint Replacement Surgeon, Jaipur"
                     width={150}
                     height={50}
+                    sizes="110px"
+                    quality={70}
+                    loading="eager"
                     className="w-[110px] h-auto"
-                    priority
                   />
                 </Link>
 
@@ -173,9 +169,6 @@ const Navbar = () => {
           )}
         </Disclosure>
 
-        {/* Desktop menu. Padding/size tighten at lg so seven top-level items
-            still fit on one row after Achievements and Events were promoted
-            out of the "Why Dr. Dubay" dropdown. */}
         <div className="hidden lg:flex lg:items-center lg:gap-1">
           {NAV_ITEMS.map((item) =>
             "href" in item ? (

@@ -17,7 +17,7 @@ const Card1 = (props: Props) => {
           <div className="grid items-center grid-cols-1 md:grid-cols-2 gap-12">
             <div data-aos="fade-right" className="space-y-6">
               <h1 className="text-3xl font-bold leading-tight bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent sm:text-5xl lg:text-6xl">
-                Dr. Dheeraj Dubay
+                Dr. Dheeraj Dubay — Orthopedic Surgeon in Jaipur
               </h1>
               <p className="text-xl lg:text-2xl font-medium text-emerald-600 dark:text-emerald-400">
                 Director, Robotic Joint Replacement Surgery — Shalby Hospital Jaipur
@@ -37,9 +37,21 @@ const Card1 = (props: Props) => {
                 <span className="text-black font-bold dark:text-gray-200">
                   {SURGERY_COUNT_DISPLAY} surgeries
                 </span>.
-                His practice focuses on knee and hip replacement, including robotic,
+                His Jaipur practice focuses on knee and hip replacement, including robotic,
                 computer-navigated and minimally invasive techniques, at Shalby Hospital Jaipur.
               </p>
+
+              <div className="flex flex-wrap gap-2 text-sm font-semibold">
+                <a href="/procedures/knee-replacement-surgery" className="rounded-full border border-emerald-200 bg-white px-4 py-2 text-emerald-800 hover:bg-emerald-50">
+                  Knee Replacement
+                </a>
+                <a href="/procedures/robotic-knee-replacement" className="rounded-full border border-emerald-200 bg-white px-4 py-2 text-emerald-800 hover:bg-emerald-50">
+                  Robotic Knee Replacement
+                </a>
+                <a href="/hip-replacement-jaipur" className="rounded-full border border-emerald-200 bg-white px-4 py-2 text-emerald-800 hover:bg-emerald-50">
+                  Hip Replacement
+                </a>
+              </div>
 
               <div className="p-6 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/30 dark:to-yellow-900/30 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-amber-200/50 dark:border-amber-700/30">
                 <div className="flex items-center gap-4">
@@ -97,13 +109,13 @@ const Card1 = (props: Props) => {
 
             <div data-aos="fade-left" className="relative">
               <Image
-                width={1400}
-                height={1400}
+                width={1000}
+                height={1000}
                 className="relative w-full xl:max-w-lg xl:mx-auto 2xl:scale-125 rounded-2xl shadow-2xl"
                 src="/assets/images/hero.png"
                 alt="Dr. Dheeraj Dubay, orthopedic and joint replacement surgeon in Jaipur"
-                sizes="(max-width: 767px) 100vw, 50vw"
-                quality={72}
+                sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1279px) 50vw, 520px"
+                quality={68}
                 priority
               />
             </div>

@@ -1,4 +1,4 @@
-import { PROCEDURE_PAGES } from '@/lib/procedure-pages'
+import { PROCEDURE_PAGES } from '@/lib/procedure-pages.current'
 import {
   BreadcrumbNav,
   CTASection,
@@ -7,10 +7,10 @@ import {
   TrustBadges,
 } from '@/components/pages'
 import { PhysicianJsonLd } from '@/components/seo/JsonLd'
+import { RelatedPatientGuides } from '@/components/seo/RelatedPatientGuides'
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { getPublishedReviews } from '@/lib/reviews'
 import {
-  AGGREGATE_RATING,
   CLINICS,
   EXPERIENCE_YEARS_DISPLAY,
   RECORD_SURGERIES_IN_A_DAY,
@@ -283,18 +283,28 @@ export default async function HipReplacementJaipurPage() {
           <p className="leading-relaxed text-gray-600">
             Cost depends on implant choice, complexity, hospital services, room category and the patient’s insurance policy. Cashless eligibility is policy- and TPA-specific, so the hospital team should verify the current coverage before treatment.
           </p>
-          <Link
-            href="/cost/hip-replacement-jaipur"
-            className="mt-4 inline-block rounded-xl bg-blue-700 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-800"
-          >
-            Hip Replacement Cost & Insurance →
-          </Link>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link
+              href="/cost/hip-replacement-jaipur"
+              className="inline-block rounded-xl bg-blue-700 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-800"
+            >
+              Hip Replacement Cost & Insurance →
+            </Link>
+            <Link
+              href="/insurance-cashless-jaipur"
+              className="inline-block rounded-xl border border-emerald-300 bg-white px-6 py-3 text-sm font-bold text-emerald-800 transition-colors hover:bg-emerald-100"
+            >
+              Shalby Jaipur Insurance List →
+            </Link>
+          </div>
         </section>
 
         <section className="my-10">
           <h2 className="mb-6 text-2xl font-bold text-gray-900">Frequently Asked Questions</h2>
           <FAQAccordion faqs={faqs} />
         </section>
+
+        <RelatedPatientGuides currentPath="/hip-replacement-jaipur" />
 
         <section className="my-10">
           <h2 className="mb-4 text-xl font-bold text-gray-900">Related Jaipur Care</h2>
@@ -332,7 +342,7 @@ export default async function HipReplacementJaipurPage() {
               </li>
             ))}
           </ul>
-          <p className="mt-3 text-xs text-gray-400">Content updated 29 August 2026.</p>
+          <p className="mt-3 text-xs text-gray-400">Content updated 30 August 2026.</p>
         </section>
 
         <CTASection
@@ -345,7 +355,7 @@ export default async function HipReplacementJaipurPage() {
         <TestimonialStrip
           reviews={reviews}
           heading="Hip replacement — patient experiences"
-          subheading={`${AGGREGATE_RATING.ratingValue}/5 average across ${AGGREGATE_RATING.reviewCount} Google reviews`}
+          subheading="Selected patient experiences published on this website. Individual outcomes vary."
         />
       ) : null}
     </>

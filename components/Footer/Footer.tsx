@@ -20,6 +20,7 @@ import {
   SURGERY_COUNT_DISPLAY,
 } from "@/lib/clinic-info";
 import { PRIORITY_JAIPUR_PAGES } from "@/lib/seo-priority-pages";
+import { PATIENT_GUIDES } from "@/lib/patient-guides";
 
 function ColumnHeading({ icon: Icon, children }: { icon: React.ElementType; children: React.ReactNode }) {
   return (
@@ -46,6 +47,19 @@ const socialLinks = [
   { name: "YouTube", href: "https://www.youtube.com/@dr.dheerajdubay6664", icon: YoutubeIcon, colorClass: "text-[#FF0000]" },
 ] as const;
 
+const patientResources = [
+  ...PATIENT_GUIDES.map((guide) => ({
+    label: guide.title,
+    href: `/guides/${guide.slug}`,
+    description: guide.category,
+  })),
+  {
+    label: 'Insurance & Cashless Treatment at Shalby Jaipur',
+    href: '/insurance-cashless-jaipur',
+    description: 'Official Shalby Jaipur tie-up list with verification guidance',
+  },
+]
+
 export default function Footer() {
   return (
     <footer className="relative bg-gradient-to-b from-white via-[#F4FCF8] to-[#E6F8F0] dark:from-gray-900 dark:to-gray-800">
@@ -68,6 +82,7 @@ export default function Footer() {
               <ul className="mt-7 space-y-4">
                 <li><NavItem href={getWhatsAppBookingUrl()} external>Book Appointment</NavItem></li>
                 <li><NavItem href="/about">About Dr. Dubay</NavItem></li>
+                <li><NavItem href="/guides">Patient Guides</NavItem></li>
                 <li><NavItem href="/locations">Jaipur Locations</NavItem></li>
                 <li><NavItem href="/editorial-policy">Medical Editorial Policy</NavItem></li>
                 <li><NavItem href="/contact">Contact</NavItem></li>
@@ -100,9 +115,9 @@ export default function Footer() {
         <div className="border-t border-emerald-100 bg-white dark:border-gray-700/50 dark:bg-gray-900">
           <div className="container mx-auto px-4 py-10">
             <div className="mx-auto max-w-5xl">
-              <div className="flex items-center gap-3"><ShieldCheckIcon className="h-6 w-6 shrink-0 text-emerald-600" /><div><h2 className="text-lg font-bold text-emerald-900 dark:text-gray-100">Joint replacement care in Jaipur</h2><p className="text-sm text-gray-600 dark:text-gray-400">Clear pathways for knee, robotic knee, joint and hip replacement — with separate cost and insurance information.</p></div></div>
+              <div className="flex items-center gap-3"><ShieldCheckIcon className="h-6 w-6 shrink-0 text-emerald-600" /><div><h2 className="text-lg font-bold text-emerald-900 dark:text-gray-100">Patient decision guides & verified practical information</h2><p className="text-sm text-gray-600 dark:text-gray-400">Balanced reading for common knee and hip decisions, plus Shalby Jaipur insurance guidance.</p></div></div>
               <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {PRIORITY_JAIPUR_PAGES.map((item) => <Link key={item.href} href={item.href} className="group rounded-xl border border-emerald-100 bg-emerald-50/40 p-4 transition hover:border-emerald-300 hover:bg-emerald-50"><span className="font-semibold text-gray-900 group-hover:text-emerald-800">{item.label}</span><span className="mt-1 block text-xs leading-relaxed text-gray-600">{item.description}</span></Link>)}
+                {patientResources.map((item) => <Link key={item.href} href={item.href} className="group rounded-xl border border-emerald-100 bg-emerald-50/40 p-4 transition hover:border-emerald-300 hover:bg-emerald-50"><span className="font-semibold text-gray-900 group-hover:text-emerald-800">{item.label}</span><span className="mt-1 block text-xs leading-relaxed text-gray-600">{item.description}</span></Link>)}
               </div>
             </div>
           </div>
@@ -113,7 +128,7 @@ export default function Footer() {
             <p className="text-center text-sm font-semibold text-emerald-800 md:text-left dark:text-emerald-400">Evidence-informed orthopedic care focused on mobility and function.</p>
             <div className="text-center"><p className="text-sm text-gray-600 dark:text-gray-400">&copy; {new Date().getFullYear()} Dr. Dheeraj Dubay. All Rights Reserved.</p><p className="mt-1 text-xs text-gray-500">Marketing partner: <a href="https://www.growthescalators.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-emerald-700">Growth Escalators</a></p></div>
             <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm text-gray-600 md:justify-end dark:text-gray-400">
-              {[{ label: "Editorial Policy", href: "/editorial-policy" }, { label: "FAQ", href: "/faq" }, { label: "Locations", href: "/locations" }, { label: "Contact", href: "/contact" }, { label: "Sitemap", href: "/sitemap.xml" }].map((item, i, arr) => <React.Fragment key={item.label}><Link href={item.href} className="transition-colors hover:text-emerald-700 dark:hover:text-emerald-400">{item.label}</Link>{i < arr.length - 1 && <span className="text-gray-300 dark:text-gray-600">|</span>}</React.Fragment>)}
+              {[{ label: "Editorial Policy", href: "/editorial-policy" }, { label: "Patient Guides", href: "/guides" }, { label: "FAQ", href: "/faq" }, { label: "Locations", href: "/locations" }, { label: "Contact", href: "/contact" }, { label: "Sitemap", href: "/sitemap.xml" }].map((item, i, arr) => <React.Fragment key={item.label}><Link href={item.href} className="transition-colors hover:text-emerald-700 dark:hover:text-emerald-400">{item.label}</Link>{i < arr.length - 1 && <span className="text-gray-300 dark:text-gray-600">|</span>}</React.Fragment>)}
             </div>
           </div>
         </div>
