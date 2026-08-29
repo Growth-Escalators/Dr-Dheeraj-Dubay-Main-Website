@@ -1,4 +1,4 @@
-// JSON-LD for the doctor + both clinic locations.
+// JSON-LD for the doctor + clinic locations.
 //
 // Clinic NAP and coordinates come from the shared clinic-info source so the
 // visible locations and structured data cannot drift apart.
@@ -10,11 +10,6 @@ const PHONE = "+91-8955373205"
 const EMAIL = "connect@drdubay.in"
 const HERO_IMAGE = `${SITE_URL}/assets/images/hero.png`
 
-// Read the Shalby address from the single NAP source (lib/clinic-info.ts)
-// instead of a separate hardcoded copy — this file used to carry its own
-// short-form duplicate that had silently drifted from the full GBP
-// address (2026-07-24 NAP alignment pass). Sourcing it here means this
-// can't drift again.
 const SHALBY = CLINICS.find((c) => c.id === "shalby-jaipur")!
 const VIDHYADHAR_NAGAR = CLINICS.find((c) => c.id === "vidhyadhar-nagar")!
 
@@ -25,17 +20,8 @@ const SOCIAL_LINKS = [
   "https://www.linkedin.com/in/dr-dheeraj-dubay-36399599/",
 ]
 
-// Dr. Dubay's Google Business Profile listing. Added to the Physician
-// node's sameAs (2026-07-24) — GBP is the single strongest local-SEO
-// sameAs signal for a Physician entity and was missing entirely before
-// this pass (only social links were listed). This is a different,
-// person-level GBP URL (cid=) from the Place-ID URL already used on the
-// MedicalBusinessJsonLd clinic node below — both point at the same
-// verified listing, just addressed by different Google identifiers.
 const GBP_MAPS_URL = "https://www.google.com/maps?cid=18282795943180212298"
 
-// Cities the practice actively serves through OPD camps + travelling patients.
-// Keep in sync with lib/city-pages.ts.
 const AREA_SERVED = [
   "Jaipur", "Bikaner", "Kota", "Udaipur", "Ajmer", "Sikar", "Alwar",
   "Jodhpur", "Bharatpur", "Jhunjhunu", "Churu", "Sawai Madhopur", "Tonk",
@@ -55,29 +41,23 @@ const PROCEDURES_OFFERED = [
   "Minimally Invasive Joint Surgery",
 ]
 
+// Keep the machine-readable Physician entity focused on stable identity and
+// practice facts. Awards, comparative claims and outcome claims should live in
+// visible pages with supporting evidence rather than be repeated as entity facts.
 export const PhysicianJsonLd = () => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Physician",
     "@id": `${SITE_URL}/#physician`,
     "name": "Dr. Dheeraj Dubay",
-    // "Dubey" is the most common misspelling of the surname across the web
-    // (Practo, TimesMed, some JustDial listings) and is the single biggest
-    // branded query cluster in Search Console ("dr dheeraj dubey" 3,515
-    // impr vs. "dubay" 353 — GSC baseline 2026-07-21). alternateName tells
-    // Google's entity graph both names are the same person, without
-    // changing the canonical visible spelling anywhere on the site. Person
-    // node only — do not add to the Organization/LocalBusiness node.
     "alternateName": ["डॉ. धीरज दुबे", "Dr. Dheeraj Dubey"],
     "honorificPrefix": "Dr.",
     "description":
-      "Director, Robotic Joint Replacement Surgery at Shalby Hospital Jaipur. " +
-      `${EXPERIENCE_YEARS_DISPLAY} years experience, ${SURGERY_COUNT_DISPLAY} successful surgeries, Forbes World Record holder.`,
+      `Orthopedic and joint replacement surgeon at Shalby Hospital Jaipur with ${EXPERIENCE_YEARS_DISPLAY} years of experience and ${SURGERY_COUNT_DISPLAY} surgeries performed.`,
     "url": SITE_URL,
     "telephone": PHONE,
     "email": EMAIL,
     "image": HERO_IMAGE,
-    "priceRange": "₹₹₹",
     "hasCredential": [
       { "@type": "EducationalOccupationalCredential", "credentialCategory": "MBBS" },
       { "@type": "EducationalOccupationalCredential", "credentialCategory": "MS (Orthopedic)" },
@@ -98,12 +78,6 @@ export const PhysicianJsonLd = () => {
         "addressCountry": SHALBY.address.addressCountry,
       },
     },
-    "award": [
-      "Forbes World Record - Highest Joint Replacement Surgeries in a Single Day",
-      "ET Inspiring Leaders Award 2025",
-      "UK Honour Recognition 2024",
-      "Most Trusted Joint Replacement Surgeon of North India",
-    ],
     "sameAs": [...SOCIAL_LINKS, GBP_MAPS_URL],
   }
   return (
@@ -115,8 +89,6 @@ export const PhysicianJsonLd = () => {
 }
 
 export const MedicalBusinessJsonLd = () => {
-  // @graph with two clinic locations — gives Google both addresses for the
-  // local pack, and ties them back to the same Physician entity via @id.
   const schema = {
     "@context": "https://schema.org",
     "@graph": [
@@ -128,9 +100,6 @@ export const MedicalBusinessJsonLd = () => {
         "telephone": PHONE,
         "email": EMAIL,
         "image": HERO_IMAGE,
-        "priceRange": "₹₹₹",
-        "currenciesAccepted": "INR",
-        "paymentAccepted": "Cash, Credit Card, UPI, Insurance",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": SHALBY.address.streetAddress,
@@ -144,14 +113,6 @@ export const MedicalBusinessJsonLd = () => {
           "latitude": SHALBY.geo.latitude,
           "longitude": SHALBY.geo.longitude,
         },
-        "openingHoursSpecification": [
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            "opens": "09:00",
-            "closes": "17:00",
-          },
-        ],
         "medicalSpecialty": "Orthopedic Surgery",
         "availableService": PROCEDURES_OFFERED.map((name) => ({
           "@type": "MedicalProcedure",
@@ -159,8 +120,6 @@ export const MedicalBusinessJsonLd = () => {
         })),
         "areaServed": AREA_SERVED.map((name) => ({ "@type": "City", name })),
         "physician": { "@id": `${SITE_URL}/#physician` },
-        // sameAs includes the Google Business Profile listing (via Place
-        // ID URL). This links the schema entity to the verified GBP.
         "sameAs": [
           "https://www.google.com/maps/place/?q=place_id:ChIJPSvAWaS0bTkRSpg1PguKuf0",
           ...SOCIAL_LINKS,
@@ -174,9 +133,6 @@ export const MedicalBusinessJsonLd = () => {
         "telephone": PHONE,
         "email": EMAIL,
         "image": HERO_IMAGE,
-        "priceRange": "₹₹",
-        "currenciesAccepted": "INR",
-        "paymentAccepted": "Cash, Credit Card, UPI",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": VIDHYADHAR_NAGAR.address.streetAddress,
@@ -190,14 +146,6 @@ export const MedicalBusinessJsonLd = () => {
           "latitude": VIDHYADHAR_NAGAR.geo.latitude,
           "longitude": VIDHYADHAR_NAGAR.geo.longitude,
         },
-        "openingHoursSpecification": [
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            "opens": "18:00",
-            "closes": "20:00",
-          },
-        ],
         "medicalSpecialty": "Orthopedic Surgery",
         "physician": { "@id": `${SITE_URL}/#physician` },
         "sameAs": SOCIAL_LINKS,
@@ -212,46 +160,16 @@ export const MedicalBusinessJsonLd = () => {
   )
 }
 
-// AggregateRating attached to the Physician node. Emit on homepage + any
-// page where the aggregate is meaningful. Caller must pass real stats —
-// Google rejects AggregateRating with reviewCount=0.
-export const AggregateRatingJsonLd = ({
-  ratingValue,
-  reviewCount,
-  itemType = "Physician",
-  itemId,
-  itemName = "Dr. Dheeraj Dubay",
-}: {
+// Visible Google ratings/reviews may be shown to users, but the practice's own
+// pages must not emit self-serving AggregateRating/Review rich-result markup.
+export const AggregateRatingJsonLd = (_props: {
   ratingValue: number
   reviewCount: number
   itemType?: "Physician" | "MedicalBusiness" | "MedicalProcedure"
   itemId?: string
   itemName?: string
-}) => {
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": itemType,
-    ...(itemId ? { "@id": itemId } : {}),
-    name: itemName,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: ratingValue.toFixed(1),
-      reviewCount: reviewCount.toString(),
-      bestRating: "5",
-      worstRating: "1",
-    },
-  }
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  )
-}
+}) => null
 
-// Batch Review schema for a page. `itemReviewed` should be the most
-// specific thing the review is about — e.g. the procedure for a procedure
-// page, the physician for the homepage.
 export interface ReviewInput {
   id: string
   patientName: string
@@ -262,51 +180,9 @@ export interface ReviewInput {
   dateOfReview: Date | string
 }
 
-export const ReviewListJsonLd = ({
-  reviews,
-  itemReviewedName = "Dr. Dheeraj Dubay",
-  itemReviewedType = "Physician",
-  itemReviewedId,
-}: {
+export const ReviewListJsonLd = (_props: {
   reviews: ReviewInput[]
   itemReviewedName?: string
   itemReviewedType?: "Physician" | "MedicalProcedure" | "MedicalBusiness"
   itemReviewedId?: string
-}) => {
-  if (!reviews.length) return null
-  const itemReviewed: Record<string, unknown> = {
-    "@type": itemReviewedType,
-    name: itemReviewedName,
-  }
-  if (itemReviewedId) itemReviewed["@id"] = itemReviewedId
-
-  const schema = reviews.map((r) => ({
-    "@context": "https://schema.org",
-    "@type": "Review",
-    "@id": `${SITE_URL}/#review-${r.id}`,
-    author: {
-      "@type": "Person",
-      name: r.patientName,
-      ...(r.city ? { address: { "@type": "PostalAddress", addressLocality: r.city } } : {}),
-    },
-    reviewRating: {
-      "@type": "Rating",
-      ratingValue: r.rating.toString(),
-      bestRating: "5",
-      worstRating: "1",
-    },
-    reviewBody: r.text,
-    datePublished: (typeof r.dateOfReview === "string"
-      ? new Date(r.dateOfReview)
-      : r.dateOfReview
-    ).toISOString().slice(0, 10),
-    itemReviewed,
-  }))
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  )
-}
+}) => null

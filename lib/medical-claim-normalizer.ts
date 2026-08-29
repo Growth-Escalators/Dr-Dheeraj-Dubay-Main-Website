@@ -9,6 +9,23 @@ export function normalizeMedicalClaimText(input: string): string {
       /Zero Pain, Zero Blood Loss, 48-Hour Discharge/gi,
       "Pain-Management & Blood-Conservation Protocol with Early Recovery",
     )
+    .replace(/Walk in 24 Hours/gi, "Early Mobilisation Protocol")
+    .replace(
+      /allows patients to walk within 24 hours/gi,
+      "is designed to support supervised early mobilisation, which may begin within 24 hours for suitable patients",
+    )
+    .replace(
+      /gets patients walking within 24 hours/gi,
+      "supports supervised early mobilisation, which may begin within 24 hours for suitable patients",
+    )
+    .replace(
+      /patients who walk on day one, go home in 3 days/gi,
+      "suitable patients who may begin walking on day one and may be discharged within several days",
+    )
+    .replace(
+      /walking within 24 hours of surgery/gi,
+      "supervised early mobilisation that may begin within 24 hours for suitable patients",
+    )
     .replace(
       /designed to eliminate post-operative pain and minimize blood loss/gi,
       "designed to reduce post-operative pain and blood loss",
@@ -22,6 +39,16 @@ export function normalizeMedicalClaimText(input: string): string {
       "outcomes that depend on diagnosis, implant choice, rehabilitation and individual health",
     )
     .replace(
+      /dramatically accelerate recovery without compromising safety/gi,
+      "support earlier recovery while following clinical safety criteria",
+    )
+    .replace(/outstanding safety record/gi, "established clinical experience")
+    .replace(/excellent safety record/gi, "established clinical experience")
+    .replace(
+      /ensures pain is well controlled/gi,
+      "uses multimodal pain-management strategies; individual pain experience varies",
+    )
+    .replace(
       /guarantees a smoother, faster recovery/gi,
       "supports a smoother, safer recovery",
     )
@@ -32,6 +59,10 @@ export function normalizeMedicalClaimText(input: string): string {
     .replace(
       /best possible outcome/gi,
       "safe, functional recovery",
+    )
+    .replace(
+      /Decades of research confirm/gi,
+      "Clinical research and practice suggest",
     );
 }
 
