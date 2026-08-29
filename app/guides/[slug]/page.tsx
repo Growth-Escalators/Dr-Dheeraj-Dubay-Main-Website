@@ -34,17 +34,12 @@ export default function PatientGuidePage({ params }: { params: { slug: string } 
     url: canonical,
     inLanguage: 'en-IN',
     about: guide.category,
-    author: {
-      '@type': 'Person',
-      name: 'Dr. Dheeraj Dubay',
-      url: `${defaultSEO.siteUrl}/about`,
-    },
+    dateModified: '2026-08-30',
     publisher: {
-      '@type': 'Person',
-      name: 'Dr. Dheeraj Dubay',
+      '@type': 'Organization',
+      name: 'Dr. Dheeraj Dubay — Patient Education Website',
       url: defaultSEO.siteUrl,
     },
-    lastReviewed: '2026-08-30',
   }
 
   return (
@@ -82,7 +77,7 @@ export default function PatientGuidePage({ params }: { params: { slug: string } 
             This guide is for education and shared decision-making. It does not determine whether an operation is appropriate for an individual patient. Diagnosis, imaging, medical fitness and a clinical examination are required for personalised advice.
           </div>
           <p className="mt-4 text-xs text-gray-500">
-            Content reviewed for medical-claim safety and source consistency on 30 August 2026.{' '}
+            Updated for medical-claim safety and source consistency on 30 August 2026.{' '}
             <Link href="/editorial-policy" className="font-semibold text-emerald-700 hover:underline">
               Medical editorial policy
             </Link>
