@@ -1,6 +1,5 @@
-import { COST_PAGES as RAW_COST_PAGES } from '@/lib/cost-pages'
-import { applyCostSeoOverrides } from '@/lib/cost-seo-overrides'
-import { PROCEDURE_PAGES } from '@/lib/procedure-pages'
+import { COST_PAGES } from '@/lib/cost-pages.current'
+import { PROCEDURE_PAGES } from '@/lib/procedure-pages.current'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { BreadcrumbNav, CTASection, FAQAccordion, TrustBadges, CostEstimateCTA } from '@/components/pages'
@@ -9,7 +8,6 @@ import { FaqJsonLd } from '@/components/seo/FaqJsonLd'
 import { defaultSEO, generatePageMetadata } from '@/lib/seo.config'
 import type { Metadata } from 'next'
 
-const COST_PAGES = applyCostSeoOverrides(RAW_COST_PAGES)
 const SHALBY_INSURANCE_SOURCE =
   'https://www.shalby.org/hospitals/jaipur-shalby/insurance-corporate-tpa-tie-ups/'
 
