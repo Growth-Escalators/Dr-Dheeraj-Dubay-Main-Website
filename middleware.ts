@@ -9,18 +9,54 @@ const LEGACY_HOSTS = new Set([
   "www.jointsreplacementsurgeon.in",
 ]);
 
-// Explicit WordPress → canonical-route mapping for the old
-// jointsreplacementsurgeon.in site. These routes are publicly linked from
-// the legacy navigation today, but their slugs do not match the Next.js site.
-// Mapping them here prevents an authority-transfer cutover from turning known
-// legacy pages into 404s when the old domain is pointed at this deployment.
+// WordPress → canonical route map derived from the 29 Aug 2026 WXR export of
+// jointsreplacementsurgeon.in. Keep each useful legacy URL pointed at the
+// closest live Dr Dubay page instead of blanket-redirecting the domain to the
+// homepage. That preserves topical relevance for users, backlinks and crawlers.
 const LEGACY_WORDPRESS_ROUTES: Record<string, string> = {
   "/": "/",
+  "/home": "/",
+  "/new-home": "/",
   "/about-us": "/about",
   "/contact-us": "/contact",
   "/services": "/services",
   "/blog": "/blogs",
+  "/achievements": "/achievements",
+  "/joint-replacement-surgery-jaipur-india": "/joint-replacement-surgeon-jaipur",
+
+  // The old WordPress install retained template-like slugs for two otherwise
+  // relevant knee-replacement articles. Route by article intent, not by slug.
+  "/get-the-home-care-and-nursing-service": "/blogs/joint-replacement-recovery-tips",
+  "/top-mistakes-after-knee-replacement": "/blogs/joint-replacement-recovery-tips",
+  "/dental-or-implant-what-is-the-best": "/blogs/total-knee-replacement",
 };
+
+// The old homepage/blog template also linked content through WordPress query
+// URLs such as /?post_type=post&p=5832. These IDs come from the WXR export and
+// must resolve before pathname mapping so old links do not collapse to /.
+const LEGACY_WORDPRESS_IDS: Record<string, string> = {
+  "5832": "/blogs/joint-replacement-recovery-tips",
+  "5835": "/blogs/joint-replacement-recovery-tips",
+  "5838": "/blogs/total-knee-replacement",
+  "7801": "/",
+  "7953": "/",
+  "8033": "/about",
+  "8074": "/services",
+  "8088": "/contact",
+  "8089": "/blogs",
+  "8133": "/joint-replacement-surgeon-jaipur",
+  "8385": "/achievements",
+};
+
+const WORDPRESS_ROUTING_QUERY_KEYS = [
+  "p",
+  "page_id",
+  "post_type",
+  "attachment_id",
+  "preview",
+  "preview_id",
+  "preview_nonce",
+];
 
 const PRIVATE_PREFIXES = [
   "/admin",
@@ -45,35 +81,53 @@ function normalisePath(pathname: string) {
   return pathname.replace(/\/+$/, "") || "/";
 }
 
-function legacyWordPressDestination(pathname: string) {
+function legacyWordPressDestination(
+  pathname: string,
+  searchParams: URLSearchParams,
+) {
+  const legacyId = searchParams.get("p") || searchParams.get("page_id");
+  if (legacyId && LEGACY_WORDPRESS_IDS[legacyId]) {
+    return LEGACY_WORDPRESS_IDS[legacyId];
+  }
+
   const normalised = normalisePath(pathname);
   const exact = LEGACY_WORDPRESS_ROUTES[normalised];
   if (exact) return exact;
 
-  // Old posts/service-detail URLs were not all discoverable from the public
-  // search index. Route descendants to the closest live content hub rather
-  // than preserving a WordPress-only prefix that cannot exist on Next.js.
+  // Keep any unexpected WordPress descendants on a semantically useful hub.
+  // Known posts from the WXR export are handled explicitly above.
   if (normalised.startsWith("/blog/")) return "/blogs";
   if (normalised.startsWith("/services/")) return "/services";
 
   // Preserve any other path. If a matching route already exists on the new
   // site it keeps its equity; genuinely unknown URLs remain honest 404s rather
-  // than being blanket-redirected to the homepage (which Google can treat as
-  // a soft 404).
+  // than being blanket-redirected to the homepage (a potential soft 404).
   return pathname;
 }
 
+function legacyWordPressSearch(searchParams: URLSearchParams) {
+  const cleaned = new URLSearchParams(searchParams);
+  WORDPRESS_ROUTING_QUERY_KEYS.forEach((key) => cleaned.delete(key));
+
+  // Preserve useful campaign/tracking parameters while removing WordPress-only
+  // routing parameters from the canonical destination.
+  const value = cleaned.toString();
+  return value ? `?${value}` : "";
+}
+
 export function middleware(request: NextRequest) {
-  const { pathname, search, hostname } = request.nextUrl;
+  const { pathname, search, hostname, searchParams } = request.nextUrl;
 
   if (LEGACY_HOSTS.has(hostname)) {
     let destinationPath = pathname;
+    let destinationSearch = search;
 
     if (
       hostname === "jointsreplacementsurgeon.in" ||
       hostname === "www.jointsreplacementsurgeon.in"
     ) {
-      destinationPath = legacyWordPressDestination(pathname);
+      destinationPath = legacyWordPressDestination(pathname, searchParams);
+      destinationSearch = legacyWordPressSearch(searchParams);
     }
 
     if (hostname === "ortho.drdubay.in") {
@@ -85,7 +139,8 @@ export function middleware(request: NextRequest) {
             : "/locations";
     }
 
-    const destination = new URL(`${destinationPath}${search}`, CANONICAL_ORIGIN);
+    const destination = new URL(destinationPath, CANONICAL_ORIGIN);
+    destination.search = destinationSearch;
     return NextResponse.redirect(destination, 308);
   }
 
