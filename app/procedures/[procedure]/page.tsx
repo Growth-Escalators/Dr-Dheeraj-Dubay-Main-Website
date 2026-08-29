@@ -1,6 +1,6 @@
-import { PROCEDURE_PAGES } from '@/lib/procedure-pages'
-import { HINDI_PAGES } from '@/lib/hindi-pages'
-import { PROCEDURE_TO_COST_SLUG } from '@/lib/cost-pages'
+import { PROCEDURE_PAGES } from '@/lib/procedure-pages.current'
+import { HINDI_PAGES } from '@/lib/hindi-pages.current'
+import { PROCEDURE_TO_COST_SLUG } from '@/lib/cost-pages.current'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { BreadcrumbNav, CTASection, FAQAccordion, RecoveryTimeline, TrustBadges } from '@/components/pages'
@@ -8,7 +8,6 @@ import { PhysicianJsonLd } from '@/components/seo/JsonLd'
 import { ProcedureReferences } from '@/components/seo/ProcedureReferences'
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { getPublishedReviews } from '@/lib/reviews'
-import { AGGREGATE_RATING } from '@/lib/clinic-info'
 import type { Metadata } from 'next'
 import { defaultSEO } from '@/lib/seo.config'
 
@@ -43,6 +42,12 @@ export async function generateMetadata(
       alternateLocale: hindiUrl ? ['hi_IN'] : undefined,
       type: 'article',
     },
+    twitter: {
+      card: 'summary_large_image',
+      title: page.metaTitle,
+      description: page.metaDescription,
+      images: [`${defaultSEO.siteUrl}/assets/images/hero.png`],
+    },
   }
 }
 
@@ -57,9 +62,9 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.drdubay.in' },
-      { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://www.drdubay.in/services' },
-      { '@type': 'ListItem', position: 3, name: page.title, item: `https://www.drdubay.in/procedures/${page.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: defaultSEO.siteUrl },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: `${defaultSEO.siteUrl}/services` },
+      { '@type': 'ListItem', position: 3, name: page.title, item: `${defaultSEO.siteUrl}/procedures/${page.slug}` },
     ],
   }
 
@@ -103,12 +108,18 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
           ]}
         />
 
-        <div className="mb-8">
+        <header className="mb-8">
           <span className="mb-4 inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
             {page.category}
           </span>
           <h1 className="mb-4 text-3xl font-bold leading-tight text-gray-900 md:text-4xl">{page.h1}</h1>
           <p className="text-base leading-relaxed text-gray-600">{page.intro}</p>
+          <p className="mt-3 text-xs leading-relaxed text-gray-500">
+            General patient education only. Suitability, risks and recovery differ by patient and require an individual clinical assessment.{' '}
+            <Link href="/editorial-policy" className="font-medium text-blue-700 hover:underline">
+              Medical editorial policy.
+            </Link>
+          </p>
           {page.schema.dateModified && (
             <p className="mt-3 text-xs text-gray-400">
               Content updated{' '}
@@ -125,7 +136,7 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
               See cost &amp; insurance details for this procedure →
             </Link>
           )}
-        </div>
+        </header>
 
         <TrustBadges />
 
@@ -138,7 +149,7 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
           <h2 className="mb-4 text-2xl font-bold text-gray-900">{page.howPerformed.heading}</h2>
           <ol className="space-y-3">
             {page.howPerformed.steps.map((step, index) => (
-              <li key={index} className="flex gap-3">
+              <li key={step} className="flex gap-3">
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">{index + 1}</span>
                 <span className="pt-0.5 leading-relaxed text-gray-600">{step}</span>
               </li>
@@ -216,13 +227,13 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
                 const related = PROCEDURE_PAGES.find((item) => item.slug === slug)
                 if (!related) return null
                 return (
-                  <Link key={slug} href={`/procedures/${slug}`} className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm text-blue-700 transition-colors hover:bg-blue-100">
+                  <Link key={slug} href={`/procedures/${slug}`} className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm text-blue-700 hover:bg-blue-100">
                     {related.title}
                   </Link>
                 )
               })}
               {page.crossLinks?.map((link) => (
-                <Link key={link.href} href={link.href} className="rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-700 transition-colors hover:bg-emerald-100">
+                <Link key={link.href} href={link.href} className="rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-700 hover:bg-emerald-100">
                   {link.label}
                 </Link>
               ))}
@@ -230,14 +241,14 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
           </section>
         )}
 
-        <CTASection />
+        <CTASection heading="Need an Orthopedic Consultation?" />
       </main>
 
       {procedureReviews.length ? (
         <TestimonialStrip
           reviews={procedureReviews}
           heading={`${page.title} — patient experiences`}
-          subheading={`${AGGREGATE_RATING.ratingValue}/5 average across ${AGGREGATE_RATING.reviewCount} reviews`}
+          subheading="Selected patient experiences published on this website. Individual outcomes vary."
         />
       ) : null}
     </>
