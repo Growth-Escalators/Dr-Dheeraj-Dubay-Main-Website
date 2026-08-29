@@ -6,6 +6,7 @@ import { HINDI_PAGES } from '@/lib/hindi-pages.current'
 import { PROCEDURE_PAGES } from '@/lib/procedure-pages.current'
 import { CONDITION_PAGES } from '@/lib/condition-pages.current'
 import { COST_PAGES } from '@/lib/cost-pages.current'
+import { PATIENT_GUIDES } from '@/lib/patient-guides'
 
 export const revalidate = 3600
 
@@ -30,6 +31,7 @@ const staticEntries: Entry[] = [
   { url: `${BASE}/about`, changeFrequency: 'monthly', priority: 0.85 },
   { url: `${BASE}/services`, changeFrequency: 'monthly', priority: 0.8 },
   { url: `${BASE}/blogs`, changeFrequency: 'weekly', priority: 0.7 },
+  { url: `${BASE}/guides`, changeFrequency: 'weekly', priority: 0.8, lastModified: '2026-08-30' },
   { url: `${BASE}/achievements`, changeFrequency: 'weekly', priority: 0.6 },
   { url: `${BASE}/gallery`, changeFrequency: 'monthly', priority: 0.5 },
   { url: `${BASE}/testimonials`, changeFrequency: 'monthly', priority: 0.7 },
@@ -75,6 +77,13 @@ const costEntries: Entry[] = COST_PAGES.map((page) => ({
   url: `${BASE}/cost/${page.slug}`,
   changeFrequency: 'monthly',
   priority: PRIORITY_COST_PAGES.has(page.slug) ? 0.9 : 0.75,
+}))
+
+const guideEntries: Entry[] = PATIENT_GUIDES.map((guide) => ({
+  url: `${BASE}/guides/${guide.slug}`,
+  lastModified: '2026-08-30',
+  changeFrequency: 'monthly',
+  priority: 0.78,
 }))
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -140,6 +149,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...costEntries,
     ...hindiEntries,
     ...cityEntries,
+    ...guideEntries,
     ...dynamicEntries,
   ]
 
