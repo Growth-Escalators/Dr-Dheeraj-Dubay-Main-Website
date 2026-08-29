@@ -25,6 +25,7 @@
       "@/lib/hindi-pages": ["./lib/hindi-pages.current.ts"],
       "@/lib/city-pages": ["./lib/city-pages.current.ts"],
       "@/lib/cost-pages": ["./lib/cost-pages.current.ts"],
+      "@/components/seo/JsonLd": ["./components/seo/JsonLd.current.tsx"],
       "@/*": ["./*"]
     }
   },

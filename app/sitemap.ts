@@ -12,6 +12,18 @@ export const revalidate = 3600
 const BASE = defaultSEO.siteUrl
 type Entry = MetadataRoute.Sitemap[number]
 
+function cleanSlug(slug: string) {
+  return slug.trim().replace(/^\/+|\/+$/g, '')
+}
+
+// This historical DB slug belongs to the compromised legacy WordPress page.
+// The old-domain migration redirects that URL to the legitimate Jaipur joint
+// replacement page, so do not advertise a dead/hacked-looking blog URL in the
+// canonical site's sitemap.
+const EXCLUDED_BLOG_SLUGS = new Set([
+  'joint-replacement-surgery-jaipur-india',
+])
+
 // Static routes have no real "last changed" date we can source from the DB
 // or a content file, so `lastModified` is omitted entirely per the GE SEO
 // standard: a fabricated/build-time date teaches Google to ignore the
@@ -96,8 +108,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     for (const b of blogs) {
       if (!b.slug) continue
+      const slug = cleanSlug(b.slug)
+      if (!slug || EXCLUDED_BLOG_SLUGS.has(slug)) continue
       dynamicEntries.push({
-        url: `${BASE}/blogs/${b.slug}`,
+        url: `${BASE}/blogs/${slug}`,
         changeFrequency: 'weekly',
         priority: 0.7,
         ...(b.publishedAt ? { lastModified: b.publishedAt } : {}),
@@ -105,16 +119,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
     for (const s of services) {
       if (!s.slug) continue
+      const slug = cleanSlug(s.slug)
+      if (!slug) continue
       dynamicEntries.push({
-        url: `${BASE}/services/${s.slug}`,
+        url: `${BASE}/services/${slug}`,
         changeFrequency: 'monthly',
         priority: 0.8,
       })
     }
     for (const a of achievements) {
       if (!a.slug) continue
+      const slug = cleanSlug(a.slug)
+      if (!slug) continue
       dynamicEntries.push({
-        url: `${BASE}/achievements/${a.slug}`,
+        url: `${BASE}/achievements/${slug}`,
         changeFrequency: 'monthly',
         priority: 0.6,
         ...(a.createdAt ? { lastModified: a.createdAt } : {}),
