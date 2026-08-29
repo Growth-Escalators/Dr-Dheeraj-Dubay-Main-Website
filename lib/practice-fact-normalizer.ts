@@ -8,6 +8,22 @@ const EXPERIENCE_DISPLAY = "24 years";
 
 export function normalizePracticeFactText(input: string): string {
   return input
+    // Older copy sometimes attached the career-wide count to a narrower
+    // category (for example "successful knee replacement surgeries"). The
+    // confirmed figure is the doctor's overall surgery count, so normalise
+    // the whole phrase rather than only swapping 35,000 for 40,000.
+    .replace(
+      /\b(?:35,000\+|40,000\+|over 35,000|over 40,000)\s+(?:successful\s+)?(?:knee and hip replacement|joint replacement|knee replacement|hip replacement)\s+surger(?:y|ies)(?:\s+performed)?/gi,
+      `${SURGERY_DISPLAY} surgeries`,
+    )
+    .replace(
+      /\b(?:35,000\+|40,000\+)\s+successful\s+surger(?:y|ies)/gi,
+      `${SURGERY_DISPLAY} surgeries`,
+    )
+    .replace(
+      /\b(?:more than|over)\s+(?:35,000|40,000)\s+successful\s+surger(?:y|ies)/gi,
+      `more than 40,000 surgeries`,
+    )
     // English surgery-count variants used across procedure, condition, cost
     // and location copy. The lookahead requires a surgery/procedure context
     // so a currency amount such as ₹35,000 can never be rewritten.
