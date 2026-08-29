@@ -4,7 +4,7 @@ import { PROCEDURE_TO_COST_SLUG } from '@/lib/cost-pages'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { BreadcrumbNav, CTASection, FAQAccordion, RecoveryTimeline, TrustBadges } from '@/components/pages'
-import { PhysicianJsonLd, AggregateRatingJsonLd, ReviewListJsonLd } from '@/components/seo/JsonLd'
+import { PhysicianJsonLd } from '@/components/seo/JsonLd'
 import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { getPublishedReviews } from '@/lib/reviews'
 import { AGGREGATE_RATING } from '@/lib/clinic-info'
@@ -52,11 +52,10 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
   const page = PROCEDURE_PAGES.find(p => p.slug === params.procedure)
   if (!page) return notFound()
 
-  // Natural cross-link into the matching /cost page, when one exists (WS-3b).
   const costSlug = PROCEDURE_TO_COST_SLUG[page.slug]
 
-  // Procedure-scoped testimonials from DB; aggregate rating digits come
-  // from the canonical GBP source.
+  // Visible patient experiences can remain on the page. They are deliberately
+  // not emitted as self-serving Review/AggregateRating structured data.
   const procedureReviews = await getPublishedReviews({
     procedureSlug: page.slug,
     limit: 3,
@@ -83,21 +82,12 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
     preparation: page.schema.preparation,
     howPerformed: page.schema.howPerformed,
     procedureType: { '@type': 'MedicalProcedureType', name: page.category },
-    // References the site's existing Physician node by @id (defined once
-    // in components/seo/JsonLd.tsx's PhysicianJsonLd) instead of a fresh
-    // inline Person, per the GE SEO standard's "connected @id graph" rule.
     performer: { '@id': `${defaultSEO.siteUrl}/#physician` },
   }
 
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    // dateModified is a valid CreativeWork/WebPage property (FAQPage
-    // extends WebPage), unlike MedicalProcedure which has no such field in
-    // the schema.org vocab — so the freshness signal lives here. Only
-    // included when the data entry sets a real edit date (see
-    // ProcedurePage['schema']['dateModified'] in lib/procedure-pages.ts);
-    // omitted entirely for every other procedure page.
     ...(page.schema.dateModified ? { dateModified: page.schema.dateModified } : {}),
     mainEntity: page.faqs.map(faq => ({
       '@type': 'Question',
@@ -120,33 +110,7 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      {/* Full Physician entity (2026-07-24 entity-split fix). Previously
-          this page only referenced the physician by `@id` — the actual
-          alternateName/credentials/sameAs node was never emitted on
-          procedure pages, so the "Dr. Dheeraj Dubey" misspelling-
-          consolidation signal never reached raw HTML here, only on the
-          homepage/about/blog. Rendering the full node here (it already
-          exists sitewide with the same @id, so this merges rather than
-          duplicates) closes that gap for every procedure page. */}
       <PhysicianJsonLd />
-      {/* AggregateRating/Review are the physician's real GBP rating, not a
-          per-procedure rating we invented — attribute them to the existing
-          #physician node (@id) so they join the same graph as
-          PhysicianJsonLd instead of implying a fresh, unverifiable
-          "MedicalProcedure has 1,100 reviews" claim. */}
-      {aggregate ? (
-        <AggregateRatingJsonLd
-          ratingValue={aggregate.ratingValue}
-          reviewCount={aggregate.reviewCount}
-          itemId={`${defaultSEO.siteUrl}/#physician`}
-        />
-      ) : null}
-      {procedureReviews.length ? (
-        <ReviewListJsonLd
-          reviews={procedureReviews}
-          itemReviewedId={`${defaultSEO.siteUrl}/#physician`}
-        />
-      ) : null}
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
         <BreadcrumbNav
@@ -157,7 +121,6 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
           ]}
         />
 
-        {/* Hero */}
         <div className="mb-8">
           <span className="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full mb-4">
             {page.category}
@@ -166,13 +129,9 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
             {page.h1}
           </h1>
           <p className="text-gray-600 text-base leading-relaxed">{page.intro}</p>
-          {/* Visible freshness signal — only renders when the data entry
-              carries a real dateModified (see lib/procedure-pages.ts).
-              Other procedure pages have no such field yet, so this is a
-              no-op for them. */}
           {page.schema.dateModified && (
             <p className="mt-3 text-xs text-gray-400">
-              Medically reviewed by Dr. Dheeraj Dubay · Last updated{' '}
+              Content updated{' '}
               {new Date(page.schema.dateModified).toLocaleDateString('en-IN', {
                 year: 'numeric',
                 month: 'long',
@@ -192,13 +151,11 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
 
         <TrustBadges />
 
-        {/* What is it */}
         <section className="my-10">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">{page.whatIsIt.heading}</h2>
           <p className="text-gray-600 leading-relaxed">{page.whatIsIt.content}</p>
         </section>
 
-        {/* How Performed */}
         <section className="my-10">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">{page.howPerformed.heading}</h2>
           <ol className="space-y-3">
@@ -213,7 +170,6 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
           </ol>
         </section>
 
-        {/* Benefits */}
         <section className="my-10">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">{page.benefits.heading}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -227,7 +183,6 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
           </div>
         </section>
 
-        {/* Why Dr. Dubay */}
         <section className="my-10 bg-gray-50 rounded-2xl p-6 md:p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Why Choose Dr. Dheeraj Dubay?</h2>
           <ul className="space-y-3">
@@ -240,7 +195,6 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
           </ul>
         </section>
 
-        {/* Are You a Candidate? */}
         <section className="my-10">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">{page.candidateFor.heading}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -267,19 +221,16 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
           </div>
         </section>
 
-        {/* Recovery Timeline */}
         <section className="my-10">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">{page.recovery.heading}</h2>
           <RecoveryTimeline steps={page.recovery.timeline} />
         </section>
 
-        {/* FAQ */}
         <section className="my-10">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
           <FAQAccordion faqs={page.faqs} />
         </section>
 
-        {/* Related Procedures */}
         {page.relatedProcedures.length > 0 && (
           <section className="my-10">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Related Procedures</h2>
@@ -297,10 +248,6 @@ export default async function ProcedurePage({ params }: { params: { procedure: s
                   </a>
                 )
               })}
-              {/* Cross-links to money pages outside PROCEDURE_PAGES (e.g. the
-                  dedicated surgeon-intent /hip-replacement-jaipur route).
-                  Undefined for every entry except knee-replacement-surgery,
-                  so this has no effect on other procedure pages. */}
               {page.crossLinks?.map((link, i) => (
                 <a
                   key={`cross-${i}`}
