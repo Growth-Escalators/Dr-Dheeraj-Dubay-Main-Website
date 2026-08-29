@@ -2,27 +2,21 @@ import { generatePageMetadata } from "@/lib/seo.config";
 import { LazyYouTubeCard } from "@/components/Testimonials/LazyYouTubeCard";
 import { AsSeenOnStrip } from "@/components/Testimonials/AsSeenOnStrip";
 import { GoogleReviewButton } from "@/components/ui/GoogleReviewButton";
-import { AggregateRatingJsonLd } from "@/components/seo/JsonLd";
-import { AGGREGATE_RATING } from "@/lib/clinic-info";
 import FinalCTA from "@/components/home/FinalCTA";
 import { db } from "@/lib/db";
 import { getYouTubeId } from "@/lib/youtube";
 
 export const revalidate = 3600;
 
-// CTR fix (WS-4a): "dr dheeraj dubay reviews" ranks pos 7.9 with 880
-// impressions but ~0% CTR (1 click) — the old title promised "testimonials"
-// (video content) when the searcher's intent is a star rating + review
-// count. Title/description now mirror that intent and pull the live
-// number from AGGREGATE_RATING (lib/clinic-info.ts) so this page can never
-// drift out of sync with the AggregateRating schema below. See
-// GE-Brain/05-Marketing/DrDubay-Copy-Drafts/money-page-titles.md #4.
+// Keep the page useful for review/testimonial intent without publishing a
+// hard-coded Google aggregate. Rating/count can be reintroduced dynamically
+// after the official owned-GBP API integration is approved.
 export const metadata = generatePageMetadata({
-  title: `Dr. Dheeraj Dubay Reviews & Ratings | ${AGGREGATE_RATING.reviewCount.toLocaleString()}+ Patients`,
-  description: `See real patient reviews and ratings for Dr. Dheeraj Dubay, Jaipur — rated ${AGGREGATE_RATING.ratingValue}/5 across ${AGGREGATE_RATING.reviewCount.toLocaleString()}+ Google reviews. Read patient stories.`,
+  title: "Dr. Dheeraj Dubay Patient Reviews & Testimonials | Jaipur",
+  description:
+    "Watch patient testimonial videos and read about patient experiences with Dr. Dheeraj Dubay's knee, hip and joint replacement care in Jaipur.",
   slug: "testimonials",
 });
-
 
 async function loadVideos() {
   try {
@@ -52,7 +46,7 @@ const TestimonialsPage = async () => {
     "@type": "ItemList",
     name: "Dr. Dheeraj Dubay Patient Testimonials",
     description:
-      "Patient testimonial videos from Dr. Dheeraj Dubay, leading joint replacement surgeon in Jaipur",
+      "Patient testimonial videos related to Dr. Dheeraj Dubay's joint replacement practice in Jaipur",
     itemListElement: videos.map((v, i) => ({
       "@type": "ListItem",
       position: i + 1,
@@ -60,7 +54,7 @@ const TestimonialsPage = async () => {
         "@type": "VideoObject",
         name: `Dr. Dubay Patient Testimonial ${i + 1}`,
         description:
-          "Patient testimonial for Dr. Dheeraj Dubay joint replacement surgery",
+          "Patient testimonial related to Dr. Dheeraj Dubay's joint replacement care",
         thumbnailUrl: `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg`,
         uploadDate: v.createdAt.toISOString(),
         embedUrl: `https://www.youtube.com/embed/${v.videoId}`,
@@ -85,27 +79,20 @@ const TestimonialsPage = async () => {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }}
         />
       )}
-      <AggregateRatingJsonLd
-        ratingValue={AGGREGATE_RATING.ratingValue}
-        reviewCount={AGGREGATE_RATING.reviewCount}
-        itemId="https://www.drdubay.in/#physician"
-      />
 
-      {/* Header */}
       <section className="py-12 bg-white">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <span className="inline-block bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-3 border border-emerald-200">
-            Real Stories
+            Patient Stories
           </span>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
             Patient Testimonials
           </h1>
-          <p className="text-gray-600 max-w-xl mx-auto mb-5">
-            Real patient stories from Dr. Dheeraj Dubay&apos;s joint replacement
-            surgeries — knee, hip, robotic, and minimally invasive procedures.
+          <p className="text-gray-600 max-w-xl mx-auto mb-3">
+            Patient experiences related to knee, hip and joint replacement care with Dr. Dheeraj Dubay in Jaipur.
           </p>
-          <p className="text-sm text-amber-700 mb-3">
-            ⭐ Rated {AGGREGATE_RATING.ratingValue}/5 across {AGGREGATE_RATING.reviewCount}+ Google reviews
+          <p className="text-xs leading-relaxed text-gray-500 max-w-xl mx-auto mb-5">
+            These are individual patient experiences and should not be interpreted as a guarantee of treatment outcome. Google rating and review totals are not hard-coded on this website.
           </p>
           <GoogleReviewButton />
         </div>
@@ -117,7 +104,6 @@ const TestimonialsPage = async () => {
         </section>
       ) : (
         <>
-          {/* Featured row — first 2-3 in a larger grid */}
           {featured.length > 0 && (
             <section className="py-8 bg-emerald-50">
               <div className="max-w-5xl mx-auto px-4">
@@ -133,7 +119,6 @@ const TestimonialsPage = async () => {
             </section>
           )}
 
-          {/* Rest of the videos */}
           {rest.length > 0 && (
             <section className="py-12 bg-white">
               <div className="max-w-6xl mx-auto px-4">
@@ -152,7 +137,6 @@ const TestimonialsPage = async () => {
       )}
 
       <AsSeenOnStrip />
-
       <FinalCTA />
     </>
   );

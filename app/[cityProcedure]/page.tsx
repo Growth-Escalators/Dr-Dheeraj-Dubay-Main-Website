@@ -9,7 +9,6 @@ import { TestimonialStrip } from '@/components/ui/TestimonialStrip'
 import { defaultSEO } from '@/lib/seo.config'
 import { getPublishedReviews } from '@/lib/reviews'
 import {
-  AGGREGATE_RATING,
   EXPERIENCE_YEARS_DISPLAY,
   SURGERY_COUNT_DISPLAY,
 } from '@/lib/clinic-info'
@@ -190,7 +189,7 @@ export default async function CityPage(
         <TestimonialStrip
           reviews={cityReviews}
           heading={`What ${page.city} patients say`}
-          subheading={`${AGGREGATE_RATING.ratingValue}/5 average across ${AGGREGATE_RATING.reviewCount}+ Google reviews`}
+          subheading="Selected patient experiences published on this website. Individual outcomes vary."
         />
       ) : null}
     </>

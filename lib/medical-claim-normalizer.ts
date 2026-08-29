@@ -20,6 +20,14 @@ export function normalizeMedicalClaimText(input: string): string {
       /Zero Pain, Zero Blood Loss, 48-Hour Discharge/gi,
       "Pain-Management & Blood-Conservation Protocol with Early Recovery",
     )
+    .replace(/\bzero pain\b/gi, "pain-management focused care")
+    .replace(/\bzero blood(?: loss)?\b/gi, "blood-conservation focused care")
+    .replace(/\bpain[- ]free\b/gi, "with reduced pain")
+    .replace(/\bfaster recovery\b/gi, "an early-recovery approach")
+    .replace(
+      /\blonger implant life\b/gi,
+      "implant longevity that varies by implant and patient factors",
+    )
     .replace(/Walk in 24 Hours/gi, "Early Mobilisation Protocol")
     .replace(
       /walk the same day as surgery/gi,
@@ -41,6 +49,8 @@ export function normalizeMedicalClaimText(input: string): string {
       /walking within 24 hours of surgery/gi,
       "supervised early mobilisation that may begin within 24 hours for suitable patients",
     )
+    .replace(/same[- ]day mobilisation/gi, "early mobilisation where clinically appropriate")
+    .replace(/stair[- ]climbing by day 2/gi, "stair training according to rehabilitation progress")
     .replace(
       /Most patients walk the same day or next day, resume light activities within 2[–-]4 weeks, and return to full function by 6[–-]8 weeks\. Traditional recovery is 3[–-]6 months\.?/gi,
       "Recovery varies by patient. Mobilisation may begin early when medically appropriate, while return to daily activities depends on strength, wound healing, medical conditions and rehabilitation progress.",
@@ -92,10 +102,7 @@ export function normalizeMedicalClaimText(input: string): string {
       /Early diagnosis prevents the condition from worsening/gi,
       "Prompt assessment can help identify conditions that may need treatment",
     )
-    .replace(
-      /identify the exact cause/gi,
-      "identify the likely cause",
-    )
+    .replace(/identify the exact cause/gi, "identify the likely cause")
     .replace(
       /ensures pain is well controlled/gi,
       "uses multimodal pain-management strategies; individual pain experience varies",
@@ -108,14 +115,15 @@ export function normalizeMedicalClaimText(input: string): string {
       /guarantees? the best possible outcome/gi,
       "supports a safe, functional recovery",
     )
-    .replace(
-      /best possible outcome/gi,
-      "safe, functional recovery",
-    )
-    .replace(
-      /Decades of research confirm/gi,
-      "Clinical research and practice suggest",
-    );
+    .replace(/best possible outcome/gi, "safe, functional recovery")
+    .replace(/Decades of research confirm/gi, "Clinical research and practice suggest")
+    // Hindi/Hinglish legacy phrasing. Preserve the treatment concept while
+    // removing absolute outcome language.
+    .replace(/(?:ज़ीरो|जीरो|zero)\s*(?:पेन|pain)/gi, "दर्द नियंत्रण पर केंद्रित")
+    .replace(/(?:ज़ीरो|जीरो|zero)\s*(?:ब्लड|blood)(?:\s*लॉस|\s*loss)?/gi, "blood-conservation protocol")
+    .replace(/24\s*घंटे\s*में\s*चल(?:ना|ने)/g, "clinical condition के अनुसार early mobilisation")
+    .replace(/बिना\s*दर्द\s*के\s*चल(?:ना|ने)/g, "कम दर्द के साथ mobility सुधारने")
+    .replace(/दर्द[- ]?मुक्त/g, "दर्द कम करने पर केंद्रित");
 }
 
 export function normalizeMedicalClaims<T>(value: T): T {

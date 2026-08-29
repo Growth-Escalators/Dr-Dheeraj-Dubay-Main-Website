@@ -62,7 +62,7 @@ const Card1 = (props: Props) => {
                   </div>
                   <div>
                     <h4 className="text-lg font-semibold bg-gradient-to-r from-amber-600 to-yellow-500 dark:from-amber-400 dark:to-yellow-300 bg-clip-text text-transparent mb-1">
-                      Forbes World Records — {RECORD_SURGERIES_IN_A_DAY} Joint Replacements in One Day
+                      Recorded Surgical Milestone — {RECORD_SURGERIES_IN_A_DAY} Joint Replacements in One Day
                     </h4>
                     <p className="text-base text-amber-900 dark:text-amber-200">
                       33 knee replacements and 1 hip replacement performed on 9 May 2024
@@ -78,7 +78,7 @@ const Card1 = (props: Props) => {
                 </span>
                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-sm font-semibold text-gray-700 dark:text-gray-200 border border-gray-100 dark:border-gray-700">
                   <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
-                  Forbes World Records — {RECORD_SURGERIES_IN_A_DAY} in One Day
+                  {RECORD_SURGERIES_IN_A_DAY} Joint Replacements in One Day
                 </span>
                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-sm font-semibold text-gray-700 dark:text-gray-200 border border-gray-100 dark:border-gray-700">
                   <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
