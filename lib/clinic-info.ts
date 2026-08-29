@@ -1,6 +1,7 @@
 // Single source of truth for NAP (name, address, phone) and stable practice facts.
 // Keep public pages aligned with clinic-confirmed information and avoid stale
 // review aggregates or outcome claims in shared data.
+// Post-migration SEO freeze baseline: 30 August 2026.
 
 export const PRIMARY_PHONE = "+91-8955373205";
 export const PRIMARY_PHONE_TEL = "+918955373205";
