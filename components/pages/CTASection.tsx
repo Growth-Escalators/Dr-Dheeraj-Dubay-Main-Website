@@ -1,8 +1,8 @@
 import { getWhatsAppBookingUrl } from '@/lib/whatsapp-booking'
 
 export function CTASection({
-  heading = 'Ready to Walk Without Pain?',
-  subheading = 'Book a consultation with Dr. Dheeraj Dubay today. Available at Shalby Hospital Vaishali Nagar and Dr. Dubay Hip & Knee Clinic, Vidhyadhar Nagar, Jaipur.',
+  heading = 'Need an Orthopedic Consultation?',
+  subheading = 'Book a consultation with Dr. Dheeraj Dubay. Appointments are available at Shalby Hospital Jaipur and Dr. Dubay Hip & Knee Clinic, Vidhyadhar Nagar.',
   showWhatsApp = true,
 }: {
   heading?: string
@@ -10,21 +10,21 @@ export function CTASection({
   showWhatsApp?: boolean
 }) {
   return (
-    <div className="bg-blue-700 rounded-2xl p-8 md:p-12 text-center my-12">
-      <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">{heading}</h2>
-      <p className="text-blue-100 mb-8 max-w-xl mx-auto leading-relaxed">{subheading}</p>
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+    <div className="my-12 rounded-2xl bg-blue-700 p-8 text-center md:p-12">
+      <h2 className="mb-4 text-2xl font-bold text-white md:text-3xl">{heading}</h2>
+      <p className="mx-auto mb-8 max-w-xl leading-relaxed text-blue-100">{subheading}</p>
+      <div className="flex flex-col justify-center gap-4 sm:flex-row">
         <a
           href={getWhatsAppBookingUrl()}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-white text-blue-700 px-8 py-3 rounded-xl font-bold text-sm hover:bg-blue-50 transition-colors"
+          className="rounded-xl bg-white px-8 py-3 text-sm font-bold text-blue-700 transition-colors hover:bg-blue-50"
         >
           Book Appointment
         </a>
         <a
           href="tel:+918955373205"
-          className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold text-sm border border-blue-500 hover:bg-blue-500 transition-colors"
+          className="rounded-xl border border-blue-500 bg-blue-600 px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-500"
         >
           Call +91-8955373205
         </a>
@@ -33,12 +33,15 @@ export function CTASection({
             href="https://wa.me/918955373205"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-green-500 text-white px-8 py-3 rounded-xl font-bold text-sm hover:bg-green-400 transition-colors"
+            className="rounded-xl bg-green-500 px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-green-400"
           >
             WhatsApp Us
           </a>
         )}
       </div>
+      <p className="mx-auto mt-5 max-w-xl text-xs leading-relaxed text-blue-100/90">
+        Website information is educational. Diagnosis and treatment recommendations require an individual clinical assessment.
+      </p>
     </div>
   )
 }
