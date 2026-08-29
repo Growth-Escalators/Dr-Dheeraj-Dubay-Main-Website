@@ -14,7 +14,6 @@ import {
 import { TestimonialStrip } from "@/components/ui/TestimonialStrip";
 import { db } from "@/lib/db";
 import { getPublishedReviews } from "@/lib/reviews";
-import { AGGREGATE_RATING } from "@/lib/clinic-info";
 import { safeImageUrl } from "@/lib/image-url";
 import { getShowcaseAwards, getAwardTimeline } from "@/lib/awards";
 import { getYouTubeId } from "@/lib/youtube";
@@ -28,11 +27,6 @@ export default async function CardWithForm() {
   try {
     achievements = await db.achievement.findMany({
       where: { isFeatured: true },
-      // Secondary key so the order is fully deterministic. featuredOrder alone
-      // leaves any two rows sharing a value — or a newly-featured row that has
-      // none yet — free to swap position between requests, which looks exactly
-      // like "the CRM ordering doesn't work". Videos and articles already sort
-      // this way; achievements were the odd one out.
       orderBy: [{ featuredOrder: "asc" }, { date: "desc" }],
       take: 6,
     });
@@ -46,16 +40,9 @@ export default async function CardWithForm() {
     slug: a.slug,
     category: a.category,
     date: a.date.toISOString(),
-    // Empty, not the hero portrait: the card renders a titled placeholder when
-    // there's no usable image. Falling back to the portrait meant a grid of six
-    // achievements could show the same photo six times — which is exactly what
-    // the dead *.edgeone.app image URLs produced.
     imageUrl: safeImageUrl(a.imageUrl, ""),
   }));
 
-  // CRM-managed award content: the showcase carousel and both timeline
-  // columns. Each accessor falls back to the static list in lib/awards.ts if
-  // the DB is unreachable, so the section can't go blank.
   const [showcaseAwards, timelineProfessional, timelineAcademic] =
     await Promise.all([
       getShowcaseAwards(),
@@ -63,9 +50,6 @@ export default async function CardWithForm() {
       getAwardTimeline("academic"),
     ]);
 
-  // Videos + articles flagged "show on homepage" in the CRM. Fetched here
-  // rather than in the browser so the page never paints empty placeholders
-  // while a request is in flight.
   let homeVideos: { id: string; videoId: string; title: string | null }[] = [];
   try {
     const rows = await db.youTube.findMany({
@@ -105,10 +89,9 @@ export default async function CardWithForm() {
     homeArticles = [];
   }
 
-  // Patient testimonial content from DB (featured first). Testimonials remain
-  // visible to users, but we intentionally do not mark up first-party reviews
-  // as AggregateRating/Review structured data because Google treats that as
-  // self-serving review markup for business-owned pages.
+  // Keep patient experiences visible, but do not hard-code a Google rating or
+  // review count. The aggregate will be reintroduced only from the official
+  // GBP API after approval, so visible figures cannot silently become stale.
   let featuredReviews: Awaited<ReturnType<typeof getPublishedReviews>> = [];
   try {
     featuredReviews = await getPublishedReviews({ featuredOnly: true, limit: 3 });
@@ -135,7 +118,7 @@ export default async function CardWithForm() {
       {featuredReviews.length ? (
         <TestimonialStrip
           reviews={featuredReviews}
-          subheading={`Rated ${AGGREGATE_RATING.ratingValue}/5 across ${AGGREGATE_RATING.reviewCount}+ Google reviews`}
+          subheading="Selected patient experiences published on this website. Individual outcomes vary."
         />
       ) : null}
     </>

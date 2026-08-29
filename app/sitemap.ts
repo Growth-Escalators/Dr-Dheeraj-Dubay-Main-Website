@@ -1,11 +1,11 @@
 import type { MetadataRoute } from 'next'
 import { db } from '@/lib/db'
 import { defaultSEO } from '@/lib/seo.config'
-import { CITY_PAGES } from '@/lib/city-pages'
-import { HINDI_PAGES } from '@/lib/hindi-pages'
-import { PROCEDURE_PAGES } from '@/lib/procedure-pages'
-import { CONDITION_PAGES } from '@/lib/condition-pages'
-import { COST_PAGES } from '@/lib/cost-pages'
+import { CITY_PAGES } from '@/lib/city-pages.current'
+import { HINDI_PAGES } from '@/lib/hindi-pages.current'
+import { PROCEDURE_PAGES } from '@/lib/procedure-pages.current'
+import { CONDITION_PAGES } from '@/lib/condition-pages.current'
+import { COST_PAGES } from '@/lib/cost-pages.current'
 
 export const revalidate = 3600
 
@@ -38,6 +38,7 @@ const staticEntries: Entry[] = [
   { url: `${BASE}/faq`, changeFrequency: 'monthly', priority: 0.6 },
   { url: `${BASE}/locations`, changeFrequency: 'monthly', priority: 0.75 },
   { url: `${BASE}/hip-replacement-jaipur`, changeFrequency: 'weekly', priority: 0.95 },
+  { url: `${BASE}/insurance-cashless-jaipur`, changeFrequency: 'monthly', priority: 0.85, lastModified: '2026-08-29' },
   { url: `${BASE}/editorial-policy`, changeFrequency: 'monthly', priority: 0.5 },
   { url: `${BASE}/articles`, changeFrequency: 'weekly', priority: 0.6 },
   { url: `${BASE}/news`, changeFrequency: 'weekly', priority: 0.5 },

@@ -8,7 +8,7 @@ import { ToastProvider } from "@/components/providers/toast-provider";
 import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
 import MobileBookingCTA from "@/components/ui/MobileBookingCTA";
 import EmergencyBanner from "@/components/ui/EmergencyBanner";
-import { LeadMagnetPopup } from "@/components/ui/LeadMagnetPopup";
+import { DeferredLeadMagnet } from "@/components/ui/DeferredLeadMagnet";
 import Navbar from "@/components/Navbar/navbar";
 import Footer from "@/components/Footer/Footer";
 import { AnalyticsListener } from "@/components/analytics/Analytics";
@@ -21,16 +21,6 @@ export const metadata: Metadata = {
   metadataBase: new URL(defaultSEO.siteUrl),
   title: {
     default: defaultSEO.defaultTitle,
-    // No " | Dr. Dheeraj Dubay" suffix here: every page's own title
-    // (via generatePageMetadata / lib/seo.config.ts, or a page-level
-    // metadata export) already includes the brand name. With a template
-    // of `%s | ${siteName}` here too, Next.js appended it a SECOND time
-    // to every page's <title> sitewide (confirmed live on /services,
-    // /about, /testimonials, /hip-replacement-jaipur, /procedures/*,
-    // etc. — e.g. "...Ratings | 1,100+ Patients | Dr. Dheeraj Dubay").
-    // That silently undermined the WS-4a/WS-4b CTR title rewrites the
-    // moment they shipped. `%s` (no suffix) makes each page's own title
-    // authoritative; `default` still covers any page that sets none.
     template: `%s`,
   },
   description: defaultSEO.defaultDescription,
@@ -42,9 +32,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: defaultSEO.siteUrl,
   },
-  // No /favicon.ico entry: that file does not exist in /public, so every
-  // page emitted a <link> to a 404. The PNG below is the real logo asset and
-  // is what browsers actually rendered in the tab.
   icons: {
     icon: [{ url: "/assets/images/logonew.png", type: "image/png" }],
     apple: "/assets/images/logonew.png",
@@ -96,19 +83,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Google Tag Manager — head */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
         <Script
           id="gtm-init"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`,
           }}
-        />
-        {/* GA4 gtag.js */}
-        <Script
-          id="ga4-src"
-          strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}
         />
         <Script
           id="ga4-init"
@@ -117,9 +98,13 @@ export default function RootLayout({
             __html: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '${GA4_ID}', { send_page_view: false });`,
           }}
         />
+        <Script
+          id="ga4-src"
+          strategy="lazyOnload"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}
+        />
       </head>
       <body className="font-sans">
-        {/* Google Tag Manager (noscript fallback) */}
         <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
@@ -140,7 +125,7 @@ export default function RootLayout({
           <Footer />
           <MobileBookingCTA />
           <WhatsAppFloat />
-          <LeadMagnetPopup />
+          <DeferredLeadMagnet />
         </ThemeProvider>
       </body>
     </html>
