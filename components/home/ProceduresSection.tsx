@@ -2,76 +2,68 @@ import Link from "next/link";
 import { BoneIcon, CpuIcon, CheckIcon, ArrowRightIcon } from "lucide-react";
 import { PROCEDURE_PAGES } from "@/lib/procedure-pages";
 import { SECTION_HEADING_CLASSES, BUTTON } from "@/lib/design-tokens";
-
-// Procedures + specialisations, merged.
-//
-// The homepage used to run two consecutive blocks that said the same thing:
-// "Advanced Joint Replacement Expertise" (two specialisation cards, one of
-// which — Robotic Hip & Knee — is also a procedure page) followed by
-// "Surgical Procedures We Specialise In" (the nine procedure cards, which
-// include Robotic Knee Replacement and Revision Knee Replacement). A visitor
-// scrolled past robotic knee replacement twice, in two different visual
-// languages, with two different "Learn more" destinations.
-//
-// One section now, two tiers: the two flagship capabilities carry their proof
-// points up top, then every procedure sits in a single grid beneath them. The
-// old block's framer-motion entrance animations are gone — this renders as a
-// server component (no client JS) and uses CSS transitions for hover.
+import {
+  HIP_OWNER_URL,
+  JOINT_OWNER_URL,
+  KNEE_OWNER_URL,
+  ROBOTIC_KNEE_OWNER_URL,
+} from "@/lib/seo-priority-pages";
 
 const PILLARS = [
   {
     icon: BoneIcon,
-    title: "Complex Hip & Knee Replacement",
+    title: "Knee Replacement in Jaipur",
     description:
-      "Advanced surgical solutions for the most challenging joint cases.",
+      "A patient-specific pathway covering total, partial, bilateral and revision knee replacement.",
     points: [
-      "Revision surgeries for failed implants",
-      "Deformity correction & bone loss management",
-      "Complex fractures around joint replacements",
-      "Post-infection joint reconstruction",
+      "Assessment based on symptoms, examination and X-rays",
+      "Total and partial knee replacement options",
+      "Bilateral and revision surgery when clinically appropriate",
+      "Recovery plan tailored to health and mobility goals",
     ],
-    // Was /services — a generic index. Points at the procedure page that
-    // actually covers this work.
-    href: "/procedures/revision-knee-replacement",
-    cta: "Explore revision surgery",
+    href: KNEE_OWNER_URL,
+    cta: "Meet the knee replacement surgeon",
   },
   {
     icon: CpuIcon,
-    title: "Robotic Hip & Knee Replacement",
+    title: "Robotic Knee Replacement",
     description:
-      "Precision surgery with computer-assisted robotic technology.",
+      "Robotic guidance used as a surgeon-controlled aid for planning and intra-operative measurements.",
     points: [
-      "Sub-millimetre accuracy in implant placement",
-      "3D pre-operative planning for every patient",
-      "Faster recovery with minimally invasive approach",
-      "Longer implant life with perfect alignment",
+      "Patient-specific surgical planning",
+      "Objective alignment guidance",
+      "Intra-operative balance assessment",
+      "Surgeon remains in control throughout",
     ],
-    href: "/procedures/robotic-knee-replacement",
-    cta: "Explore robotic surgery",
+    href: ROBOTIC_KNEE_OWNER_URL,
+    cta: "Understand robotic knee replacement",
   },
+] as const;
+
+const OTHER_JAIPUR_PATHS = [
+  { href: JOINT_OWNER_URL, label: "Joint Replacement Surgeon in Jaipur" },
+  { href: HIP_OWNER_URL, label: "Hip Replacement Surgeon in Jaipur" },
 ] as const;
 
 export default function ProceduresSection() {
   return (
-    <section className="py-16 md:py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-4">
-        {/* Heading */}
-        <div className="text-center mb-12">
+    <section className="bg-white py-16 md:py-20">
+      <div className="mx-auto max-w-6xl px-4">
+        <div className="mb-12 text-center">
           <span className={SECTION_HEADING_CLASSES.eyebrow}>
             Specialisations &amp; Procedures
           </span>
           <h2 className={SECTION_HEADING_CLASSES.h2}>
-            Advanced Joint Replacement{" "}
-            <span className="text-emerald-600">Expertise</span>
+            Knee &amp; Joint Replacement{" "}
+            <span className="text-emerald-600">Care in Jaipur</span>
           </h2>
           <p className={SECTION_HEADING_CLASSES.sub}>
-            From robotic knee replacement to complex revision surgery — what
-            Dr. Dheeraj Dubay operates on, and what each approach changes for
-            you.
+            Start with the condition and treatment pathway that matches your
+            need. The final recommendation depends on examination, imaging and
+            overall health.
           </p>
         </div>
 
-        {/* Tier 1 — the two flagship capabilities */}
         <div className="grid gap-5 md:grid-cols-2">
           {PILLARS.map((pillar) => {
             const Icon = pillar.icon;
@@ -119,19 +111,31 @@ export default function ProceduresSection() {
           })}
         </div>
 
-        {/* Tier 2 — every procedure, one grid */}
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          {OTHER_JAIPUR_PATHS.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-50"
+            >
+              {item.label}
+              <ArrowRightIcon className="h-3.5 w-3.5" />
+            </Link>
+          ))}
+        </div>
+
         <div className="mt-14 flex flex-wrap items-end justify-between gap-4 border-t border-gray-200 pt-8">
           <div>
             <h3 className="text-xl font-bold text-gray-900">
               All {PROCEDURE_PAGES.length} Procedures
             </h3>
             <p className="mt-1 text-sm text-gray-500">
-              Every knee and hip procedure performed by Dr. Dubay, explained in
-              full.
+              Detailed patient education for the knee and hip procedures
+              offered by the practice.
             </p>
           </div>
           <Link href="/services" className={BUTTON.outline}>
-            Compare all procedures
+            Compare procedures
             <ArrowRightIcon className="h-4 w-4" />
           </Link>
         </div>
