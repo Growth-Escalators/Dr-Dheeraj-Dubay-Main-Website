@@ -12,6 +12,7 @@ import LatestBlogs from "@/components/home/LatestBlogs";
 import ProceduresSection from "@/components/home/ProceduresSection";
 import ConditionsSection from "@/components/home/ConditionsSection";
 import HindiSection from "@/components/home/HindiSection";
+import PatientGuidesSection from "@/components/home/PatientGuidesSection";
 import FeaturedAchievementsSection from "@/components/Achievements/FeaturedAchievementsSection";
 
 type FeaturedAchievement = {
@@ -29,8 +30,6 @@ type TimelineRows =
 
 interface HomePageContentProps {
   featuredAchievements?: FeaturedAchievement[];
-  // All CRM-managed, fetched in app/page.tsx and passed down so nothing on
-  // this page has to fetch from the browser.
   showcaseAwards?: Award[];
   timelineProfessional?: TimelineRows;
   timelineAcademic?: TimelineRows;
@@ -49,21 +48,10 @@ export default function HomePageContent({
 }: HomePageContentProps) {
   return (
     <div className="overflow-hidden">
-      {/* 1. Hero */}
       <Card1 />
-
-      {/* 2. Trust strip — every practice stat on the page, in one block */}
       <MilestonesSection />
-
-      {/* 3. Procedures + specialisations (merged — see ProceduresSection for
-             why these were one duplicated pair of blocks before) */}
       <ProceduresSection />
 
-      {/* Internal-link hub (2026-07-24, rebased 2026-08-03 onto the
-          post-CRM-refactor homepage): /hip-replacement-jaipur is a
-          dedicated surgeon-intent money page, not a PROCEDURE_PAGES
-          entry, so it doesn't appear in ProceduresSection's grid above —
-          link it explicitly with a descriptive anchor. */}
       <p className="text-center text-sm text-gray-500 -mt-8 mb-8">
         Looking for hip replacement specifically?{' '}
         <a href="/hip-replacement-jaipur" className="text-emerald-700 font-semibold hover:underline">
@@ -71,37 +59,22 @@ export default function HomePageContent({
         </a>
       </p>
 
-      {/* 4. Conditions We Treat (scrollable rail) */}
       <ConditionsSection />
-
-      {/* 5. Hindi info section (scrollable rail) */}
+      <PatientGuidesSection />
       <HindiSection />
 
-      {/* 6. Why Choose Us (nests the CRM-managed recognition timeline) */}
       <WhyChoose
         timelineProfessional={timelineProfessional}
         timelineAcademic={timelineAcademic}
       />
 
-      {/* 7. Awards & Honours — fixed portrait, card cycles through awards */}
       <AwardsShowcase awards={showcaseAwards} />
-
-      {/* 8. Featured achievements text grid (DB-driven; crawlable companion to slider) */}
       <FeaturedAchievementsSection achievements={featuredAchievements} />
-
-      {/* 9. Videos + published work — both CRM-managed ("show on homepage"),
-             server-rendered, and absent entirely when nothing is flagged. */}
       <FeaturedVideos videos={homeVideos} />
       <FeaturedArticles articles={homeArticles} />
-
-      {/* 10. Latest content (events + blogs) */}
       <LatestEvents />
       <LatestBlogs />
-
-      {/* 11. Locations (address-only) */}
       <LocationsBlock />
-
-      {/* 12. Final CTA — Book + Call, no form */}
       <FinalCTA />
     </div>
   );
