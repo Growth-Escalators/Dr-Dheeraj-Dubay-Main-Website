@@ -1,7 +1,7 @@
 import { EXPERIENCE_YEARS_DISPLAY, SURGERY_COUNT_DISPLAY } from '@/lib/clinic-info'
 
 const badges = [
-  { icon: '🩺', value: `${EXPERIENCE_YEARS_DISPLAY}+ Years`, label: 'Orthopedic experience' },
+  { icon: '🩺', value: `${EXPERIENCE_YEARS_DISPLAY} Years`, label: 'Orthopedic experience' },
   { icon: '⚕️', value: `${SURGERY_COUNT_DISPLAY} Surgeries`, label: 'Total surgeries performed' },
   { icon: '🏥', value: 'Director', label: 'Robotic Joint Replacement Surgery, Shalby Hospital Jaipur' },
 ]
