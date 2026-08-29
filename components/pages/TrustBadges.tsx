@@ -1,41 +1,26 @@
-import { SURGERY_COUNT_DISPLAY, EXPERIENCE_YEARS_DISPLAY } from '@/lib/clinic-info'
+import { EXPERIENCE_YEARS_DISPLAY, SURGERY_COUNT_DISPLAY } from '@/lib/clinic-info'
+
+const badges = [
+  { icon: '🩺', value: `${EXPERIENCE_YEARS_DISPLAY}+ Years`, label: 'Orthopedic experience' },
+  { icon: '⚕️', value: `${SURGERY_COUNT_DISPLAY} Surgeries`, label: 'Total surgeries performed' },
+  { icon: '🏥', value: 'Director', label: 'Robotic Joint Replacement Surgery, Shalby Hospital Jaipur' },
+]
 
 export function TrustBadges() {
-  const badges = [
-    {
-      icon: '🏆',
-      label: 'Forbes World Record',
-      sub: 'Most surgeries in a single day',
-    },
-    {
-      icon: '⚕️',
-      label: `${SURGERY_COUNT_DISPLAY} Surgeries`,
-      sub: 'Successful joint replacements',
-    },
-    {
-      icon: '⭐',
-      label: `${EXPERIENCE_YEARS_DISPLAY} Years Experience`,
-      sub: 'Expert orthopaedic care',
-    },
-    {
-      icon: '🎖️',
-      label: 'Health Minister Award',
-      sub: '3 consecutive years',
-    },
-  ]
-
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-10">
-      {badges.map(b => (
-        <div
-          key={b.label}
-          className="bg-blue-50 rounded-xl p-4 text-center border border-blue-100"
-        >
-          <div className="text-3xl mb-2">{b.icon}</div>
-          <p className="text-sm font-bold text-blue-900">{b.label}</p>
-          <p className="text-xs text-blue-600 mt-1">{b.sub}</p>
-        </div>
-      ))}
-    </div>
+    <section className="mx-auto max-w-5xl px-4 py-8">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {badges.map((badge) => (
+          <div
+            key={badge.label}
+            className="rounded-xl border border-gray-200 bg-white p-5 text-center shadow-sm"
+          >
+            <div className="text-2xl" aria-hidden="true">{badge.icon}</div>
+            <p className="mt-2 text-lg font-bold text-gray-900">{badge.value}</p>
+            <p className="mt-1 text-sm text-gray-600">{badge.label}</p>
+          </div>
+        ))}
+      </div>
+    </section>
   )
 }
